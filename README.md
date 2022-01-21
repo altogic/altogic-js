@@ -1,3 +1,3 @@
-# altogic
+# Altogic
 
 Javascript client for Altogic.
