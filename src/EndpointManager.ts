@@ -29,6 +29,8 @@ export class EndpointManager {
 
    /**
     * Makes a GET request to the endpoint path. Optionally, you can provide query string parameters or headers in this request.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} path The path of the endpoint. The endpoint path needs to start with a slash '/' character e.g., /users/profile
     * @param {KeyValuePair} [queryParams] Query string parameters as a "key":"value" pair object
     * @param {KeyValuePair} [headers] Additional request headers as a "key":"value" pair object
@@ -47,6 +49,8 @@ export class EndpointManager {
 
    /**
     * Makes a POST request to the endpoint path. Optionally, you can provide body, query string parameters or headers in this request.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} path The path of the endpoint. The endpoint path needs to start with a slash '/' character e.g., /users/profile
     * @param {FormData | object} [body] Request body **JSON** or **FromData** object
     * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
@@ -67,6 +71,8 @@ export class EndpointManager {
 
    /**
     * Makes a PUT request to the endpoint path. Optionally, you can provide body, query string parameters or headers in this request.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} path The path of the endpoint. The endpoint path needs to start with a slash '/' character e.g., /users/profile
     * @param {FormData | object} [body] Request body **JSON** or **FromData** object
     * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
@@ -87,6 +93,8 @@ export class EndpointManager {
 
    /**
     * Makes a DELETE request to the endpoint path. Optionally, you can provide body, query string parameters or headers in this request.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} path The path of the endpoint. The endpoint path needs to start with a slash '/' character e.g., /users/profile
     * @param {FormData | object} [body] Request body **JSON** or **FromData** object
     * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object

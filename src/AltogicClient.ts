@@ -5,6 +5,9 @@ import { KeyValuePair, ClientOptions } from './types';
 import { AuthManager } from './AuthManager';
 import { EndpointManager } from './EndpointManager';
 import { CacheManager } from './CacheManager';
+import { QueueManager } from './QueueManager';
+import { TaskManager } from './TaskManager';
+import { DatabaseManager } from './DatabaseManager';
 
 const DEFAULT_OPTIONS = {
    apiKey: undefined,
@@ -20,7 +23,7 @@ const DEFAULT_OPTIONS = {
  * * {@link db}: {@link DatabaseManager} - Perform CRUD (including filtering, sorting, pagination, lookup) operations in your app database
  * * {@link queue}: {@link QueueManager} - Enables you to perform long-running jobs asynchronously by submitting messages to queues
  * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer
- * * {@link job}: {@link CronJobsManager} - Manually trigger execution of cron jobs
+ * * {@link task}: {@link TaskManager} - Manually trigger execution of scheduled tasks (e.g., cron jobs)
  * @export
  * @class AltogicClient
  */
@@ -40,22 +43,40 @@ export class AltogicClient {
    #fetcher: Fetcher;
 
    /**
-    * AuthManager object used to manage user authentications and sessions
+    * AuthManager object is used to manage user authentications and sessions
     * @type {AuthManager}
     */
    #authManager: AuthManager | null;
 
    /**
-    * EndpointManager object used to make http requests to your app endpoints
+    * EndpointManager object is used to make http requests to your app endpoints
     * @type {EndpointManager}
     */
    #epManager: EndpointManager | null;
 
    /**
-    * CacheManager object used to store and manage objects in cache
+    * CacheManager object is used to store and manage objects in cache
     * @type {CacheManager}
     */
    #cacheManager: CacheManager | null;
+
+   /**
+    * QueueManager object is used to submit messages to a message queue for asynchronous processing
+    * @type {CacheManager}
+    */
+   #queueManager: QueueManager | null;
+
+   /**
+    * TaskManager object is used to trigger execution of scheduled tasks (e.g., cron jobs)
+    * @type {TaskManager}
+    */
+   #taskManager: TaskManager | null;
+
+   /**
+    * DatabaseManager object is used to perform CRUD (create, read, update and delete) and complex query operations in your app's database
+    * @type {DatabaseManager}
+    */
+   #databaseManager: DatabaseManager | null;
 
    /**
     * Create a new client for web applications.
@@ -76,6 +97,9 @@ export class AltogicClient {
       this.#authManager = null;
       this.#epManager = null;
       this.#cacheManager = null;
+      this.#queueManager = null;
+      this.#taskManager = null;
+      this.#databaseManager = null;
 
       //Create combination of default and custom options
       this.settings = { ...DEFAULT_OPTIONS, ...options };
@@ -131,6 +155,45 @@ export class AltogicClient {
       else {
          this.#cacheManager = new CacheManager(this.#fetcher);
          return this.#cacheManager;
+      }
+   }
+
+   /**
+    * Returns the queue manager which is used to submit messages to a message queue for processing.
+    * @readonly
+    * @type {QueueManager}
+    */
+   get queue(): QueueManager {
+      if (this.#queueManager) return this.#queueManager;
+      else {
+         this.#queueManager = new QueueManager(this.#fetcher);
+         return this.#queueManager;
+      }
+   }
+
+   /**
+    * Returns the task manager which is used to trigger scheduled tasks (e.g., cron jobs) for execution.
+    * @readonly
+    * @type {TaskManager}
+    */
+   get task(): TaskManager {
+      if (this.#taskManager) return this.#taskManager;
+      else {
+         this.#taskManager = new TaskManager(this.#fetcher);
+         return this.#taskManager;
+      }
+   }
+
+   /**
+    * Returns the database manager, which is used to perform CRUD (create, read, update and delete) and complex query operations in your app's database.
+    * @readonly
+    * @type {DatabaseManager}
+    */
+   get db(): DatabaseManager {
+      if (this.#databaseManager) return this.#databaseManager;
+      else {
+         this.#databaseManager = new DatabaseManager(this.#fetcher);
+         return this.#databaseManager;
       }
    }
 }

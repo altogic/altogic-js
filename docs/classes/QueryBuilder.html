@@ -1,0 +1,440 @@
+<!DOCTYPE html><html class="default"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>QueryBuilder | altogic</title><meta name="description" content="Documentation for altogic"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script async src="../assets/search.js" id="search-script"></script></head><body><script>document.body.classList.add(localStorage.getItem("tsd-theme") || "os")</script><header><div class="tsd-page-toolbar"><div class="container"><div class="table-wrap"><div class="table-cell" id="tsd-search" data-base=".."><div class="field"><label for="tsd-search-field" class="tsd-widget search no-caption">Search</label><input type="text" id="tsd-search-field"/></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">altogic</a></div><div class="table-cell" id="tsd-widgets"><div id="tsd-filter"><a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a><div class="tsd-filter-group"><div class="tsd-select" id="tsd-filter-visibility"><span class="tsd-select-label">All</span><ul class="tsd-select-list"><li data-value="public">Public</li><li data-value="protected">Public/Protected</li><li data-value="private" class="selected">All</li></ul></div> <input type="checkbox" id="tsd-filter-inherited" checked/><label class="tsd-widget" for="tsd-filter-inherited">Inherited</label><input type="checkbox" id="tsd-filter-externals" checked/><label class="tsd-widget" for="tsd-filter-externals">Externals</label></div></div><a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a></div></div></div></div><div class="tsd-page-title"><div class="container"><ul class="tsd-breadcrumb"><li><a href="../modules.html">altogic</a></li><li><a href="QueryBuilder.html">QueryBuilder</a></li></ul><h1>Class QueryBuilder</h1></div></div></header><div class="container container-main"><div class="row"><div class="col-8 col-content"><section class="tsd-panel tsd-comment"><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The query builder is primarily used to build database queries or run CRUD operataions on a model (i.e., table, collection) of your application.</p>
+</div><dl class="tsd-comment-tags"><dt>export</dt><dd></dd></dl></div></section><section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><ul class="tsd-hierarchy"><li><span class="target">QueryBuilder</span></li></ul></section><section class="tsd-panel-group tsd-index-group"><h2>Index</h2><section class="tsd-panel tsd-index-panel"><div class="tsd-index-content"><section class="tsd-index-section "><h3>Constructors</h3><ul class="tsd-index-list"><li class="tsd-kind-constructor tsd-parent-kind-class"><a href="QueryBuilder.html#constructor" class="tsd-kind-icon">constructor</a></li></ul></section><section class="tsd-index-section tsd-is-private tsd-is-private-protected"><h3>Properties</h3><ul class="tsd-index-list"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_action" class="tsd-kind-icon">#action</a></li><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_fetcher" class="tsd-kind-icon">#fetcher</a></li><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_name" class="tsd-kind-icon">#name</a></li></ul></section><section class="tsd-index-section "><h3>Methods</h3><ul class="tsd-index-list"><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#append" class="tsd-kind-icon">append</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#create" class="tsd-kind-icon">create</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#filter" class="tsd-kind-icon">filter</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#getFetcher" class="tsd-kind-icon">get<wbr/>Fetcher</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#getModel" class="tsd-kind-icon">get<wbr/>Model</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#limit" class="tsd-kind-icon">limit</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#lookup" class="tsd-kind-icon">lookup</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#object" class="tsd-kind-icon">object</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#omit" class="tsd-kind-icon">omit</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#range" class="tsd-kind-icon">range</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#select" class="tsd-kind-icon">select</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#set" class="tsd-kind-icon">set</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#skip" class="tsd-kind-icon">skip</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#sort" class="tsd-kind-icon">sort</a></li></ul></section></div></section></section><section class="tsd-panel-group tsd-member-group "><h2>Constructors</h2><section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"><a id="constructor" class="tsd-anchor"></a><h3>constructor</h3><ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">new <wbr/>Query<wbr/>Builder<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, fetcher<span class="tsd-signature-symbol">: </span><a href="Fetcher.html" class="tsd-signature-type" data-tsd-kind="Class">Fetcher</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:39</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Creates an instance of QueryBuilder to run queries and CRUD operations on your app&#39;s database.</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>name: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The name of the model that this query builder will be operating on</p>
+</div></div></li><li><h5>fetcher: <a href="Fetcher.html" class="tsd-signature-type" data-tsd-kind="Class">Fetcher</a></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The http client to make RESTful API calls to the application&#39;s execution engine</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4></li></ul></section></section><section class="tsd-panel-group tsd-member-group tsd-is-private tsd-is-private-protected"><h2>Properties</h2><section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_action" class="tsd-anchor"></a><h3><span class="tsd-flag ts-flagPrivate">Private</span> #action</h3><div class="tsd-signature tsd-kind-icon">#action<span class="tsd-signature-symbol">:</span> <a href="../interfaces/DBAction.html" class="tsd-signature-type" data-tsd-kind="Interface">DBAction</a></div><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:25</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The action object that will be sent to your app to query data, create, update or delete objects in the database. When you use filter, order, skip, limit etc. methods, the action object will be populated with respective entries.</p>
+</div></div></section><section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_fetcher" class="tsd-anchor"></a><h3><span class="tsd-flag ts-flagPrivate">Private</span> #fetcher</h3><div class="tsd-signature tsd-kind-icon">#fetcher<span class="tsd-signature-symbol">:</span> <a href="Fetcher.html" class="tsd-signature-type" data-tsd-kind="Class">Fetcher</a></div><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:32</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The http client to make RESTful API calls to the application&#39;s execution engine</p>
+</div></div></section><section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="_name" class="tsd-anchor"></a><h3><span class="tsd-flag ts-flagPrivate">Private</span> #name</h3><div class="tsd-signature tsd-kind-icon">#name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:19</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The name of the model that the query builder will be operating on</p>
+</div></div></section></section><section class="tsd-panel-group tsd-member-group "><h2>Methods</h2><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="append" class="tsd-anchor"></a><h3>append</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">append<span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span>, parentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, returnTop<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:482</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Appends object(s) to a child-list of the parent object identified by parentId. This method ignores the values set through other query building methods in your db action configuration, such as <a href="QueryBuilder.html#filter">filter</a>, <a href="QueryBuilder.html#sort">sort</a>, <a href="QueryBuilder.html#lookup">lookup</a>, <a href="QueryBuilder.html#skip">skip</a> etc. This method should also be the last method in your query builder chain.</p>
+</div><div><p>As an example, assuming you have a <code>users</code> top-level model where you define your app users and in this model you have an <strong>object-list</strong> field called <code>addresses</code>, which is a sub-model list, that you store addresses of your users. When creating users, you most probably will not be collecting address information but at a later stage you might collect this information and would like to add these addresses to your users&#39; addresses list. You can use this <strong>append</strong> method to add child object(s) to a user identified by the parentId.</p>
+<p><em>An active user session is required (e.g., user needs to be logged in) to call this method.</em></p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>values: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>An object or list of objects that contains the fields and their values to append to an object-list</p>
+</div></div></li><li><h5>parentId: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The id of the parent object</p>
+</div></div></li><li><h5>returnTop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4><div><p>Returns the newly create object(s) in the database. If <code>returnTop</code> is set to true, it returns the updated top-level object instead of the appended sub-model object(s).</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="create" class="tsd-anchor"></a><h3>create</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">create<span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:433</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Creates top level model object(s) in the database. This method ignores the values set through other query building methods in your db action configuration, such as <a href="QueryBuilder.html#filter">filter</a>, <a href="QueryBuilder.html#sort">sort</a>, <a href="QueryBuilder.html#lookup">lookup</a>, <a href="QueryBuilder.html#skip">skip</a> etc. This method should also be the last method in your query builder chain.</p>
+</div><div><p>If a list of objects is provided as input and if any one of the objects in this list fails during creation, none of the objects will be created in the database.</p>
+<p><em>An active user session is required (e.g., user needs to be logged in) to call this method.</em></p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>values: <span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>An object or a list of objects that contains the fields and their values to create in the database</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4><div><p>Returns the newly create object or list of objects in the database.</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="filter" class="tsd-anchor"></a><h3>filter</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">filter<span class="tsd-signature-symbol">(</span>expression<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:286</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Sets the query expression for selecting/filtering data from your app&#39;s database.</p>
+</div><div><p>If multiple filter method calls are chained then the last one overwrites the previous filters</p>
+
+<a href="#expressions" id="expressions" style="color: inherit; text-decoration: none;">
+  <h3>Expressions</h3>
+</a>
+<p>Expressions enable the creation of <strong>logical</strong>, <strong>mathematical</strong> and <strong>relational</strong> <strong>statements</strong>, which are used to apply rules, perform mathematical calculations on retrieved data, compare model objects and check the feasibility of a statement. <strong>Expressions are also used to access data of model objects.</strong></p>
+<p>The basic expression types implemented by Altogic platform can be summarized as follows:</p>
+<ul>
+<li>Mathematical</li>
+<li>Logical</li>
+<li>Relational</li>
+<li>Informational (data retrieval from model objects)</li>
+</ul>
+<p><strong>Expressions are defined as combinations of operands and operators in a logical sequence.</strong> Such a sequence may represent a mathematical calculation, logical reasoning, relational comparison or even an informational operation. ****Below are some expression examples.</p>
+<blockquote>
+<ol>
+<li><pre><code><span class="hl-0">10</span><span class="hl-1"> - </span><span class="hl-0">5</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-1">(</span><span class="hl-0">100</span><span class="hl-1"> - </span><span class="hl-0">20</span><span class="hl-1">) * </span><span class="hl-0">8</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-2">&#39;Altogic&#39;</span><span class="hl-1"> + </span><span class="hl-2">&#39;-&#39;</span><span class="hl-1"> + </span><span class="hl-2">&#39;Backend as a service platform&#39;</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-1">(</span><span class="hl-3">shoppingCart</span><span class="hl-1">.</span><span class="hl-3">totalPrice</span><span class="hl-1"> / </span><span class="hl-4">SIZE</span><span class="hl-1">(</span><span class="hl-3">shoppingCart</span><span class="hl-1">.</span><span class="hl-3">items</span><span class="hl-1">)) &gt; </span><span class="hl-0">25</span>
+</code></pre>
+</li>
+</ol>
+</blockquote>
+<p>The first expression above is a mathematical expression, the second one is again a mathematical expression but it is nested. The third one is a string manipulation expression and the last one is a combination of relational, informational and mathematical expressions, including the use of <code>SIZE</code> function. This last expression checks whether the average price of an item in an imaginary shopping cart object is greater than 25 or not. As seen from the above examples, the expression types and combinations may differ from one expression to another, however, <strong>the main rule is to keep combinations and types similar to each other</strong>. That is the results of the expression operands evaluation, namely the values, must be of the same type to have a proper operator implementation.</p>
+<p>Expressions consist of <strong>operands</strong> and <strong>operators</strong>. An operand can be a <strong>basic value</strong> or an expression defined in terms of other expressions because expressions can be treated as recursive data structures.</p>
+
+<a href="#values" id="values" style="color: inherit; text-decoration: none;">
+  <h3><strong>Values</strong></h3>
+</a>
+<p>Each expression is formed by logically combining values. Values are actually primitive data types, but more complex data types such as lists and geo-points can also be used in expressions. A value can be a:</p>
+<table>
+<thead>
+<tr>
+<th align="left">Value type</th>
+<th align="left">Examples</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Boolean</td>
+<td align="left"><code>true</code> <code>false</code></td>
+</tr>
+<tr>
+<td align="left">Number</td>
+<td align="left"><code>134</code> <code>56.98</code></td>
+</tr>
+<tr>
+<td align="left">Text</td>
+<td align="left"><code>&#39;Hello world!&#39;</code></td>
+</tr>
+<tr>
+<td align="left">Datetime</td>
+<td align="left"><code>&#39;2020-04-01T06:40:12.941+00:00&#39;</code></td>
+</tr>
+<tr>
+<td align="left">List (array of basic values)</td>
+<td align="left"><code>[&#39;pop&#39;, &#39;90s&#39;, &#39;urban&#39;, &#39;dance&#39;]</code></td>
+</tr>
+<tr>
+<td align="left">Geo-point (longitude and latitude)</td>
+<td align="left"><code>[29.032589793205258, 41.2200826257151]</code></td>
+</tr>
+<tr>
+<td align="left">Model field value</td>
+<td align="left"><code>profile.email</code> <code>address.city</code></td>
+</tr>
+</tbody></table>
+
+<a href="#operators" id="operators" style="color: inherit; text-decoration: none;">
+  <h3><strong>Operators</strong></h3>
+</a>
+<p>Operators carry out all the computations by using the expression elements and can be classified into two main categories. They can be either <strong>unary</strong> or <strong>binary</strong>.</p>
+<p><strong>Unary operators</strong> carry the calculations on a <strong>single value</strong>, namely on an operand, however, <strong>binary operators</strong> carry calculations on <strong>two operands</strong>, one on the left of the operator (left operand) and the other on the right (right operand).</p>
+
+<a href="#arithmetic-operators" id="arithmetic-operators" style="color: inherit; text-decoration: none;">
+  <h4><strong>Arithmetic operators</strong></h4>
+</a>
+<p>Arithmetic operators are used for mathematical calculations.</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Operator</strong></th>
+<th align="left"><strong>Syntax</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">+ (unary)</td>
+<td align="left">+ Expression</td>
+<td align="left">Assigns a positive sign to expression</td>
+</tr>
+<tr>
+<td align="left">+</td>
+<td align="left">Expression + expression</td>
+<td align="left">Adds the values</td>
+</tr>
+<tr>
+<td align="left">- (unary)</td>
+<td align="left">- Expression</td>
+<td align="left">Assigns a negative sign to expression value</td>
+</tr>
+<tr>
+<td align="left">-</td>
+<td align="left">Expression – expression</td>
+<td align="left">Subtracts the values</td>
+</tr>
+<tr>
+<td align="left">*</td>
+<td align="left">Expression * expression</td>
+<td align="left">Multiplies the values</td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td align="left">Expression / expression</td>
+<td align="left">Divides the values</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Example:</strong></p>
+<pre><code><span class="hl-1">-(</span><span class="hl-0">10</span><span class="hl-1"> + ((</span><span class="hl-0">10</span><span class="hl-1"> * </span><span class="hl-0">5</span><span class="hl-1"> - </span><span class="hl-0">4</span><span class="hl-1">) / </span><span class="hl-0">100</span><span class="hl-1"> - </span><span class="hl-0">20</span><span class="hl-1">))</span>
+</code></pre>
+</blockquote>
+<p>In the above expression, all the arithmetic operators are used. The expression is purely mathematical and it is nested. Moreover, the evaluation result of the expression value sign is converted to negative type by the unary minus operator.</p>
+
+<a href="#logical-operators" id="logical-operators" style="color: inherit; text-decoration: none;">
+  <h4><strong>Logical operators</strong></h4>
+</a>
+<p>Logical operators are used to evaluating an expression to <strong>true</strong> (1) or <strong>false</strong> (0).</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Operator</strong></th>
+<th align="left"><strong>Syntax</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">&amp;&amp;</td>
+<td align="left">Expression &amp;&amp; expression</td>
+<td align="left">Logical AND returns true (1) only if both expressions evaluate to a nonzero value; otherwise it returns false (0).</td>
+</tr>
+<tr>
+<td align="left">||</td>
+<td align="left">Expression || expression</td>
+<td align="left">Logical OR returns true (1) if either of the expressions evaluates to a nonzero value; otherwise it returns false (0).</td>
+</tr>
+<tr>
+<td align="left">!</td>
+<td align="left">!Expression</td>
+<td align="left">Logical negation returns false (0) if the expression evaluates to a nonzero value; otherwise it returns true (1).</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Example:</strong></p>
+<pre><code><span class="hl-1">(</span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">firstName</span><span class="hl-1"> &amp;&amp; </span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">lastName</span><span class="hl-1">) || </span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">fullName</span>
+</code></pre>
+</blockquote>
+<p>As it can be seen that the expression uses a combination of both logical &amp;&amp; and || operators. It uses three field values of an imaginary &#39;profile&#39; model. Initially, the expression in parenthesis will be evaluated, which performs a logical AND conditioning on the first two attributes. The result obtained from this evaluation will next be combined with the evaluation result of the last expression operand (profile.fullName) and the final result will be either evaluated to true or false.</p>
+<p>Instead of the logical operators, you can also use <strong>AND</strong> function for &amp;&amp;, <strong>OR</strong> function for || and NOT function for ! operator. Using the functions instead of operators the above example can be written as:</p>
+<pre><code><span class="hl-4">OR</span><span class="hl-1">(</span><span class="hl-4">AND</span><span class="hl-1">(</span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">firstName</span><span class="hl-1">, </span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">lastName</span><span class="hl-1">), </span><span class="hl-3">profile</span><span class="hl-1">.</span><span class="hl-3">fullName</span><span class="hl-1">)</span><span class="hl-2">`</span>
+</code></pre>
+
+<a href="#relational-operators" id="relational-operators" style="color: inherit; text-decoration: none;">
+  <h4><strong>Relational operators</strong></h4>
+</a>
+<p>Like logical operators, relational operators are also used to evaluate an expression to <strong>true</strong> (1) or <strong>false</strong> (0).</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Operator</strong></th>
+<th align="left"><strong>Syntax</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">==</td>
+<td align="left">Expression == expression</td>
+<td align="left">Checks equality of expressions; if the expressions are equal, it returns true (1) otherwise, it returns false (0)</td>
+</tr>
+<tr>
+<td align="left">!=</td>
+<td align="left">Expression != expression</td>
+<td align="left">Checks not equality of expressions; if the expressions are not equal, it returns true (1) otherwise, it returns false (0)</td>
+</tr>
+<tr>
+<td align="left">&lt;</td>
+<td align="left">Expression &lt; expression</td>
+<td align="left">Checks whether the first expression is less than the second one; if the first expression is less than the second one, returns true (1) otherwise, it returns false (0)</td>
+</tr>
+<tr>
+<td align="left">&gt;</td>
+<td align="left">Expression &gt; expression</td>
+<td align="left">Checks whether the first expression is greater than the second one; if the first expression is greater than the second one, returns true (1) otherwise, it returns false (0)</td>
+</tr>
+<tr>
+<td align="left">&lt;=</td>
+<td align="left">Expression &lt;= expression</td>
+<td align="left">Checks whether the first expression is less than or equal to the second one; if the first expression is less than or equal to the second one, returns true (1) otherwise, it returns false (0)</td>
+</tr>
+<tr>
+<td align="left">&gt;=</td>
+<td align="left">Expression &gt;= expression</td>
+<td align="left">Checks whether the first expression is greater than or equal to the second one; if the first expression is greater than or equal to the second one, returns true (1) otherwise, it returns false (0)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Example:</strong></p>
+<pre><code><span class="hl-3">task</span><span class="hl-1">.</span><span class="hl-3">completionDate</span><span class="hl-1"> &gt; </span><span class="hl-3">task</span><span class="hl-1">.</span><span class="hl-3">dueDate</span>
+</code></pre>
+</blockquote>
+<p>The expression above uses a relational greater than operator. It checks whether the completion time is later than the due date of an imaginary task object.</p>
+
+<a href="#altogic-specific-operators" id="altogic-specific-operators" style="color: inherit; text-decoration: none;">
+  <h4>Altogic specific operators</h4>
+</a>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Operator</strong></th>
+<th align="left"><strong>Syntax</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">[ ]</td>
+<td align="left">[expression, expression, ...]</td>
+<td align="left">This bracket operator specifies that the expressions which are separated by commas between the brackets are members of a list (array)</td>
+</tr>
+<tr>
+<td align="left">&quot; &quot;</td>
+<td align="left">&quot;text&quot;</td>
+<td align="left">This operator specifies that the expression between the double quotation is a text value.</td>
+</tr>
+<tr>
+<td align="left">&#39; &#39;</td>
+<td align="left">&#39;text&#39;</td>
+<td align="left">This operator specifies that the expression between the quotation is a text value.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>Examples:</strong></p>
+<ol>
+<li><pre><code><span class="hl-2">&#39;10&#39;</span><span class="hl-1"> + </span><span class="hl-2">&#39;20&#39;</span><span class="hl-1"> + </span><span class="hl-2">&#39;30&#39;</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-2">&#39;Result : &#39;</span><span class="hl-1"> + (</span><span class="hl-0">10</span><span class="hl-1"> * </span><span class="hl-0">5</span><span class="hl-1"> + </span><span class="hl-0">100</span><span class="hl-1">)</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-4">SIZE</span><span class="hl-1">([</span><span class="hl-0">45</span><span class="hl-1">,</span><span class="hl-0">26</span><span class="hl-1">,</span><span class="hl-0">94</span><span class="hl-1">,</span><span class="hl-0">73</span><span class="hl-1">]) == </span><span class="hl-0">4</span>
+</code></pre>
+</li>
+</ol>
+</blockquote>
+<p>The first expression illustrates a basic string concatenation operation. The characters between the double quotes are treated as a string. The second and the third strings are concatenated to the first one, which results in this final string: <code>102030</code>. The second expression is a special one and evaluation result of this expression is <code>Result : 150</code>. This is again a string concatenation operation but the second expression is evaluated as a mathematical one and the result is converted to a string value. The last expression is a relational equality check whether the left operand value is equal to the right operand value. <code>size</code> is a built in function which returns the length of an array. In this case the array length is 4 and this overall expression evaluates to true (1).</p>
+
+<a href="#associativity-and-precedence-of-operators" id="associativity-and-precedence-of-operators" style="color: inherit; text-decoration: none;">
+  <h3><strong>Associativity and Precedence of Operators</strong></h3>
+</a>
+<p>In expressions, operators have different precedence. Evaluation of the expressions is carried on according to the precedence of the operators. From simple algebra, multiplication precedes addition or subtraction, however division and multiplication have the same precedence.</p>
+<p>The precedence relation between the arithmetical, logical, special and relational operators implemented is as follows.</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Operators</strong></th>
+<th align="left"><strong>Associativity</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">( ) &quot; &#39; [ ]</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">+ - !</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">* /</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">+ -</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">&lt; &lt;= &gt; &gt;=</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">== !=</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">&amp;&amp;</td>
+<td align="left">Left to right</td>
+</tr>
+<tr>
+<td align="left">||</td>
+<td align="left">Left to right</td>
+</tr>
+</tbody></table>
+<p>Operators in the same category have equal precedence with each other. Where duplicates of operators appear in the table, the first occurrence is unary, the second binary. Each category has an associativity rule: left to right. In the absence of parentheses, this rule resolves the grouping of expressions with operators of equal precedence. The precedence of each operator in table above is indicated by its order in the table. The first category (on the first line) has the highest precedence. Operators on the same line have equal precedence.</p>
+
+<a href="#functions" id="functions" style="color: inherit; text-decoration: none;">
+  <h3>Functions</h3>
+</a>
+<p>There are several <strong>array</strong>, <strong>logical</strong>, <strong>text</strong>, <strong>object</strong>, <strong>mathematical</strong>, <strong>date &amp; time</strong>, <strong>type conversion</strong>, <strong>validation</strong> and <strong>geolocation</strong> functions implemented as expressions for performing advanced calculations and data manipulations. You can use these functions in your expressions.</p>
+<p>Each function has a name and zero or more input parameters. The number and type of input parameters are all specific to a function.</p>
+<blockquote>
+<p><strong>Examples:</strong></p>
+<ol>
+<li><pre><code><span class="hl-4">STARTSWITH</span><span class="hl-1">(</span><span class="hl-3">main_text</span><span class="hl-1">, </span><span class="hl-3">search_text</span><span class="hl-1">)</span><br/><br/><span class="hl-4">STARTSWITH</span><span class="hl-1">(</span><span class="hl-2">&quot;Jonh Adams&quot;</span><span class="hl-1">, </span><span class="hl-2">&quot;Jon&quot;</span><span class="hl-1">)</span><br/>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-4">PRODUCT</span><span class="hl-1">(</span><span class="hl-3">number1</span><span class="hl-1">, </span><span class="hl-3">number2</span><span class="hl-1">, ...)</span><br/><br/><span class="hl-4">PRODUCT</span><span class="hl-1">(</span><span class="hl-0">10</span><span class="hl-1">, </span><span class="hl-0">23</span><span class="hl-1">, </span><span class="hl-0">5</span><span class="hl-1">, -</span><span class="hl-0">75</span><span class="hl-1">)</span><br/>
+</code></pre>
+</li>
+</ol>
+</blockquote>
+<p>The first example above is the &quot;STARTSWITH&quot; function. This function checks whether a string starts with the characters of a search string, returning true or false as appropriate. It accepts two text parameters, <em>main text</em> and <em>search text</em>. The second example is the &quot;PRODUCT&quot; function. This function multiplies all the numbers given as arguments and returns the resulting number.  There is no fixed number of input parameter for this function. At a minimum it takes two parameters and maximum it can have 100.</p>
+
+<a href="#data-query-expressions" id="data-query-expressions" style="color: inherit; text-decoration: none;">
+  <h3>Data query expressions</h3>
+</a>
+<p>Altogic does not use a separate data query syntax (e.g., SQL) for selecting/filtering data from the database. <strong>You use the same expression syntax described above and functions to query your data.</strong></p>
+<p>Assuming you have an imaginary product model with quantity (integer), weight (decimal), volume (decimal) and type (text) information. Below are some data query examples that you can create to fetch/filter your products data.</p>
+<blockquote>
+<p><strong>Examples:</strong></p>
+<ol>
+<li><pre><code><span class="hl-3">quantity</span><span class="hl-1"> &gt; </span><span class="hl-0">100</span><span class="hl-1"> &amp;&amp; </span><span class="hl-3">quantity</span><span class="hl-1"> &lt; </span><span class="hl-0">200</span><span class="hl-1"> &amp;&amp; </span><span class="hl-3">type</span><span class="hl-1"> == </span><span class="hl-2">&quot;plastic&quot;</span>
+</code></pre>
+</li>
+<li><pre><code><span class="hl-1">(</span><span class="hl-3">weight</span><span class="hl-1"> / </span><span class="hl-3">volume</span><span class="hl-1"> &gt; </span><span class="hl-0">2</span><span class="hl-1"> &amp;&amp; </span><span class="hl-3">type</span><span class="hl-1"> == </span><span class="hl-2">&#39;metal&#39;</span><span class="hl-1">) || (</span><span class="hl-3">weight</span><span class="hl-1"> / </span><span class="hl-3">volume</span><span class="hl-1"> &lt;= </span><span class="hl-0">2</span><span class="hl-1"> &amp;&amp; </span><span class="hl-3">type</span><span class="hl-1"> == </span><span class="hl-2">&#39;plastic&#39;</span><span class="hl-1">)</span>
+</code></pre>
+</li>
+</ol>
+</blockquote>
+<p>The first data query above searches for products that are of type plastic and has a stock quantity between 100-200 items. The second data query search for products either metal and with a weight to volume ration greater than 2 or plastics with a weight to volume ration less than or equal to 2.</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>expression: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The query expression string</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getFetcher" class="tsd-anchor"></a><h3>get<wbr/>Fetcher</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">get<wbr/>Fetcher<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="Fetcher.html" class="tsd-signature-type" data-tsd-kind="Class">Fetcher</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:58</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Returns the <a href="Fetcher.html">Fetcher</a> of the query builder object</p>
+</div></div><h4 class="tsd-returns-title">Returns <a href="Fetcher.html" class="tsd-signature-type" data-tsd-kind="Class">Fetcher</a></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getModel" class="tsd-anchor"></a><h3>get<wbr/>Model</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">get<wbr/>Model<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:66</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Returns the name of the data model that this query builder object is operating on</p>
+</div></div><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><div></div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="limit" class="tsd-anchor"></a><h3>limit</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">limit<span class="tsd-signature-symbol">(</span>limitCount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:328</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Limits the max number of objects returned from the database. In combination with <a href="QueryBuilder.html#skip">skip</a>, primarily used to paginate through your data. Even if you do not specify a limit in your database queries, Altogic automatically limits the number of objects returned from the database by setting the default limits.</p>
+</div><div><p>If multiple limit method calls are chained then the last one overwrites the previous limit values</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>limitCount: <span class="tsd-signature-type">number</span></h5></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="lookup" class="tsd-anchor"></a><h3>lookup</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">lookup<span class="tsd-signature-symbol">(</span>lookups<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="../interfaces/SimpleLookup.html" class="tsd-signature-type" data-tsd-kind="Interface">SimpleLookup</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/ComplexLookup.html" class="tsd-signature-type" data-tsd-kind="Interface">ComplexLookup</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:300</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Looks up (left outer join) the specified fields of the model when getting data form the database</p>
+</div><div><p>If multiple lookup method calls are chained then the last one overwrites the previous lookups</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>lookups: <span class="tsd-signature-symbol">[</span><a href="../interfaces/SimpleLookup.html" class="tsd-signature-type" data-tsd-kind="Interface">SimpleLookup</a><span class="tsd-signature-symbol"> | </span><a href="../interfaces/ComplexLookup.html" class="tsd-signature-type" data-tsd-kind="Interface">ComplexLookup</a><span class="tsd-signature-symbol">]</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The list of lookups to make (left outer join) while getting the object from the database</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="object" class="tsd-anchor"></a><h3>object</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">object<span class="tsd-signature-symbol">(</span>id<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="DBObject.html" class="tsd-signature-type" data-tsd-kind="Class">DBObject</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:78</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Gets a <a href="DBObject.html">DBObject</a> instance that refers to the object with the specified id.</p>
+</div><div><p><a href="DBObject.html">DBObject</a> provides convenience methods to perform create, update, delete, get and upsert operations.</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5><span class="tsd-flag ts-flagOptional">Optional</span> id: <span class="tsd-signature-type">string</span></h5></li></ul><h4 class="tsd-returns-title">Returns <a href="DBObject.html" class="tsd-signature-type" data-tsd-kind="Class">DBObject</a></h4><div><p>A DBObject instance</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="omit" class="tsd-anchor"></a><h3>omit</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">omit<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:388</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Applies a field mask to the result and returns all the fields except the omitted ones. Either <a href="QueryBuilder.html#select">select</a> or <a href="QueryBuilder.html#omit">omit</a>, <u>but not both</u> can be used in your database queries.</p>
+</div><div><p>If multiple omit method calls are chained then each call is concatenated to a list</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>fields: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="range" class="tsd-anchor"></a><h3>range</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">range<span class="tsd-signature-symbol">(</span>startIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, endIndex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:410</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Limits the objects returned from the database within the specified range, inclusive. Primarily used to paginate through your data.</p>
+</div><div><p>If multiple range method calls are chained then the last one overwrites the previous range values</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>startIndex: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The starting index, an integer, from which to limit the result, inclusive.</p>
+</div></div></li><li><h5>endIndex: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The end index, an integer, to which to limit the result, inclusive.</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="select" class="tsd-anchor"></a><h3>select</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">select<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>fields<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:367</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Applies a field mask to the result and returns only the specified subset of fields. Either <a href="QueryBuilder.html#select">select</a> or <a href="QueryBuilder.html#omit">omit</a>, <u>but not both</u> can be used in your database queries.</p>
+</div><div><p>If multiple select method calls are chained then each call is concatenated to a list</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>fields: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The name of the fields that will be returned in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="set" class="tsd-anchor"></a><h3>set</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>values<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, parentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, returnTop<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:455</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Sets the sub-object field value of the parent object identified by parentId. This method ignores the values set through other query building methods in your db action configuration, such as <a href="QueryBuilder.html#filter">filter</a>, <a href="QueryBuilder.html#sort">sort</a>, <a href="QueryBuilder.html#lookup">lookup</a>, <a href="QueryBuilder.html#skip">skip</a> etc. This method should also be the last method in your query builder chain.</p>
+</div><div><p>As an example, assuming you have a <code>users</code> top-level model where you define your app users and in this model you have an <em>object</em> field called <code>profile</code>, which is a sub-model, that you store details about your users. When creating users, you most probably will not be collecting profile information but at a later stage you might collect this information and would like to set the value of the profile. You can use this <strong>set</strong> method to set the profile field of a users object identified by the parentId.</p>
+<p><em>An active user session is required (e.g., user needs to be logged in) to call this method.</em></p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>values: <span class="tsd-signature-type">object</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>An object that contains the fields and their values of a sub-model object to set in the database</p>
+</div></div></li><li><h5>parentId: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The id of the parent object</p>
+</div></div></li><li><h5>returnTop: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5></li></ul><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{ </span>data<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">; </span>errors<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/APIError.html" class="tsd-signature-type" data-tsd-kind="Interface">APIError</a><span class="tsd-signature-symbol"> }</span><span class="tsd-signature-symbol">&gt;</span></h4><div><p>Returns the newly create object in the database. If <code>returnTop</code> is set to true, it returns the updated top-level object instead of the set sub-model object.</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="skip" class="tsd-anchor"></a><h3>skip</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">skip<span class="tsd-signature-symbol">(</span>skipCount<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:314</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Skips over the specified number of objects when getting model objects from the database. In combination with <a href="QueryBuilder.html#limit">limit</a>, primarily used to paginate through your data.</p>
+</div><div><p>If multiple skip method calls are chained then the last one overwrites the previous skip values</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>skipCount: <span class="tsd-signature-type">number</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>An integer that specifies the number of objects to skip</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section><section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="sort" class="tsd-anchor"></a><h3>sort</h3><ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class"><li class="tsd-signature tsd-kind-icon">sort<span class="tsd-signature-symbol">(</span>fieldName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, sortDirection<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">&quot;asc&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;desc&quot;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></li></ul><ul class="tsd-descriptions"><li class="tsd-description"><aside class="tsd-sources"><ul><li>Defined in QueryBuilder.ts:346</li></ul></aside><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Sorts the returned objects by the value of the specified field and sort direction</p>
+</div><div><p>If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields</p>
+</div></div><h4 class="tsd-parameters-title">Parameters</h4><ul class="tsd-parameters"><li><h5>fieldName: <span class="tsd-signature-type">string</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)</p>
+</div></div></li><li><h5>sortDirection: <span class="tsd-signature-type">&quot;asc&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;desc&quot;</span></h5><div class="tsd-comment tsd-typography"><div class="lead">
+<p>Sort direction whether ascending or descending</p>
+</div></div></li></ul><h4 class="tsd-returns-title">Returns <a href="QueryBuilder.html" class="tsd-signature-type" data-tsd-kind="Class">QueryBuilder</a></h4><div><p>Returns the query builder itself so that you can chain other methods</p>
+</div></li></ul></section></section></div><div class="col-4 col-menu menu-sticky-wrap menu-highlight"><nav class="tsd-navigation primary"><ul><li class=""><a href="../modules.html">Exports</a></li></ul></nav><nav class="tsd-navigation secondary menu-sticky"><ul><li class="current tsd-kind-class"><a href="QueryBuilder.html" class="tsd-kind-icon">Query<wbr/>Builder</a><ul><li class="tsd-kind-constructor tsd-parent-kind-class"><a href="QueryBuilder.html#constructor" class="tsd-kind-icon">constructor</a></li><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_action" class="tsd-kind-icon">#action</a></li><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_fetcher" class="tsd-kind-icon">#fetcher</a></li><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><a href="QueryBuilder.html#_name" class="tsd-kind-icon">#name</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#append" class="tsd-kind-icon">append</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#create" class="tsd-kind-icon">create</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#filter" class="tsd-kind-icon">filter</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#getFetcher" class="tsd-kind-icon">get<wbr/>Fetcher</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#getModel" class="tsd-kind-icon">get<wbr/>Model</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#limit" class="tsd-kind-icon">limit</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#lookup" class="tsd-kind-icon">lookup</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#object" class="tsd-kind-icon">object</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#omit" class="tsd-kind-icon">omit</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#range" class="tsd-kind-icon">range</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#select" class="tsd-kind-icon">select</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#set" class="tsd-kind-icon">set</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#skip" class="tsd-kind-icon">skip</a></li><li class="tsd-kind-method tsd-parent-kind-class"><a href="QueryBuilder.html#sort" class="tsd-kind-icon">sort</a></li></ul></li></ul></nav></div></div></div><footer class="with-border-bottom"><div class="container"><h2>Legend</h2><div class="tsd-legend-group"><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li><li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li><li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li><li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li></ul><ul class="tsd-legend"><li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li></ul></div><h2>Settings</h2><p>Theme <select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></p></div></footer><div class="container tsd-generator"><p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div><div class="overlay"></div><script src="../assets/main.js"></script></body></html>

@@ -179,6 +179,11 @@ export interface APIError {
    items: ErrorEntry[];
 }
 
+/**
+ * Provides info about an error.
+ * @export
+ * @interface ErrorEntry
+ */
 export interface ErrorEntry {
    /**
     * Originator of the error either a client error or an internal server error
@@ -203,4 +208,443 @@ export interface ErrorEntry {
     * @type {object}
     */
    details?: object;
+}
+
+/**
+ * Provides info about the status of a message that is submitted to a queue.
+ * @export
+ * @interface MessageInfo
+ */
+export interface MessageInfo {
+   /**
+    * The id of the message
+    * @type {string}
+    */
+   messageId: string;
+   /**
+    * The id of the queue this message is submitted to
+    * @type {string}
+    */
+   queueId: string;
+   /**
+    * The name of the queue this message is submitted to
+    * @type {string}
+    */
+   queueName: string;
+   /**
+    * The message submit date-time
+    * @type {string}
+    */
+   submittedAt: string;
+   /**
+    * The message processing start date-time
+    * @type {string}
+    */
+   startedAt: string;
+   /**
+    * The message processing complete date-time
+    * @type {string}
+    */
+   completedAt: string;
+   /**
+    * The status of the message. When the message is submitted to the queue, it is in `pending` status. When the message is being processed, its status changes to `processing`. If message is successfully completed its status becomes `complete`otherwiese it becomes `errors`.
+    * @type {string}
+    */
+   status: 'pending' | 'processing' | 'completed' | 'errors';
+   errors: object;
+}
+
+/**
+ * Provides info about the status of a task that is triggered for execution.
+ * @export
+ * @interface TaskInfo
+ */
+export interface TaskInfo {
+   /**
+    * The id of the task
+    * @type {string}
+    */
+   taskId: string;
+   /**
+    * The id of the scheduled task that is triggered
+    * @type {string}
+    */
+   scheduledTaskId: string;
+   /**
+    * The name of the scheduled task that is triggered
+    * @type {string}
+    */
+   scheduledTaskName: string;
+   /**
+    * The task trigger date-time
+    * @type {string}
+    */
+   triggeredAt: string;
+   /**
+    * The task execution start date-time
+    * @type {string}
+    */
+   startedAt: string;
+   /**
+    * The task execution complete date-time
+    * @type {string}
+    */
+   completedAt: string;
+   /**
+    * The status of the task. When the task is firts triggered, it is in `pending` status. When the task is being processed, its status changes to `processing`. If task is successfully completed its status becomes `complete`otherwiese it becomes `errors`.
+    * @type {string}
+    */
+   status: 'pending' | 'processing' | 'completed' | 'errors';
+   errors: object;
+}
+
+/**
+ * Defines the options for an object read operation
+ * @export
+ * @interface GetOptions
+ */
+export interface GetOptions {
+   /**
+    * Specify whether to cache the retrieved object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
+    * @type {string}
+    */
+   cache:
+      | 'nocache'
+      | 'noexpiry'
+      | '15mins'
+      | '30mins'
+      | '1hour'
+      | '6hours'
+      | '12hours'
+      | '1day'
+      | '1week'
+      | '1month'
+      | '6months'
+      | '1year';
+}
+
+/**
+ * Defines the structure of a simple lookup
+ * @export
+ * @interface SimpleLookup
+ */
+export interface SimpleLookup {
+   /**
+    * The name of the object reference field of the model that will be looked up. Only the immediate fields of the model can be used in simple lookups. If you would like to look up for a sub-object field then you need to use that respective sub-model as the reference point of your lookups. The simple lookup basically runs the following query: `this.field == lookup._id`, meaning joins the looked up model with the current one by matching the value of the field with the _id of the looked up model.
+    * @type {string}
+    */
+   field: string;
+}
+
+/**
+ * Defines the structure of a complex lookup
+ * @export
+ * @interface ComplexLookup
+ */
+export interface ComplexLookup {
+   /**
+    * The name of the lookup. This will become a field of the retrieved object which will hold the looked up value. The specified name needs to be **unique** among the fields of the model.
+    * @type {string}
+    */
+   name: string;
+   /**
+    * The name of the target model which will be joined with the current model
+    * @type {string}
+    */
+   modelName: string;
+   /**
+    * The query expression that will be used in joining the models
+    * @type {string}
+    */
+   query: string;
+}
+
+/**
+ * Defines the options for an object create operation
+ * @export
+ * @interface CreateOptions
+ */
+export interface CreateOptions {
+   /**
+    * Specify whether to cache the created object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
+    * @type {string}
+    */
+   cache:
+      | 'nocache'
+      | 'noexpiry'
+      | '15mins'
+      | '30mins'
+      | '1hour'
+      | '6hours'
+      | '12hours'
+      | '1day'
+      | '1week'
+      | '1month'
+      | '6months'
+      | '1year';
+}
+
+/**
+ * Defines the options for an object set operation
+ * @export
+ * @interface SetOptions
+ */
+export interface SetOptions {
+   /**
+    * Specify whether to cache the set object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
+    * @type {string}
+    */
+   cache:
+      | 'nocache'
+      | 'noexpiry'
+      | '15mins'
+      | '30mins'
+      | '1hour'
+      | '6hours'
+      | '12hours'
+      | '1day'
+      | '1week'
+      | '1month'
+      | '6months'
+      | '1year';
+
+   /**
+    * When you create a submodel object (a child object of a top-level object), you can specify whether to return the newly created child object or the updated top-level object.
+    * @type {boolean}
+    */
+   returnTop: boolean;
+}
+
+/**
+ * Defines the options for an object append operation
+ * @export
+ * @interface AppendOptions
+ */
+export interface AppendOptions {
+   /**
+    * Specify whether to cache the appended object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
+    * @type {string}
+    */
+   cache:
+      | 'nocache'
+      | 'noexpiry'
+      | '15mins'
+      | '30mins'
+      | '1hour'
+      | '6hours'
+      | '12hours'
+      | '1day'
+      | '1week'
+      | '1month'
+      | '6months'
+      | '1year';
+
+   /**
+    * When you create a submodel object (a child object of a top-level object), you can specify whether to return the newly created child object or the updated top-level object.
+    * @type {boolean}
+    */
+   returnTop: boolean;
+}
+
+/**
+ * Defines the options for an object delete operation
+ * @export
+ * @interface DeleteOptions
+ */
+export interface DeleteOptions {
+   /**
+    * Specify whether to remove deleted object from cache using deleted object id as the cache key.
+    * @type {string}
+    */
+   removeFromCache: boolean;
+
+   /**
+    * In case if you delete a submodel object (a child object of a top-level object), you can specify whether to return the updated top-level object.
+    * @type {boolean}
+    */
+   returnTop: boolean;
+}
+
+/**
+ * Defines the options for an object update operation
+ * @export
+ * @interface UpdateOptions
+ */
+export interface UpdateOptions {
+   /**
+    * Specify whether to cache the updated object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
+    * @type {string}
+    */
+   cache:
+      | 'nocache'
+      | 'noexpiry'
+      | '15mins'
+      | '30mins'
+      | '1hour'
+      | '6hours'
+      | '12hours'
+      | '1day'
+      | '1week'
+      | '1month'
+      | '6months'
+      | '1year';
+
+   /**
+    * In case if you update a submodel object (a child object of a top-level object), you can specify whether to return the newly updated child object or the updated top-level object.
+    * @type {boolean}
+    */
+   returnTop: boolean;
+}
+
+/**
+ * Defines the structure of a db action that is built by a {@link QueryBuilder}
+ * @export
+ * @interface DBAction
+ */
+export interface DBAction {
+   /**
+    * The filter query expression string
+    * @type {string | null}
+    */
+   expression: string | null | undefined;
+   /**
+    * The list of lookups to make (left outer join) while getting the object from the database
+    * @type {([SimpleLookup | ComplexLookup]| null | undefined)}
+    */
+   lookups: [SimpleLookup | ComplexLookup] | null | undefined;
+   /**
+    * An integer that specifies the number of objects to skip
+    * @type {(number | null | undefined)}
+    */
+   skip: number | null | undefined;
+   /**
+    * An integer that specifies the max number of objects to return
+    * @type {(number | null | undefined)}
+    */
+   limit: number | null | undefined;
+   /**
+    * Keeps the list of field names and sort direction for sorting returned objects
+    * @type {([SortEntry] | null | undefined)}
+    */
+   sort: [SortEntry] | null | undefined;
+   /**
+    * The list of fields that will be returned in retrieved objects
+    * @type {(string[]| null | undefined)}
+    */
+   select: string[] | null | undefined;
+   /**
+    * The list of fields that will be omitted in retrieved objects
+    * @type {(string[]| null | undefined)}
+    */
+   omit: string[] | null | undefined;
+   /**
+    * The range definition to limit the records returned from the database
+    * @type {(string[]| null | undefined)}
+    */
+   range: Range | null | undefined;
+}
+
+/**
+ * Defines the structure of sort entry
+ * @export
+ * @interface SortEntry
+ */
+export interface SortEntry {
+   /**
+    * The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specicy sub-object fields (e.g., fiel.subField)
+    * @type {string}
+    */
+   field: string;
+   /**
+    * Sort direction
+    * @type {string}
+    */
+   direction: 'asc' | 'desc';
+}
+
+/**
+ * Defines the structure of a range
+ * @export
+ * @interface Range
+ */
+export interface Range {
+   /**
+    * The starting index, an integer, from which to limit the returned objects, inclusive.
+    * @type {string}
+    */
+   startIndex: number;
+   /**
+    * The end index, an integer, to which to limit the returned objects, inclusive.
+    * @type {string}
+    */
+   endIndex: number;
+}
+
+/**
+ * Defines the structure of a field update
+ * @export
+ * @interface FieldUpdate
+ */
+export interface FieldUpdate {
+   /**
+    * The name of the field whose value will be updated. The field name can be in dot-notation to specicy sub-object fields (e.g., fiel.subField). Please note that only sub-model object fields can be accessed through the dot-notation. You cannot create an update instruction for an object-list field through the dot-notation.
+    * @type {string}
+    */
+   field: string;
+
+   /**
+    * Defines how the field will be updated.
+    * - **set:** Sets (overwrites) the value of a field. Applicable only all fields, except system managed `_id`, `_parent`, `createdAt`, `updatedAt` fields.
+    * - **unset:** Clears the value of a field. Applicable only all fields, except system managed `_id`, `_parent`, `createdAt`, `updatedAt` fields.
+    * - **increment:** Increments the value of a numeric field by the specified amount. Applicable only for integer and decimal fields.
+    * - **decrement:** Decrements the value of a numeric field by the specified amount. Applicable only for integer and decimal fields.
+    * - **min:** Assigns the minimum of the specified value or the field value. If the specified value is less than the current field value, sets the field value to the specificied value, otherwise does not make any changes. Applicable only for integer and decimal fields.
+    * - **max:** Assigns the maximum of the specified value or the field value. If the specified value is greater than the current field value, sets the field value to the specificied value, otherwise does not make any changes. Applicable only for integer and decimal fields.
+    * - **multiply:** Multiplies the current value of the field with the specified amount and sets the field value to teh multiplication result. Applicable only for integer and decimal fields.
+    * - **pull:** Removes the specified value from a basic values list. Applicable only for basic values list fields.
+    * - **push:** Adds the specified value to a basic values list. Applicable only for basic values list fields.
+    * - **pop:** Removes the last element from a basic values list. Applicable only for basic values list fields.
+    * - **shift:** Removes the first element from a basic values list. Applicable only for basic values list fields.
+    * @type {('set'
+    *       | 'unset'
+    *       | 'increment'
+    *       | 'decrement'
+    *       | 'min'
+    *       | 'max'
+    *       | 'multiply'
+    *       | 'pull'
+    *       | 'push'
+    *       | 'pop'
+    *       | 'shift')}
+    */
+   updateType:
+      | 'set'
+      | 'unset'
+      | 'increment'
+      | 'decrement'
+      | 'min'
+      | 'max'
+      | 'multiply'
+      | 'pull'
+      | 'push'
+      | 'pop'
+      | 'shift';
+
+   /**
+    * The value that will be used during the field update. Depending on the update type the value will have different meaning.
+    * - **set:** The new value to set
+    * - **unset:** Not applicable, value is not needed
+    * - **increment:** The icrement amount
+    * - **decrement:** The decrement amount
+    * - **min:** The min amount to compare against current field value
+    * - **max:** The max amount to compare against current field value
+    * - **multiply:** The multiplication amount
+    * - **pull:** Basic value list item to remove
+    * - **push:** Basic value list item to add
+    * - **pop:** Not applicable, value is not needed
+    * - **shift:** Not applicable, value is not needed
+    * @type {*}
+    * @memberof FieldUpdate
+    */
+   value: any;
 }

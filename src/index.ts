@@ -2,6 +2,11 @@ import { AltogicClient } from './AltogicClient';
 import { AuthManager } from './AuthManager';
 import { EndpointManager } from './EndpointManager';
 import { CacheManager } from './CacheManager';
+import { QueueManager } from './QueueManager';
+import { TaskManager } from './TaskManager';
+import { DatabaseManager } from './DatabaseManager';
+import { QueryBuilder } from './QueryBuilder';
+import { DBObject } from './DBObject';
 import { Fetcher } from './utils/Fetcher';
 import {
    KeyValuePair,
@@ -11,6 +16,20 @@ import {
    User,
    APIError,
    ErrorEntry,
+   MessageInfo,
+   TaskInfo,
+   GetOptions,
+   SimpleLookup,
+   ComplexLookup,
+   CreateOptions,
+   DeleteOptions,
+   UpdateOptions,
+   SetOptions,
+   AppendOptions,
+   DBAction,
+   SortEntry,
+   Range,
+   FieldUpdate,
 } from './types';
 import { polyfillGlobalThis } from './utils/polyfills';
 
@@ -34,6 +53,9 @@ export {
    AuthManager,
    EndpointManager,
    CacheManager,
+   QueueManager,
+   TaskManager,
+   DatabaseManager,
    Fetcher,
    KeyValuePair,
    Session,
@@ -42,4 +64,20 @@ export {
    User,
    APIError,
    ErrorEntry,
+   MessageInfo,
+   TaskInfo,
+   QueryBuilder,
+   DBObject,
+   GetOptions,
+   SimpleLookup,
+   ComplexLookup,
+   CreateOptions,
+   DeleteOptions,
+   UpdateOptions,
+   SetOptions,
+   AppendOptions,
+   DBAction,
+   SortEntry,
+   Range,
+   FieldUpdate,
 };
