@@ -138,6 +138,15 @@ export interface ClientOptions {
     * @type {string}
     */
    signInRedirect?: string;
+
+   /**
+    * Flag to set on/off session check by your backend app for each method call of the client library. If this flag is set on, then a user needs to be signed in to call methods of the client library objects, otherwise, no user sign in is required.
+    *
+    * The value of this flag is ignored for {@link AuthManager.signOut}, {@link AuthManager.signOutAll}, {@link AuthManager.signOutAllExceptCurrent}, {@link AuthManager.getAllSessions}, {@link AuthManager.getUserFromDB}, {@link AuthManager.changePassword}, {@link AuthManager.changeEmail}, {@link EndpointManager.get}, {@link EndpointManager.post}, {@link EndpointManager.put} and {@link EndpointManager.delete} methods.
+    *
+    * @type {boolean}
+    */
+   enforceSession: boolean;
 }
 
 /**
@@ -532,6 +541,15 @@ export interface DBAction {
     * @type {(string[]| null | undefined)}
     */
    omit: string[] | null | undefined;
+
+   /**
+    * The grouping definition of the query builder. If you want to group the query results by values of specific fields, then provide the name of the fields in a string array format e.g., ['field1', 'field2.subField', ...]
+    *
+    * If you prefer to group the query results by an expression then just provide the expression string.
+    *
+    * @type {(string | string[] | null | undefined)}
+    */
+   group: string | string[] | null | undefined;
 }
 
 /**
@@ -616,7 +634,74 @@ export interface FieldUpdate {
     * - **pop:** Not applicable, value is not needed
     * - **shift:** Not applicable, value is not needed
     * @type {*}
-    * @memberof FieldUpdate
     */
    value: any;
+}
+
+/**
+ * Defines the structure of the response of a multi-object update operation in the database
+ * @export
+ * @interface UpdateInfo
+ */
+export interface UpdateInfo {
+   /**
+    * Total number of objects that matched to the filter query
+    * @type {number}
+    */
+   totalMatch: number;
+   /**
+    * Number of objects updated
+    * @type {number}
+    */
+   updated: number;
+}
+
+/**
+ * Defines the structure of the response of a multi-object delete operation in the database
+ * @export
+ * @interface UpdateInfo
+ */
+export interface DeleteInfo {
+   /**
+    * Total number of objects that matched to the filter query
+    * @type {number}
+    */
+   totalMatch: number;
+   /**
+    * Number of objects deleted
+    * @type {number}
+    */
+   deleted: number;
+}
+
+/**
+ * Defines the structure of grouped object computations. Basically, it provides aggregate calculation instructions to {@link QueryBuilder.compute} method
+ * @export
+ * @interface GroupComputation
+ */
+export interface GroupComputation {
+   /**
+    * The name of the computation which will be reported in the result of {@link QueryBuilder.compute} method execution. If you are defining more than one group computation, then their names need to be unique.
+    * @type {string}
+    */
+   name: string;
+   /**
+    *  Defines the type of the computation
+    * - **count:** Counts the number of objects in each group
+    * - **countif:** Counts the number of objects in each group based on the result of the specified expression. If the expression evaluates to true then they are counted otherwise not.
+    * - **sum:** Sums the evaluated expression values for each group member. The expression needs to return an integer or decimal value.
+    * - **avg:** Averages the evaluated expression values for the overall group. The expression needs to return an integer or decimal value.
+    * - **min:** Calculates the minimum value of the evaluated expression for the overall group. The expression needs to return an integer or decimal value.
+    * - **max:** Calculates the maximum value of the evaluated expression for the overall group. The expression needs to return an integer or decimal value.
+    *
+    * @type {('count' | 'countif' | 'sum' | 'avg' | 'min' | 'max')}
+    * @memberof GroupComputation
+    */
+   type: 'count' | 'countif' | 'sum' | 'avg' | 'min' | 'max';
+   /**
+    * The computation expression string. Except **count**, expression string is required for all other computation types.
+    * @type {string}
+    * @memberof GroupComputation
+    */
+   expression: string;
 }

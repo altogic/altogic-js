@@ -58,7 +58,7 @@ export class DBObject extends APIBase {
    /**
     * Gets the object referred to by this DBObject and identified by the `id` from the database. If the `id` of the db object is not specified, it throws an exception.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
     * @returns Returns the object identified by the `id` or null if no such object exists in the database
     */
@@ -66,7 +66,7 @@ export class DBObject extends APIBase {
    /**
     * Gets the object referred to by this DBObject and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it throws an exception.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {[SimpleLookup | ComplexLookup]} lookups The list of lookups to make (left outer join) while getting the object from the database
     * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
     * @returns Returns the object identified by the `id` or null if no such object exists in the database
@@ -101,7 +101,7 @@ export class DBObject extends APIBase {
     *
     * If the `id` is provided as input to this DBObject, its value will be ignored by this method since Altogic will automatically assign an id for new objects created in the database.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to create in the database
     * @param {CreateOptions} options Create operation options. By default no caching of the newly created object in Redis store.
     * @returns Returns the newly create object in the database.
@@ -125,7 +125,7 @@ export class DBObject extends APIBase {
     *
     * If the `id` is provided as input to this DBObject, its value will be ignored by this method since Altogic will automatically assign an id for new objects created in the database.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to create in the database
     * @param {string} parentId the id of the parent object.
     * @param {SetOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
@@ -153,7 +153,7 @@ export class DBObject extends APIBase {
     *
     * If the `id` is provided as input to this DBObject, its value will be ignored by this method since Altogic will automatically assign an id for new objects created in the database.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to create in the database
     * @param {string} parentId the id of the parent object.
     * @param {AppendOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
@@ -179,7 +179,7 @@ export class DBObject extends APIBase {
    /**
     * Deletes the document referred to by this DBObject and identified by the `id`. For a top level model object this method deletes the object from the database and for sub-model objects either unsets its value or removes it from its parent's object list. If the `id` of the db object is not defined, it throws an exception.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {DeleteOptions} options Delete operation options. By default removes deleted object from Redis cache (if cached already) and no top level object return.
     * @returns Returns null if the deleted object is a top-level object. If the deleted object is a sub-model object and if `returnTop` is set to true in {@link DeleteOptions}, it returns the updated top-level object.
     */
@@ -198,7 +198,7 @@ export class DBObject extends APIBase {
    /**
     * Updates the object referred to by this db object and identified by the `id` using the input values. This method directly sets the field values of the object in the database with the values provided in the input.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to update in the database
     * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.
@@ -219,9 +219,9 @@ export class DBObject extends APIBase {
    }
 
    /**
-    * Updates the fields of object referred to by this db object and identified by the `id` using the input list of {@link FieldUpdate} instructions.
+    * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instructions.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {FieldUpdate} fieldUpdates List of update instructions
     * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.

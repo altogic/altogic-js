@@ -12,6 +12,7 @@ import { DatabaseManager } from './DatabaseManager';
 const DEFAULT_OPTIONS = {
    apiKey: undefined,
    localStorage: globalThis.window.localStorage,
+   enforceSession: false,
 };
 
 /**
@@ -107,6 +108,7 @@ export class AltogicClient {
       //Set the default headers
       const headers: KeyValuePair = {
          'X-Client': 'altogic-js',
+         'X-Enforce-Session': this.settings.enforceSession ? true : false,
       };
 
       //If apiKey is provided, add it to the default headers

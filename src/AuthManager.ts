@@ -292,7 +292,7 @@ export class AuthManager extends APIBase {
    /**
     * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} [token] Session token which uniquely identifies a user session
     */
    async signOut(sessionToken?: string): Promise<{ errors: APIError | null }> {
@@ -318,7 +318,7 @@ export class AuthManager extends APIBase {
    /**
     * A user can have multiple active sessions (e.g., logged in form multiple different devices, browsers). This method signs out users from all their active sessions. For the client that triggers this method, also clears user and session data in local storage, and removes the **Session** header in {@link Fetcher}.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async signOutAll(): Promise<{ errors: APIError | null }> {
       let { errors } = await this.fetcher.post('/_api/rest/v1/auth/signout-all');
@@ -335,7 +335,7 @@ export class AuthManager extends APIBase {
    /**
     * Signs out users from all their active sessions except the current one which makes the api call.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async signOutAllExceptCurrent(): Promise<{ errors: APIError | null }> {
       let { errors } = await this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
@@ -346,7 +346,7 @@ export class AuthManager extends APIBase {
    /**
     * Gets all active sessions of a user.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async getAllSessions(): Promise<{ sessions: Session[] | null; errors: APIError | null }> {
       let { data, errors } = await this.fetcher.get('/_api/rest/v1/auth/sessions');
@@ -356,7 +356,7 @@ export class AuthManager extends APIBase {
    /**
     * Retrieves the user associated with the active session from the database.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async getUserFromDB(): Promise<{ user: User | null; errors: APIError | null }> {
       let { data, errors } = await this.fetcher.get('/_api/rest/v1/auth/user');
@@ -366,7 +366,7 @@ export class AuthManager extends APIBase {
    /**
     * Changes the password of the user.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} newPassword The new password of the user
     * @param {string} oldPassword The current password of the user
     */
@@ -495,7 +495,7 @@ export class AuthManager extends APIBase {
     *
     * If email confirmation is **enabled** in your app authentication settings, it sends a confirmation email to the new email address with a link for the user to click and returns the current user's info. Until the user clicks on the link, the user's email address will not be changed to the new one.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} currentPassword The password of the user
     * @param {string} newEmail The new email address of the user
     */

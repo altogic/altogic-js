@@ -171,7 +171,13 @@ export class Fetcher {
                      errors: {
                         status: response.status,
                         statusText: response.statusText,
-                        items: errResp?.errors ? errResp.errors : errResp,
+                        items: errResp?.errors
+                           ? Array.isArray(errResp.errors)
+                              ? errResp.errors
+                              : [errResp.errors]
+                           : Array.isArray(errResp.errors)
+                           ? errResp
+                           : [errResp],
                      },
                   });
                }

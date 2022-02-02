@@ -30,6 +30,9 @@ import {
    DBAction,
    SortEntry,
    FieldUpdate,
+   UpdateInfo,
+   DeleteInfo,
+   GroupComputation,
 } from './types';
 import { polyfillGlobalThis } from './utils/polyfills';
 
@@ -80,4 +83,7 @@ export {
    DBAction,
    SortEntry,
    FieldUpdate,
+   UpdateInfo,
+   DeleteInfo,
+   GroupComputation,
 };

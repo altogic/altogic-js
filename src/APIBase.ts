@@ -9,10 +9,10 @@ import { Fetcher } from './utils/Fetcher';
 export class APIBase {
    /**
     * The http client to make RESTful API calls to the application's execution engine
-    * @public
+    * @protected
     * @type {Fetcher}
     */
-   fetcher: Fetcher;
+   protected fetcher: Fetcher;
 
    /**
     * Creates an instance of base class to access services exposed by Altogic

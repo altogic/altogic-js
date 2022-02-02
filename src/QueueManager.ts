@@ -27,7 +27,7 @@ export class QueueManager extends APIBase {
     *
     * The structure of the message (e.g., key-value pairs) is defined by the Start Node of your queue service.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} queueNameOrId The name or id of the message queue.
     * @param {object} message The message payload (JSON object) that will be submitted to the message queue
     * @returns If successful, returns information about the submitted message. You can use `messageId` to check the processing status of your message by calling {@link getMessageStatus} method. In case of an errors, returns the errors that occurred.
@@ -50,7 +50,7 @@ export class QueueManager extends APIBase {
    /**
     * Gets the latest status of the message. The last seven days message logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for MessageInfo.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} messageId The id of the message
     * @returns If successful, returns status information about the submitted message
     */

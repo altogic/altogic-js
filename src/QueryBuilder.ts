@@ -1,8 +1,17 @@
 import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { DBObject } from './DBObject';
-import { APIError, DBAction, SimpleLookup, ComplexLookup } from './types';
-import { checkRequired, integerRequired, objectRequired } from './utils/helpers';
+import {
+   APIError,
+   DBAction,
+   SimpleLookup,
+   ComplexLookup,
+   UpdateInfo,
+   DeleteInfo,
+   FieldUpdate,
+   GroupComputation,
+} from './types';
+import { checkRequired, integerRequired, objectRequired, arrayRequired } from './utils/helpers';
 import { ClientError } from './utils/ClientError';
 
 /**
@@ -40,6 +49,7 @@ export class QueryBuilder extends APIBase {
          limit: null,
          sort: null,
          omit: null,
+         group: null,
       };
    }
 
@@ -342,7 +352,7 @@ export class QueryBuilder extends APIBase {
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    omit(...fields: string[]): QueryBuilder {
-      checkRequired('fields', fields);
+      arrayRequired('fields', fields);
 
       if (this.#action.omit) this.#action.omit.push(...fields);
       else this.#action.omit = [...fields];
@@ -359,16 +369,24 @@ export class QueryBuilder extends APIBase {
    /**
     * Groups the objects of the model by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
-    * @param {[string]} fields List of fields that will be used for grouping
+    * @param {[string]} fields List of field names that will be used for grouping. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    group(fields: [string]): QueryBuilder;
    group(fieldsOrExpression: [string] | string): QueryBuilder {
+      checkRequired('fieldsOrExpression', fieldsOrExpression);
+      if (typeof fieldsOrExpression !== 'string' && !Array.isArray(fieldsOrExpression))
+         throw new ClientError(
+            'invalid_group_definition',
+            `The group method accepts either a grouping expression string or a string array of field names/paths.`
+         );
+
+      this.#action.group = fieldsOrExpression;
       return this;
    }
 
    /**
-    * Creates top level model object(s) in the database.  This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
+    * Creates top level model object(s) in the database. This method ignores all query modifiers except {@link omit}. See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with create? |
     * | :--- | :--- |
@@ -376,13 +394,13 @@ export class QueryBuilder extends APIBase {
     * | group |  |
     * | limit |  |
     * | lookup |  |
-    * | omit |  |
+    * | omit | &#10004; |
     * | page |  |
     * | sort |  |
     *
     * > If a list of objects is provided as input and if any one of the objects in this list fails during creation, none of the objects will be created in the database, i.e., database transaction will be rolled back
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
     * @returns Returns the newly create object or list of objects in the database.
     */
@@ -393,12 +411,13 @@ export class QueryBuilder extends APIBase {
 
       return await this.fetcher.post(`/_api/rest/v1/db/create`, {
          values: values,
+         query: this.#action,
          model: this.#modelName,
       });
    }
 
    /**
-    * Sets the sub-object field value of the parent object identified by parentId. This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
+    * Sets the sub-object field value of the parent object identified by parentId. This method ignores all query modifiers except {@link omit}. See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with set? |
     * | :--- | :--- |
@@ -406,13 +425,13 @@ export class QueryBuilder extends APIBase {
     * | group |  |
     * | limit |  |
     * | lookup |  |
-    * | omit |  |
+    * | omit | &#10004; |
     * | page |  |
     * | sort |  |
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an *object* field called `profile`, which is a sub-model, that you store details about your users. When creating users, you most probably will not be collecting profile information but at a later stage you might collect this information and would like to set the value of the profile. You can use this **set** method to set the profile field of a users object identified by the parentId.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
@@ -430,12 +449,13 @@ export class QueryBuilder extends APIBase {
          values: values,
          parentId: parentId,
          returnTop: returnTop,
+         query: this.#action,
          model: this.#modelName,
       });
    }
 
    /**
-    * Appends object(s) to a child-list of the parent object identified by parentId. This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
+    * Appends object(s) to a child-list of the parent object identified by parentId. This method ignores all query modifiers except {@link omit}. See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with append? |
     * | :--- | :--- |
@@ -443,13 +463,13 @@ export class QueryBuilder extends APIBase {
     * | group |  |
     * | limit |  |
     * | lookup |  |
-    * | omit |  |
+    * | omit | &#10004; |
     * | page |  |
     * | sort |  |
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an **object-list** field called `addresses`, which is a sub-model list, that you store addresses of your users. When creating users, you most probably will not be collecting address information but at a later stage you might collect this information and would like to add these addresses to your users' addresses list. You can use this **append** method to add child object(s) to a user identified by the parentId.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
@@ -467,6 +487,7 @@ export class QueryBuilder extends APIBase {
          values: values,
          parentId: parentId,
          returnTop: returnTop,
+         query: this.#action,
          model: this.#modelName,
       });
    }
@@ -484,7 +505,7 @@ export class QueryBuilder extends APIBase {
     * | page |  &#10004; |
     * | sort |  &#10004; |
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
     * @returns Returns the array of objects matching the query. If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
     */
@@ -499,7 +520,7 @@ export class QueryBuilder extends APIBase {
    }
 
    /**
-    * Runs the specified computations on the model objects and returns the computation results. This method is typically chained with {@link group} and {@link filter} methods. See table below for applicable modifiers that can be used with this method.
+    * Runs the specified computation(s) on the model objects and returns the computation results. This method is typically chained with {@link group} and {@link filter} methods. See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with compute? |
     * | :--- | :--- |
@@ -511,26 +532,30 @@ export class QueryBuilder extends APIBase {
     * | page |  |
     * | sort |  |
     *
-    * As an example, you might have an orders model where you keep track of your sales of particular products. Using this method you can calculate the total order revenues, average order size, total number of orders and revenues on a weekly or monthly basis etc. The {@link group} method helps you to group your orders, for example if you would like to group your orders by the week of the year or the month of the year you can specify a grouping expression which calculates the week or the month of your order creation date. Another example would be you can specify the name of the field in the {@link group} method, such as the productId, which will group your orders by product.
+    * For example, you might have an orders model where you keep track of your sales of particular products. Using this method you can calculate the total order revenues, average order size, total number of orders and revenues on a weekly or monthly basis etc. The {@link group} method helps you to group your orders. If you would like to group your orders by the week or the month of the year, you can specify a grouping expression which calculates the week or the month of your order creation date. You can also specify the name of the field in the {@link group} method, such as the productId, which will group your orders by product.
     *
-    * The computations parameter defines the calculations that you will be making on the filtered and/or grouped objects. Altogic will perform the specified calculations for each group and return their results. You can specify multiple calculations at the same time such as you can calculate the the total number of orders, total sales amount and average order on a weekly grouping basis etc.
+    * The computations parameter defines the calculations that you will be running on the filtered and/or grouped objects. You can either specify a single computation or an array of computations. Altogic will perform the specified calculations for each group and return their results. You can specify multiple calculations at the same time, such as, you can calculate the total number of orders, total sales amount, and average order size on a weekly basis, etc.
     *
     * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
     * @returns Returns the computation results
     */
    async compute(
-      computations: any
+      computations: GroupComputation | GroupComputation[]
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
+      checkRequired('computations', computations);
+
       return await this.fetcher.post(`/_api/rest/v1/db/compute`, {
+         query: this.#action,
+         computations: Array.isArray(computations) ? computations : [computations],
          model: this.#modelName,
       });
    }
 
    /**
-    * Runs the query defined by the query modifiers and returns the matching single object. See table below for applicable modifiers that can be used with this method.
+    * Runs the query defined by the query modifiers and returns the matching single object. If there are more than one object mathing the query, it returns the first one. See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with getSingle? |
     * | :--- | :--- |
@@ -542,7 +567,7 @@ export class QueryBuilder extends APIBase {
     * | page |   |
     * | sort |   |
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @returns Returns the object matching the query.
     */
    async getSingle(): Promise<{ data: object | null; errors: APIError | null }> {
@@ -555,7 +580,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Retrieves the specified number of objects from the database randomly. See table below for applicable modifiers that can be used with this method.
     *
-    * | Modifier | Chained with getSingle? |
+    * | Modifier | Chained with getRandom? |
     * | :--- | :--- |
     * | filter |  &#10004; |
     * | group |  |
@@ -567,12 +592,112 @@ export class QueryBuilder extends APIBase {
     *
     * If {@link filter} modifier is used with this method, Altogic first narrows down the set of objects that can be selected using the filter query and among these filtered objects performs random selection.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {number} count An integer that specifies the number of items to randomly select
     * @returns Returns the array of objects selected randomly.
     */
-   async getRandomly(count: number): Promise<{ data: object | null; errors: APIError | null }> {
-      return await this.fetcher.post(`/_api/rest/v1/db/get-single`, {
+   async getRandom(count: number): Promise<{ data: object[] | null; errors: APIError | null }> {
+      integerRequired('count', count);
+
+      return await this.fetcher.post(`/_api/rest/v1/db/get-random`, {
+         query: this.#action,
+         count: count,
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Updates the objects matching the query using the input values. This method directly sets the field values of the objects in the database with the values provided in the input. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with update? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |   |
+    * | lookup | &#10004; |
+    * | omit |  |
+    * | page |   |
+    * | sort |   |
+    *
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * @param {object} values An object that contains the fields and their values to update in the database
+    * @returns Returns information about the update operation
+    */
+   async update(values: object): Promise<{ data: UpdateInfo; errors: APIError | null }> {
+      objectRequired('values', values);
+
+      if (!this.#action.expression)
+         throw new ClientError(
+            'missing_filter_query',
+            `The update method requires a filter query to select the objects to update in the database.`
+         );
+
+      return await this.fetcher.post(`/_api/rest/v1/db/update`, {
+         values: values,
+         query: this.#action,
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Updates the objects matching the query using the input {@link FieldUpdate} instructions. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with updateFields? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |   |
+    * | lookup | &#10004; |
+    * | omit |  |
+    * | page |   |
+    * | sort |   |
+    *
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * @param {FieldUpdate} fieldUpdates List of update instructions
+    * @returns Returns information about the update operation
+    */
+   async updateFields(
+      fieldUpdates: [FieldUpdate]
+   ): Promise<{ data: UpdateInfo; errors: APIError | null }> {
+      arrayRequired('fieldUpdates', fieldUpdates);
+
+      if (!this.#action.expression)
+         throw new ClientError(
+            'missing_filter_query',
+            `The updateFields method requires a filter query to select the objects to update in the database.`
+         );
+
+      return await this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
+         updates: fieldUpdates,
+         query: this.#action,
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Deletes the objects matching the query. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with delete? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |   |
+    * | lookup | &#10004; |
+    * | omit |  |
+    * | page |   |
+    * | sort |   |
+    *
+    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * @returns Returns information about the delete operation
+    */
+   async delete(): Promise<{ data: DeleteInfo; errors: APIError | null }> {
+      if (!this.#action.expression)
+         throw new ClientError(
+            'missing_filter_query',
+            `The delete method requires a filter query to select the objects to delete in the database.`
+         );
+
+      return await this.fetcher.post(`/_api/rest/v1/db/delete`, {
          query: this.#action,
          model: this.#modelName,
       });
