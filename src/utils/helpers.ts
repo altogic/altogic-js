@@ -98,20 +98,16 @@ export function arrayRequired(
  * @export
  * @param {string} fieldName Field name to check for a value
  * @param {any} fieldValue Field value
- * @param {any} checkPositiveOrZero Flag to check whether the number is positive or not
+ * @param {any} checkPositive Flag to check whether the number is positive or not
  */
-export function integerRequired(
-   fieldName: string,
-   fieldValue: any,
-   checkPositiveOrZero: boolean = true
-) {
+export function integerRequired(fieldName: string, fieldValue: any, checkPositive: boolean = true) {
    checkRequired(fieldName, fieldValue, false);
 
    if (!Number.isInteger(fieldValue))
       throw new ClientError('invalid_value', `${fieldName} needs to be an integer`);
 
-   if (checkPositiveOrZero && fieldValue < 0)
-      throw new ClientError('invalid_value', `${fieldName} needs to be a positive integer or zero`);
+   if (checkPositive && fieldValue <= 0)
+      throw new ClientError('invalid_value', `${fieldName} needs to be a positive integer`);
 }
 
 /**

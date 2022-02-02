@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { APIError, TaskInfo } from './types';
 import { checkRequired } from './utils/helpers';
@@ -10,20 +11,13 @@ import { checkRequired } from './utils/helpers';
  * @export
  * @class TaskManager
  */
-export class TaskManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class TaskManager extends APIBase {
    /**
     * Creates an instance of TaskManager to trigger execution of scheduled tasks.
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(fetcher: Fetcher) {
-      this.#fetcher = fetcher;
+      super(fetcher);
    }
 
    /**
@@ -38,7 +32,7 @@ export class TaskManager {
    ): Promise<{ info: TaskInfo | null; errors: APIError | null }> {
       checkRequired('taskNameOrId', taskNameOrId);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/task', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/task', {
          taskNameOrId,
       });
 
@@ -57,7 +51,7 @@ export class TaskManager {
    ): Promise<{ info: TaskInfo | null; errors: APIError | null }> {
       checkRequired('messageId', taskId);
 
-      let { data, errors } = await this.#fetcher.get(`/_api/rest/v1/task/${taskId}`);
+      let { data, errors } = await this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
 
       return { info: data, errors: errors };
    }

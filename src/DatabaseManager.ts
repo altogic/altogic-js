@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { checkRequired } from './utils/helpers';
 import { QueryBuilder } from './QueryBuilder';
@@ -8,20 +9,13 @@ import { QueryBuilder } from './QueryBuilder';
  * @export
  * @class DatabaseManager
  */
-export class DatabaseManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class DatabaseManager extends APIBase {
    /**
     * Creates an instance of DatabaseManager to manage data of your application.
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(fetcher: Fetcher) {
-      this.#fetcher = fetcher;
+      super(fetcher);
    }
 
    /**
@@ -34,12 +28,12 @@ export class DatabaseManager {
     * > In case you need to work on a sub-model object, such as your users might have a list of addresses and these addresses can be stored under a users object, you can create a {@link QueryBuilder} for `addresses` sub-model using the *dot-notation* by calling `altogic.db.model('users.addresses')`.
     *
     * *An active user session is required (e.g., user needs to be logged in) to call this method.*
-    * @param {string} name The key to retrieve
+    * @param {string} name The name of the model
     * @returns Returns a new query builder object that will be issuing database commands (e.g., CRUD operations, queries) on the specified model
     */
    model(name: string): QueryBuilder {
       checkRequired('name', name);
 
-      return new QueryBuilder(name, this.#fetcher);
+      return new QueryBuilder(name, this.fetcher);
    }
 }

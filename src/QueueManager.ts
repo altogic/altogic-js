@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { APIError, MessageInfo } from './types';
 import { checkRequired } from './utils/helpers';
@@ -12,20 +13,13 @@ import { checkRequired } from './utils/helpers';
  * @export
  * @class QueueManager
  */
-export class QueueManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class QueueManager extends APIBase {
    /**
     * Creates an instance of QueueManager to submit messages to your backend app message queues.
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(fetcher: Fetcher) {
-      this.#fetcher = fetcher;
+      super(fetcher);
    }
 
    /**
@@ -45,7 +39,7 @@ export class QueueManager {
       checkRequired('queueNameOrId', queueNameOrId);
       checkRequired('message', message);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/queue', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/queue', {
          queueNameOrId,
          message,
       });
@@ -65,7 +59,7 @@ export class QueueManager {
    ): Promise<{ info: MessageInfo | null; errors: APIError | null }> {
       checkRequired('messageId', messageId);
 
-      let { data, errors } = await this.#fetcher.get(`/_api/rest/v1/queue/${messageId}`);
+      let { data, errors } = await this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
 
       return { info: data, errors: errors };
    }

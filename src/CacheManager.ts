@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { APIError } from './types';
 import { checkRequired } from './utils/helpers';
@@ -12,20 +13,13 @@ import { checkRequired } from './utils/helpers';
  * @export
  * @class CacheManager
  */
-export class CacheManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class CacheManager extends APIBase {
    /**
     * Creates an instance of CacheManager to make caching requests to your backend app.
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(fetcher: Fetcher) {
-      this.#fetcher = fetcher;
+      super(fetcher);
    }
 
    /**
@@ -37,7 +31,7 @@ export class CacheManager {
    async get(key: string): Promise<{ data: object | object[] | null; errors: APIError | null }> {
       checkRequired('key', key);
 
-      return await this.#fetcher.get(`/_api/rest/v1/cache?key=${key}`);
+      return await this.fetcher.get(`/_api/rest/v1/cache?key=${key}`);
    }
 
    /**
@@ -52,7 +46,7 @@ export class CacheManager {
       checkRequired('key', key);
       checkRequired('value', value, false);
 
-      let { errors } = await this.#fetcher.post('/_api/rest/v1/cache', {
+      let { errors } = await this.fetcher.post('/_api/rest/v1/cache', {
          key,
          value,
          ttl: ttl ? ttl : undefined,
@@ -69,7 +63,7 @@ export class CacheManager {
    async delete(key: string): Promise<{ errors: APIError | null }> {
       checkRequired('key', key);
 
-      let { errors } = await this.#fetcher.delete(`/_api/rest/v1/cache?key=${key}`);
+      let { errors } = await this.fetcher.delete(`/_api/rest/v1/cache?key=${key}`);
       return { errors };
    }
 
@@ -89,7 +83,7 @@ export class CacheManager {
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
       checkRequired('key', key);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/cache/increment', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/cache/increment', {
          key,
          increment,
          ttl: ttl ? ttl : undefined,
@@ -113,7 +107,7 @@ export class CacheManager {
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
       checkRequired('key', key);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/cache/decrement', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/cache/decrement', {
          key,
          decrement,
          ttl: ttl ? ttl : undefined,
@@ -132,7 +126,7 @@ export class CacheManager {
       checkRequired('key', key);
       checkRequired('ttl', ttl);
 
-      let { errors } = await this.#fetcher.post('/_api/rest/v1/cache/expire', {
+      let { errors } = await this.fetcher.post('/_api/rest/v1/cache/expire', {
          key,
          ttl,
       });

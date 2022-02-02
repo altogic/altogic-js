@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { KeyValuePair, APIError } from './types';
 import { checkRequired } from './utils/helpers';
@@ -11,20 +12,13 @@ import { checkRequired } from './utils/helpers';
  * @export
  * @class EndpointManager
  */
-export class EndpointManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class EndpointManager extends APIBase {
    /**
     * Creates an instance of EndpointManager to make http requests to your app endpoints.
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(fetcher: Fetcher) {
-      this.#fetcher = fetcher;
+      super(fetcher);
    }
 
    /**
@@ -44,7 +38,7 @@ export class EndpointManager {
       resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       checkRequired('path', path);
-      return await this.#fetcher.get(path, queryParams, headers, resolveType || 'json');
+      return await this.fetcher.get(path, queryParams, headers, resolveType || 'json');
    }
 
    /**
@@ -66,7 +60,7 @@ export class EndpointManager {
       resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       checkRequired('path', path);
-      return await this.#fetcher.post(path, body, queryParams, headers, resolveType || 'json');
+      return await this.fetcher.post(path, body, queryParams, headers, resolveType || 'json');
    }
 
    /**
@@ -88,7 +82,7 @@ export class EndpointManager {
       resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       checkRequired('path', path);
-      return await this.#fetcher.put(path, body, queryParams, headers, resolveType || 'json');
+      return await this.fetcher.put(path, body, queryParams, headers, resolveType || 'json');
    }
 
    /**
@@ -110,6 +104,6 @@ export class EndpointManager {
       resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       checkRequired('path', path);
-      return await this.#fetcher.delete(path, body, queryParams, headers, resolveType || 'json');
+      return await this.fetcher.delete(path, body, queryParams, headers, resolveType || 'json');
    }
 }

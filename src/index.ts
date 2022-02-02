@@ -1,4 +1,5 @@
 import { AltogicClient } from './AltogicClient';
+import { APIBase } from './APIBase';
 import { AuthManager } from './AuthManager';
 import { EndpointManager } from './EndpointManager';
 import { CacheManager } from './CacheManager';
@@ -28,7 +29,6 @@ import {
    AppendOptions,
    DBAction,
    SortEntry,
-   Range,
    FieldUpdate,
 } from './types';
 import { polyfillGlobalThis } from './utils/polyfills';
@@ -49,6 +49,7 @@ const createClient = (envUrl: string, options?: ClientOptions): AltogicClient =>
 
 export {
    createClient,
+   APIBase,
    AltogicClient,
    AuthManager,
    EndpointManager,
@@ -78,6 +79,5 @@ export {
    AppendOptions,
    DBAction,
    SortEntry,
-   Range,
    FieldUpdate,
 };

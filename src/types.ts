@@ -513,12 +513,12 @@ export interface DBAction {
     */
    lookups: [SimpleLookup | ComplexLookup] | null | undefined;
    /**
-    * An integer that specifies the number of objects to skip
+    * A positive integer that specifies the page number to paginate query results. Page numbers start from 1.
     * @type {(number | null | undefined)}
     */
-   skip: number | null | undefined;
+   page: number | null | undefined;
    /**
-    * An integer that specifies the max number of objects to return
+    * A positive integer that specifies the max number of objects to return per page
     * @type {(number | null | undefined)}
     */
    limit: number | null | undefined;
@@ -528,20 +528,10 @@ export interface DBAction {
     */
    sort: [SortEntry] | null | undefined;
    /**
-    * The list of fields that will be returned in retrieved objects
-    * @type {(string[]| null | undefined)}
-    */
-   select: string[] | null | undefined;
-   /**
     * The list of fields that will be omitted in retrieved objects
     * @type {(string[]| null | undefined)}
     */
    omit: string[] | null | undefined;
-   /**
-    * The range definition to limit the records returned from the database
-    * @type {(string[]| null | undefined)}
-    */
-   range: Range | null | undefined;
 }
 
 /**
@@ -551,7 +541,7 @@ export interface DBAction {
  */
 export interface SortEntry {
    /**
-    * The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specicy sub-object fields (e.g., fiel.subField)
+    * The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @type {string}
     */
    field: string;
@@ -563,31 +553,13 @@ export interface SortEntry {
 }
 
 /**
- * Defines the structure of a range
- * @export
- * @interface Range
- */
-export interface Range {
-   /**
-    * The starting index, an integer, from which to limit the returned objects, inclusive.
-    * @type {string}
-    */
-   startIndex: number;
-   /**
-    * The end index, an integer, to which to limit the returned objects, inclusive.
-    * @type {string}
-    */
-   endIndex: number;
-}
-
-/**
  * Defines the structure of a field update
  * @export
  * @interface FieldUpdate
  */
 export interface FieldUpdate {
    /**
-    * The name of the field whose value will be updated. The field name can be in dot-notation to specicy sub-object fields (e.g., fiel.subField). Please note that only sub-model object fields can be accessed through the dot-notation. You cannot create an update instruction for an object-list field through the dot-notation.
+    * The name of the field whose value will be updated. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField). Please note that only sub-model object fields can be accessed through the dot-notation. You cannot create an update instruction for an object-list field through the dot-notation.
     * @type {string}
     */
    field: string;

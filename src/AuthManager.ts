@@ -1,3 +1,4 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { ClientOptions, ClientStorage, User, Session, APIError } from './types';
 import { getParamValue, checkRequired } from './utils/helpers';
@@ -7,14 +8,7 @@ import { getParamValue, checkRequired } from './utils/helpers';
  * @export
  * @class AuthManager
  */
-export class AuthManager {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
-
+export class AuthManager extends APIBase {
    /**
     * Storage handler to manage local user and session data
     * @type {(ClientStorage)}
@@ -33,7 +27,7 @@ export class AuthManager {
     * @param {ClientOptions} options Altogic client options
     */
    constructor(fetcher: Fetcher, { localStorage, signInRedirect }: ClientOptions) {
-      this.#fetcher = fetcher;
+      super(fetcher);
       this.#localStorage = localStorage;
       this.#signInRedirect = signInRedirect;
    }
@@ -65,7 +59,7 @@ export class AuthManager {
     */
    invalidateSession(): void {
       this.#deleteLocalData();
-      this.#fetcher.clearSession();
+      this.fetcher.clearSession();
 
       if (globalThis.window && this.#signInRedirect)
          globalThis.window.location.href = this.#signInRedirect;
@@ -102,7 +96,7 @@ export class AuthManager {
     * @returns {void}
     */
    setSession(session: Session): void {
-      this.#fetcher.setSession(session);
+      this.fetcher.setSession(session);
       if (this.#localStorage && session)
          this.#localStorage.setItem('session', JSON.stringify(session));
    }
@@ -137,7 +131,7 @@ export class AuthManager {
       checkRequired('email', email);
       checkRequired('password', password);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/auth/signup-email', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/auth/signup-email', {
          email,
          password,
          name,
@@ -150,7 +144,7 @@ export class AuthManager {
       if (data.session) {
          this.#deleteLocalData();
          this.#saveLocalData(data.user, data.session);
-         this.#fetcher.setSession(data.session);
+         this.fetcher.setSession(data.session);
       }
 
       return { user: data.user, session: data.session, errors: errors };
@@ -174,7 +168,7 @@ export class AuthManager {
       checkRequired('phone', phone);
       checkRequired('password', password);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/auth/signup-phone', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/auth/signup-phone', {
          phone,
          password,
          name,
@@ -187,7 +181,7 @@ export class AuthManager {
       if (data.session) {
          this.#deleteLocalData();
          this.#saveLocalData(data.user, data.session);
-         this.#fetcher.setSession(data.session);
+         this.fetcher.setSession(data.session);
       }
 
       return { user: data.user, session: data.session, errors: errors };
@@ -210,7 +204,7 @@ export class AuthManager {
       checkRequired('email', email);
       checkRequired('password', password);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/auth/signin-email', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/auth/signin-email', {
          email,
          password,
       });
@@ -219,7 +213,7 @@ export class AuthManager {
 
       this.#deleteLocalData();
       this.#saveLocalData(data.user, data.session);
-      this.#fetcher.setSession(data.session);
+      this.fetcher.setSession(data.session);
       return { user: data.user, session: data.session, errors: errors };
    }
 
@@ -238,7 +232,7 @@ export class AuthManager {
       checkRequired('phone', phone);
       checkRequired('password', password);
 
-      let { data, errors } = await this.#fetcher.post('/_api/rest/v1/auth/signin-phone', {
+      let { data, errors } = await this.fetcher.post('/_api/rest/v1/auth/signin-phone', {
          phone,
          password,
       });
@@ -247,7 +241,7 @@ export class AuthManager {
 
       this.#deleteLocalData();
       this.#saveLocalData(data.user, data.session);
-      this.#fetcher.setSession(data.session);
+      this.fetcher.setSession(data.session);
       return { user: data.user, session: data.session, errors: errors };
    }
 
@@ -268,7 +262,7 @@ export class AuthManager {
       checkRequired('phone', phone);
       checkRequired('code', code);
 
-      let { data, errors } = await this.#fetcher.post(
+      let { data, errors } = await this.fetcher.post(
          `/_api/rest/v1/auth/signin-code?code=${code}&phone=${encodeURIComponent(phone)}`
       );
 
@@ -276,7 +270,7 @@ export class AuthManager {
 
       this.#deleteLocalData();
       this.#saveLocalData(data.user, data.session);
-      this.#fetcher.setSession(data.session);
+      this.fetcher.setSession(data.session);
       return { user: data.user, session: data.session, errors: errors };
    }
 
@@ -292,7 +286,7 @@ export class AuthManager {
       checkRequired('provider', provider);
 
       if (globalThis.window)
-         globalThis.window.location.href = `${this.#fetcher.getBaseUrl()}/_auth/${provider}`;
+         globalThis.window.location.href = `${this.fetcher.getBaseUrl()}/_auth/${provider}`;
    }
 
    /**
@@ -303,7 +297,7 @@ export class AuthManager {
     */
    async signOut(sessionToken?: string): Promise<{ errors: APIError | null }> {
       try {
-         let { errors } = await this.#fetcher.post('/_api/rest/v1/auth/signout', {
+         let { errors } = await this.fetcher.post('/_api/rest/v1/auth/signout', {
             token: sessionToken,
          });
 
@@ -312,7 +306,7 @@ export class AuthManager {
          //Clear local user and session data if we are signing out from current session or signed out session token matches with current session token
          if (!errors && (!sessionToken || (session && sessionToken === session.token))) {
             this.#deleteLocalData();
-            this.#fetcher.clearSession();
+            this.fetcher.clearSession();
          }
 
          return { errors };
@@ -327,12 +321,12 @@ export class AuthManager {
     * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async signOutAll(): Promise<{ errors: APIError | null }> {
-      let { errors } = await this.#fetcher.post('/_api/rest/v1/auth/signout-all');
+      let { errors } = await this.fetcher.post('/_api/rest/v1/auth/signout-all');
 
       //Clear local user and session data
       if (!errors) {
          this.#deleteLocalData();
-         this.#fetcher.clearSession();
+         this.fetcher.clearSession();
       }
 
       return { errors };
@@ -344,7 +338,7 @@ export class AuthManager {
     * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async signOutAllExceptCurrent(): Promise<{ errors: APIError | null }> {
-      let { errors } = await this.#fetcher.post('/_api/rest/v1/auth/signout-all-except');
+      let { errors } = await this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
 
       return { errors };
    }
@@ -355,7 +349,7 @@ export class AuthManager {
     * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async getAllSessions(): Promise<{ sessions: Session[] | null; errors: APIError | null }> {
-      let { data, errors } = await this.#fetcher.get('/_api/rest/v1/auth/sessions');
+      let { data, errors } = await this.fetcher.get('/_api/rest/v1/auth/sessions');
       return { sessions: data, errors: errors };
    }
 
@@ -365,7 +359,7 @@ export class AuthManager {
     * *An active user session is required (e.g., user needs to be logged in) to call this method.*
     */
    async getUserFromDB(): Promise<{ user: User | null; errors: APIError | null }> {
-      let { data, errors } = await this.#fetcher.get('/_api/rest/v1/auth/user');
+      let { data, errors } = await this.fetcher.get('/_api/rest/v1/auth/user');
       return { user: data, errors: errors };
    }
 
@@ -383,7 +377,7 @@ export class AuthManager {
       checkRequired('newPassword', newPassword);
       checkRequired('oldPassword', oldPassword);
 
-      let { errors } = await this.#fetcher.post('/_api/rest/v1/auth/change-pwd', {
+      let { errors } = await this.fetcher.post('/_api/rest/v1/auth/change-pwd', {
          newPassword,
          oldPassword,
       });
@@ -402,13 +396,13 @@ export class AuthManager {
       let tokenStr = accessToken ? accessToken : getParamValue('access_token');
       checkRequired('accessToken', tokenStr);
 
-      let { data, errors } = await this.#fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr}`);
+      let { data, errors } = await this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr}`);
 
       if (errors) return { user: null, session: null, errors: errors };
 
       this.#deleteLocalData();
       this.#saveLocalData(data.user, data.session);
-      this.#fetcher.setSession(data.session);
+      this.fetcher.setSession(data.session);
       return { user: data.user, session: data.session, errors: errors };
    }
 
@@ -419,7 +413,7 @@ export class AuthManager {
    async resendVerificationEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
 
-      let { errors } = await this.#fetcher.post(`/_api/rest/v1/auth/resend?email=${email}`);
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email}`);
       return { errors: errors };
    }
 
@@ -436,7 +430,7 @@ export class AuthManager {
    async sendMagicLinkEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
 
-      let { errors } = await this.#fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email}`);
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email}`);
       return { errors: errors };
    }
 
@@ -453,7 +447,7 @@ export class AuthManager {
    async sendResetPwdEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
 
-      let { errors } = await this.#fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email}`);
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email}`);
       return { errors: errors };
    }
 
@@ -470,7 +464,7 @@ export class AuthManager {
    async sendSignInCode(phone: string): Promise<{ errors: APIError | null }> {
       checkRequired('phone', phone);
 
-      let { errors } = await this.#fetcher.post(
+      let { errors } = await this.fetcher.post(
          `/_api/rest/v1/auth/send-code?phone=${encodeURIComponent(phone)}`
       );
       return { errors: errors };
@@ -488,7 +482,7 @@ export class AuthManager {
       checkRequired('accessToken', accessToken);
       checkRequired('newPassword', newPassword);
 
-      let { errors } = await this.#fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken}`, {
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken}`, {
          newPassword,
       });
       return { errors: errors };
@@ -512,7 +506,7 @@ export class AuthManager {
       checkRequired('currentPassword', currentPassword);
       checkRequired('newEmail', newEmail);
 
-      let { data, errors } = await this.#fetcher.post(`/_api/rest/v1/auth/change-email`, {
+      let { data, errors } = await this.fetcher.post(`/_api/rest/v1/auth/change-email`, {
          currentPassword,
          newEmail,
       });
@@ -534,7 +528,7 @@ export class AuthManager {
       checkRequired('phone', phone);
       checkRequired('code', code);
 
-      let { data, errors } = await this.#fetcher.post(
+      let { data, errors } = await this.fetcher.post(
          `/_api/rest/v1/auth/verify-phone?code=${code}&phone=${encodeURIComponent(phone)}`
       );
 
@@ -542,7 +536,7 @@ export class AuthManager {
 
       this.#deleteLocalData();
       this.#saveLocalData(data.user, data.session);
-      this.#fetcher.setSession(data.session);
+      this.fetcher.setSession(data.session);
       return { user: data.user, session: data.session, errors: errors };
    }
 }

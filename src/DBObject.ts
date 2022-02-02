@@ -1,4 +1,5 @@
-import { QueryBuilder } from './QueryBuilder';
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
 import {
    APIError,
    GetOptions,
@@ -27,13 +28,13 @@ const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
  * @export
  * @class DBObject
  */
-export class DBObject {
+export class DBObject extends APIBase {
    /**
-    * Reference to the QueryBuilder object which has created this DBObject instance
+    * The name of the model that the db object will be operating on
     * @private
-    * @type {QueryBuilder}
+    * @type {string}
     */
-   #builder: QueryBuilder;
+   #modelName: string;
 
    /**
     * The unique identifier of the db object
@@ -44,10 +45,13 @@ export class DBObject {
 
    /**
     * Creates an instance of DBObject
+    * @param {string} modelName The name of the model that this query builder will be operating on
+    * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     * @param {string} id The unique identifier of the dbobject
     */
-   constructor(builder: QueryBuilder, id?: string) {
-      this.#builder = builder;
+   constructor(modelName: string, fetcher: Fetcher, id?: string) {
+      super(fetcher);
+      this.#modelName = modelName;
       this.#id = id;
    }
 
@@ -84,11 +88,11 @@ export class DBObject {
          lookupsVal = undefined;
       }
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/get`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/get`, {
          options: { ...DEFAULT_GET_OPTIONS, ...optionsVal },
          id: this.#id,
          lookups: lookupsVal,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -108,11 +112,11 @@ export class DBObject {
    ): Promise<{ data: object | null; errors: APIError | null }> {
       checkRequired('values', values);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/create`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/create`, {
          values: values,
          options: { ...DEFAULT_CREATE_OPTIONS, ...options },
          id: this.#id,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -135,12 +139,12 @@ export class DBObject {
       checkRequired('values', values);
       checkRequired('parentId', parentId);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/set`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/set`, {
          values: values,
          options: { ...DEFAULT_SET_OPTIONS, ...options },
          id: this.#id,
          parentId: parentId,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -163,12 +167,12 @@ export class DBObject {
       checkRequired('values', values);
       checkRequired('parentId', parentId);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/append`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/append`, {
          values: values,
          options: { ...DEFAULT_APPEND_OPTIONS, ...options },
          id: this.#id,
          parentId: parentId,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -184,10 +188,10 @@ export class DBObject {
    ): Promise<{ data: object | null; errors: APIError | null }> {
       checkRequired('id', this.#id);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/delete`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/delete`, {
          options: { ...DEFAULT_DELETE_OPTIONS, ...options },
          id: this.#id,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -206,11 +210,11 @@ export class DBObject {
       checkRequired('id', this.#id);
       objectRequired('values', values);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/update`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/update`, {
          values: values,
          options: { ...DEFAULT_UPDATE_OPTIONS, ...options },
          id: this.#id,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 
@@ -229,11 +233,11 @@ export class DBObject {
       checkRequired('id', this.#id);
       arrayRequired('fieldUpdates', fieldUpdates);
 
-      return await this.#builder.getFetcher().post(`/_api/rest/v1/db/object/update-fields`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/object/update-fields`, {
          updates: fieldUpdates,
          options: { ...DEFAULT_UPDATE_OPTIONS, ...options },
          id: this.#id,
-         model: this.#builder.getModel(),
+         model: this.#modelName,
       });
    }
 }

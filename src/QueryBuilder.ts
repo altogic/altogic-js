@@ -1,7 +1,8 @@
+import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { DBObject } from './DBObject';
 import { APIError, DBAction, SimpleLookup, ComplexLookup } from './types';
-import { checkRequired, arrayRequired, integerRequired, objectRequired } from './utils/helpers';
+import { checkRequired, integerRequired, objectRequired } from './utils/helpers';
 import { ClientError } from './utils/ClientError';
 
 /**
@@ -10,26 +11,19 @@ import { ClientError } from './utils/ClientError';
  * @export
  * @class QueryBuilder
  */
-export class QueryBuilder {
+export class QueryBuilder extends APIBase {
    /**
     * The name of the model that the query builder will be operating on
     * @private
     * @type {string}
     */
-   #name: string;
+   #modelName: string;
 
    /**
-    * The action object that will be sent to your app to query data, create, update or delete objects in the database. When you use filter, order, skip, limit etc. methods, the action object will be populated with respective entries.
+    * The action object that will be sent to your app to query data, create, update or delete objects in the database. When you use filter, order, page, limit etc. methods, the action object will be populated with respective entries.
     * @type {DBAction}
     */
    #action: DBAction;
-
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @private
-    * @type {Fetcher}
-    */
-   #fetcher: Fetcher;
 
    /**
     * Creates an instance of QueryBuilder to run queries and CRUD operations on your app's database.
@@ -37,34 +31,16 @@ export class QueryBuilder {
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
    constructor(name: string, fetcher: Fetcher) {
-      this.#name = name;
+      super(fetcher);
+      this.#modelName = name;
       this.#action = {
          expression: null,
          lookups: null,
-         skip: null,
+         page: null,
          limit: null,
          sort: null,
-         select: null,
          omit: null,
-         range: null,
       };
-      this.#fetcher = fetcher;
-   }
-
-   /**
-    * Returns the {@link Fetcher} of the query builder object
-    * @returns {Fetcher}
-    */
-   getFetcher(): Fetcher {
-      return this.#fetcher;
-   }
-
-   /**
-    * Returns the name of the data model that this query builder object is operating on
-    * @returns {string}
-    */
-   getModel(): string {
-      return this.#name;
    }
 
    /**
@@ -76,7 +52,7 @@ export class QueryBuilder {
     * @returns A DBObject instance
     */
    object(id?: string): DBObject {
-      return new DBObject(this, id);
+      return new DBObject(this.#modelName, this.fetcher, id);
    }
 
    /**
@@ -291,38 +267,39 @@ export class QueryBuilder {
    }
 
    /**
-    * Looks up (left outer join) the specified fields of the model when getting data form the database
+    * Look up (left outer join) the specified field ({@link SimpleLookup}) of the model or perform specified lookup query ({@link ComplexLookup}) when getting data form the database
     *
-    * If multiple lookup method calls are chained then the last one overwrites the previous lookups
-    * @param {([SimpleLookup | ComplexLookup])} lookups The list of lookups to make (left outer join) while getting the object from the database
+    * If multiple lookup method calls are chained then each call is concatenated to a list, so that you can perform multiple lookups.
+    * @param {SimpleLookup | ComplexLookup} lookup The lookup to make (left outer join) while getting the object from the database
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
-   lookup(lookups: [SimpleLookup | ComplexLookup]): QueryBuilder {
-      arrayRequired('lookups', lookups);
+   lookup(lookup: SimpleLookup | ComplexLookup): QueryBuilder {
+      objectRequired('lookup', lookup);
 
-      this.#action.lookups = lookups;
+      if (this.#action.lookups) this.#action.lookups.push(lookup);
+      else this.#action.lookups = [lookup];
       return this;
    }
 
    /**
-    * Skips over the specified number of objects when getting model objects from the database. In combination with {@link limit}, primarily used to paginate through your data.
+    * Paginates to the specified page number. In combination with {@link limit}, primarily used to paginate through your data.
     *
-    * If multiple skip method calls are chained then the last one overwrites the previous skip values
-    * @param {number} skipCount An integer that specifies the number of objects to skip
+    * If multiple page method calls are chained then the last one overwrites the previous page values
+    * @param {number} pageNumber An integer that specifies the page number
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
-   skip(skipCount: number): QueryBuilder {
-      integerRequired('skipCount', skipCount);
+   page(pageNumber: number): QueryBuilder {
+      integerRequired('pageNumber', pageNumber);
 
-      this.#action.skip = skipCount;
+      this.#action.page = pageNumber;
       return this;
    }
 
    /**
-    * Limits the max number of objects returned from the database. In combination with {@link skip}, primarily used to paginate through your data. Even if you do not specify a limit in your database queries, Altogic automatically limits the number of objects returned from the database by setting the default limits.
+    * Limits the max number of objects returned from the database, namely defines the page size for pagination. In combination with {@link page}, primarily used to paginate through your data. Even if you do not specify a limit in your database queries, Altogic automatically limits the number of objects returned from the database by setting the default limits.
     *
     * If multiple limit method calls are chained then the last one overwrites the previous limit values
-    * @param {number} skipCount An integer that specifies the max number of objects to return
+    * @param {number} limitCount An integer that specifies the max number of objects to return
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    limit(limitCount: number): QueryBuilder {
@@ -338,8 +315,8 @@ export class QueryBuilder {
    /**
     * Sorts the returned objects by the value of the specified field and sort direction
     *
-    * If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields
-    * @param {string} fieldName The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)
+    * If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields.
+    * @param {string} fieldName The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @param {'asc' | 'desc'} sortDirection Sort direction whether ascending or descending
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
@@ -358,41 +335,14 @@ export class QueryBuilder {
    }
 
    /**
-    * Applies a field mask to the result and returns only the specified subset of fields. Either {@link select} or {@link omit}, <u>but not both</u> can be used in your database queries.
-    *
-    * If multiple select method calls are chained then each call is concatenated to a list
-    * @param {...string[]} fields The name of the fields that will be returned in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)
-    * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
-    */
-   select(...fields: string[]): QueryBuilder {
-      checkRequired('fields', fields);
-
-      if (this.#action.omit)
-         throw new ClientError(
-            'invalid_field_masking',
-            `There is already an 'omit' entry in your db action. Either 'select' or 'omit' but not both can be used in your database queries.`
-         );
-
-      if (this.#action.select) this.#action.select.push(...fields);
-      else this.#action.select = [...fields];
-      return this;
-   }
-
-   /**
-    * Applies a field mask to the result and returns all the fields except the omitted ones. Either {@link select} or {@link omit}, <u>but not both</u> can be used in your database queries.
+    * Applies a field mask to the result and returns all the fields except the omitted ones.
     *
     * If multiple omit method calls are chained then each call is concatenated to a list
-    * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., fiel.subField)
+    * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    omit(...fields: string[]): QueryBuilder {
       checkRequired('fields', fields);
-
-      if (this.#action.select)
-         throw new ClientError(
-            'invalid_field_masking',
-            `There is already a 'select' entry in your db action. Either 'select' or 'omit' but not both can be used in your database queries.`
-         );
 
       if (this.#action.omit) this.#action.omit.push(...fields);
       else this.#action.omit = [...fields];
@@ -400,33 +350,39 @@ export class QueryBuilder {
    }
 
    /**
-    * Limits the objects returned from the database within the specified range, inclusive. Primarily used to paginate through your data.
+    * Groups the objects of the model by the specified expression. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
-    * If multiple range method calls are chained then the last one overwrites the previous range values
-    * @param {number} startIndex The starting index, an integer, from which to limit the result, inclusive.
-    * @param {number} endIndex The end index, an integer, to which to limit the result, inclusive.
+    * @param {string} expression Grouping expression string
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
-   range(startIndex: number, endIndex: number): QueryBuilder {
-      integerRequired('startIndex', startIndex);
-      integerRequired('endIndex', endIndex);
-
-      if (startIndex >= endIndex)
-         throw new ClientError(
-            'invalid_range',
-            `The start index (${startIndex}) of the range needs to be less than the end index (${endIndex}).`
-         );
-
-      this.#action.range = { startIndex: startIndex, endIndex: endIndex };
+   group(expression: string): QueryBuilder;
+   /**
+    * Groups the objects of the model by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
+    *
+    * @param {[string]} fields List of fields that will be used for grouping
+    * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
+    */
+   group(fields: [string]): QueryBuilder;
+   group(fieldsOrExpression: [string] | string): QueryBuilder {
       return this;
    }
 
    /**
-    * Creates top level model object(s) in the database. This method ignores the values set through other query building methods in your db action configuration, such as {@link filter}, {@link sort}, {@link lookup}, {@link skip} etc. This method should also be the last method in your query builder chain.
+    * Creates top level model object(s) in the database.  This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
     *
-    * If a list of objects is provided as input and if any one of the objects in this list fails during creation, none of the objects will be created in the database.
+    * | Modifier | Chained with create? |
+    * | :--- | :--- |
+    * | filter |  |
+    * | group |  |
+    * | limit |  |
+    * | lookup |  |
+    * | omit |  |
+    * | page |  |
+    * | sort |  |
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > If a list of objects is provided as input and if any one of the objects in this list fails during creation, none of the objects will be created in the database, i.e., database transaction will be rolled back
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
     * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
     * @returns Returns the newly create object or list of objects in the database.
     */
@@ -435,21 +391,31 @@ export class QueryBuilder {
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
       objectRequired('values', values);
 
-      return await this.getFetcher().post(`/_api/rest/v1/db/create`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/create`, {
          values: values,
-         model: this.getModel(),
+         model: this.#modelName,
       });
    }
 
    /**
-    * Sets the sub-object field value of the parent object identified by parentId. This method ignores the values set through other query building methods in your db action configuration, such as {@link filter}, {@link sort}, {@link lookup}, {@link skip} etc. This method should also be the last method in your query builder chain.
+    * Sets the sub-object field value of the parent object identified by parentId. This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
+    *
+    * | Modifier | Chained with set? |
+    * | :--- | :--- |
+    * | filter |  |
+    * | group |  |
+    * | limit |  |
+    * | lookup |  |
+    * | omit |  |
+    * | page |  |
+    * | sort |  |
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an *object* field called `profile`, which is a sub-model, that you store details about your users. When creating users, you most probably will not be collecting profile information but at a later stage you might collect this information and would like to set the value of the profile. You can use this **set** method to set the profile field of a users object identified by the parentId.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
     * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
     * @param {string} parentId The id of the parent object
-    * @param {boolean} [returnTop=false] Flag to specify whether to return the newly set child object or the updated top-level object
+    * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
     * @returns Returns the newly create object in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the set sub-model object.
     */
    async set(
@@ -460,23 +426,33 @@ export class QueryBuilder {
       objectRequired('values', values);
       checkRequired('parentId', parentId);
 
-      return await this.getFetcher().post(`/_api/rest/v1/db/set`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/set`, {
          values: values,
          parentId: parentId,
          returnTop: returnTop,
-         model: this.getModel(),
+         model: this.#modelName,
       });
    }
 
    /**
-    * Appends object(s) to a child-list of the parent object identified by parentId. This method ignores the values set through other query building methods in your db action configuration, such as {@link filter}, {@link sort}, {@link lookup}, {@link skip} etc. This method should also be the last method in your query builder chain.
+    * Appends object(s) to a child-list of the parent object identified by parentId. This method ignores all other query modifiers; {@link filter}, {@link sort}, {@link lookup}, {@link page}, {@link group}, {@link omit}, {@link limit}.
+    *
+    * | Modifier | Chained with append? |
+    * | :--- | :--- |
+    * | filter |  |
+    * | group |  |
+    * | limit |  |
+    * | lookup |  |
+    * | omit |  |
+    * | page |  |
+    * | sort |  |
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an **object-list** field called `addresses`, which is a sub-model list, that you store addresses of your users. When creating users, you most probably will not be collecting address information but at a later stage you might collect this information and would like to add these addresses to your users' addresses list. You can use this **append** method to add child object(s) to a user identified by the parentId.
     *
-    * *An active user session is required (e.g., user needs to be logged in) to call this method.*
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
     * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
     * @param {string} parentId The id of the parent object
-    * @param {boolean} [returnTop=false] Flag to specify whether to return the newly appended child object(s) or the updated top-level object
+    * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
     * @returns Returns the newly create object(s) in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the appended sub-model object(s).
     */
    async append(
@@ -487,11 +463,118 @@ export class QueryBuilder {
       objectRequired('values', values);
       checkRequired('parentId', parentId);
 
-      return await this.getFetcher().post(`/_api/rest/v1/db/append`, {
+      return await this.fetcher.post(`/_api/rest/v1/db/append`, {
          values: values,
          parentId: parentId,
          returnTop: returnTop,
-         model: this.getModel(),
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Runs the query defined by the query modifiers and returns matching objects array. This method accepts all the query modifiers except {@link group}. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with get? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |  &#10004; |
+    * | lookup | &#10004; |
+    * | omit |  &#10004; |
+    * | page |  &#10004; |
+    * | sort |  &#10004; |
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
+    * @returns Returns the array of objects matching the query. If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
+    */
+   async get(
+      returnCountInfo: boolean = false
+   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/db/get-list`, {
+         query: this.#action,
+         returnCountInfo: returnCountInfo,
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Runs the specified computations on the model objects and returns the computation results. This method is typically chained with {@link group} and {@link filter} methods. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with compute? |
+    * | :--- | :--- |
+    * | filter | &#10004; |
+    * | group | &#10004; |
+    * | limit |  |
+    * | lookup |  |
+    * | omit |  |
+    * | page |  |
+    * | sort |  |
+    *
+    * As an example, you might have an orders model where you keep track of your sales of particular products. Using this method you can calculate the total order revenues, average order size, total number of orders and revenues on a weekly or monthly basis etc. The {@link group} method helps you to group your orders, for example if you would like to group your orders by the week of the year or the month of the year you can specify a grouping expression which calculates the week or the month of your order creation date. Another example would be you can specify the name of the field in the {@link group} method, such as the productId, which will group your orders by product.
+    *
+    * The computations parameter defines the calculations that you will be making on the filtered and/or grouped objects. Altogic will perform the specified calculations for each group and return their results. You can specify multiple calculations at the same time such as you can calculate the the total number of orders, total sales amount and average order on a weekly grouping basis etc.
+    *
+    * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
+    * @returns Returns the computation results
+    */
+   async compute(
+      computations: any
+   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/db/compute`, {
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Runs the query defined by the query modifiers and returns the matching single object. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with getSingle? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |   |
+    * | lookup | &#10004; |
+    * | omit |  &#10004; |
+    * | page |   |
+    * | sort |   |
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * @returns Returns the object matching the query.
+    */
+   async getSingle(): Promise<{ data: object | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/db/get-single`, {
+         query: this.#action,
+         model: this.#modelName,
+      });
+   }
+
+   /**
+    * Retrieves the specified number of objects from the database randomly. See table below for applicable modifiers that can be used with this method.
+    *
+    * | Modifier | Chained with getSingle? |
+    * | :--- | :--- |
+    * | filter |  &#10004; |
+    * | group |  |
+    * | limit |   |
+    * | lookup | &#10004; |
+    * | omit |  &#10004; |
+    * | page |   |
+    * | sort |   |
+    *
+    * If {@link filter} modifier is used with this method, Altogic first narrows down the set of objects that can be selected using the filter query and among these filtered objects performs random selection.
+    *
+    * *An active user session is required (e.g., user needs to be logged in) to call this method and this method should also be the last method in your query builder chain.*
+    * @param {number} count An integer that specifies the number of items to randomly select
+    * @returns Returns the array of objects selected randomly.
+    */
+   async getRandomly(count: number): Promise<{ data: object | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/db/get-single`, {
+         query: this.#action,
+         model: this.#modelName,
       });
    }
 }
