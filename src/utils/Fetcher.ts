@@ -104,6 +104,7 @@ export class Fetcher {
                   }
                }
             } else {
+               //For everthing else we assume JSON format
                try {
                   requestBody = JSON.stringify(body);
                } catch (err) {

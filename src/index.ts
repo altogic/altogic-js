@@ -8,6 +8,8 @@ import { TaskManager } from './TaskManager';
 import { DatabaseManager } from './DatabaseManager';
 import { QueryBuilder } from './QueryBuilder';
 import { DBObject } from './DBObject';
+import { StorageManager } from './StorageManager';
+import { BucketManager } from './BucketManager';
 import { Fetcher } from './utils/Fetcher';
 import {
    KeyValuePair,
@@ -33,6 +35,8 @@ import {
    UpdateInfo,
    DeleteInfo,
    GroupComputation,
+   BucketListOptions,
+   BucketSortEntry,
 } from './types';
 import { polyfillGlobalThis } from './utils/polyfills';
 
@@ -86,4 +90,8 @@ export {
    UpdateInfo,
    DeleteInfo,
    GroupComputation,
+   StorageManager,
+   BucketManager,
+   BucketListOptions,
+   BucketSortEntry,
 };

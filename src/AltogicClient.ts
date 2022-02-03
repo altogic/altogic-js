@@ -8,10 +8,11 @@ import { CacheManager } from './CacheManager';
 import { QueueManager } from './QueueManager';
 import { TaskManager } from './TaskManager';
 import { DatabaseManager } from './DatabaseManager';
+import { StorageManager } from './StorageManager';
 
 const DEFAULT_OPTIONS = {
    apiKey: undefined,
-   localStorage: globalThis.window.localStorage,
+   localStorage: globalThis.window?.localStorage,
    enforceSession: false,
 };
 
@@ -80,6 +81,12 @@ export class AltogicClient {
    #databaseManager: DatabaseManager | null;
 
    /**
+    * StorageManager object is used to manage the buckets and files your app cloud storage
+    * @type {StorageManager}
+    */
+   #storageManager: StorageManager | null;
+
+   /**
     * Create a new client for web applications.
     * @param {string} baseUrl The unique app environment base URL which is automatically generated when you create an environment for your backend app
     * @param {ClientOptions} [options] Configuration options for the api client
@@ -101,6 +108,7 @@ export class AltogicClient {
       this.#queueManager = null;
       this.#taskManager = null;
       this.#databaseManager = null;
+      this.#storageManager = null;
 
       //Create combination of default and custom options
       this.settings = { ...DEFAULT_OPTIONS, ...options };
@@ -196,6 +204,19 @@ export class AltogicClient {
       else {
          this.#databaseManager = new DatabaseManager(this.#fetcher);
          return this.#databaseManager;
+      }
+   }
+
+   /**
+    * Returns the storage manager, which is used to manage buckets and files of your app.
+    * @readonly
+    * @type {StorageManager}
+    */
+   get storage(): StorageManager {
+      if (this.#storageManager) return this.#storageManager;
+      else {
+         this.#storageManager = new StorageManager(this.#fetcher);
+         return this.#storageManager;
       }
    }
 }

@@ -705,3 +705,103 @@ export interface GroupComputation {
     */
    expression: string;
 }
+
+/**
+ * Defines the structure how to get app buckets
+ * @export
+ * @interface BucketListOptions
+ */
+export interface BucketListOptions {
+   /**
+    * A positive integer that specifies the page number to paginate bucket results. Page numbers start from 1.
+    * @type {(number | null | undefined)}
+    */
+   page: number | null | undefined;
+   /**
+    * A positive integer that specifies the max number of buckets to return per page
+    * @type {(number | null | undefined)}
+    */
+   limit: number | null | undefined;
+   /**
+    * Specifies the field name and sort direction for sorting returned buckets
+    * @type {(BucketSortEntry | null | undefined)}
+    */
+   sort: BucketSortEntry | null | undefined;
+   /**
+    * Flag to specify whether to return the count and pagination information such as total number of buckets, page number and page size
+    * @type {boolean}
+    */
+   returnCountInfo: boolean;
+}
+
+/**
+ * Defines the structure of a bucket sort entry
+ * @export
+ * @interface BucketSortEntry
+ */
+export interface BucketSortEntry {
+   /**
+    * The name of the bucket field that will be used in sorting the returned objects
+    * @type {string}
+    */
+   field: 'name' | 'isPublic' | 'createdAt' | 'updatedAt';
+   /**
+    * Sort direction
+    * @type {string}
+    */
+   direction: 'asc' | 'desc';
+}
+
+/**
+ * Defines the structure how to get the files of a bucket
+ * @export
+ * @interface FileListOptions
+ */
+export interface FileListOptions {
+   /**
+    * A positive integer that specifies the page number to paginate file results. Page numbers start from 1.
+    * @type {(number | null | undefined)}
+    */
+   page: number | null | undefined;
+   /**
+    * A positive integer that specifies the max number of files to return per page
+    * @type {(number | null | undefined)}
+    */
+   limit: number | null | undefined;
+   /**
+    * Specifies the field name and sort direction for sorting returned files
+    * @type {(FileSortEntry | null | undefined)}
+    */
+   sort: FileSortEntry | null | undefined;
+   /**
+    * Flag to specify whether to return the count and pagination information such as total number of files, page number and page size
+    * @type {boolean}
+    */
+   returnCountInfo: boolean;
+}
+
+/**
+ * Defines the structure of a file sort entry
+ * @export
+ * @interface FileSortEntry
+ */
+export interface FileSortEntry {
+   /**
+    * The name of the bucket field that will be used in sorting the returned objects
+    * @type {string}
+    */
+   field:
+      | 'fileName'
+      | 'size'
+      | 'disposition'
+      | 'encoding'
+      | 'mimeType'
+      | 'isPublic'
+      | 'uploadedAt'
+      | 'updatedAt';
+   /**
+    * Sort direction
+    * @type {string}
+    */
+   direction: 'asc' | 'desc';
+}

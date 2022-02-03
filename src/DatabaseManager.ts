@@ -4,7 +4,7 @@ import { checkRequired } from './utils/helpers';
 import { QueryBuilder } from './QueryBuilder';
 
 /**
- * The database manager allows you manage your applications data. With DatabaseManager you can create new objects in your data model, update or delete existing ones, run complex queries and paginate over large data sets.
+ * The database manager allows you manage your applications database. With DatabaseManager you can create new objects in your data model, update or delete existing ones, run complex queries and paginate over large data sets.
  *
  * @export
  * @class DatabaseManager
@@ -19,7 +19,7 @@ export class DatabaseManager extends APIBase {
    }
 
    /**
-    * Creates a new query builder for the specified model.
+    * Creates a new {@link QueryBuilder} for the specified model.
     *
     * In Altogic, models define the data structure and data validation rules of your applications. A model is composed of basic, advanced, and sub-model fields. As an analogy, you can think of models as tables and fields as columns in relational databases.
     *
