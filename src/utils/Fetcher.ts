@@ -68,8 +68,8 @@ export class Fetcher {
    async #handleRequest(
       method: 'GET' | 'POST' | 'PUT' | 'DELETE',
       path: string,
-      query: KeyValuePair,
-      headers: KeyValuePair,
+      query: KeyValuePair | null,
+      headers: KeyValuePair | null,
       body: any,
       resolveType: 'json' | 'text' | 'blob' | 'arraybuffer' = 'json'
    ): Promise<{ data: any | null; errors: APIError | null }> {
@@ -84,40 +84,49 @@ export class Fetcher {
          //Get the body of the request in the right format
          let requestBody = undefined;
          if (body) {
+            let isFormDataBody = false;
             //Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
-            //we will not have the FormData object by default, for this reason for approximation we are checking the
-            //FormData proxy object used has an append method or not
-            if (
-               body instanceof FormData ||
-               (typeof body === 'object' && typeof body.append === 'function')
-            ) {
+            //we will not have the FormData object by default
+            if (typeof FormData !== 'undefined' && body instanceof FormData) {
                requestBody = body;
-               //Browser will set the content type to the correct value, we should not have a content type entry in headers
-               //for request with FormData body
-               if (headers) {
-                  let keys = Object.keys(headers);
-                  for (let i = 0; i < keys.length; i++) {
-                     const key = keys[i];
-                     if (key.trim().toLowerCase() === 'content-type') {
-                        delete headers[key];
-                     }
-                  }
-               }
+               isFormDataBody = true;
+            } else if (
+               ((typeof Blob !== 'undefined' && body instanceof Blob) ||
+                  (typeof File !== 'undefined' && body instanceof File)) &&
+               typeof FormData !== 'undefined'
+            ) {
+               requestBody = new FormData();
+               requestBody.append('file', body);
+               isFormDataBody = true;
             } else {
                //For everthing else we assume JSON format
                try {
                   requestBody = JSON.stringify(body);
+
+                  if (!headers) headers = {};
+                  headers['Content-Type'] = 'application/json';
                } catch (err) {
+                  //Seems not a json document, directly set the contents to the body, maybe it is binary body data (e.g., file upload)
                   requestBody = body;
-               } finally {
-                  headers['Content-type'] = 'application/json';
+               }
+            }
+
+            //Browser will set the content type to the correct value, we should not have a content type entry in headers
+            //for request with FormData body
+            if (headers && isFormDataBody) {
+               let keys = Object.keys(headers);
+               for (let i = 0; i < keys.length; i++) {
+                  const key = keys[i];
+                  if (key.trim().toLowerCase() === 'content-type') {
+                     delete headers[key];
+                  }
                }
             }
          }
 
          //Build query parameters string
          let queryString = Object.keys(query || {}).reduce((previousValue, key) => {
-            let value = query[key];
+            let value = query ? query[key] : '';
             value = value ?? '';
             if (typeof value === 'object') {
                try {
@@ -202,8 +211,8 @@ export class Fetcher {
     */
    async get(
       path: string,
-      query: KeyValuePair = {},
-      headers: KeyValuePair = {},
+      query: KeyValuePair | null = {},
+      headers: KeyValuePair | null = {},
       resolveType: 'json' | 'text' | 'blob' | 'arraybuffer' = 'json'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       return this.#handleRequest('GET', path, query, headers, null, resolveType);
@@ -221,8 +230,8 @@ export class Fetcher {
    async post(
       path: string,
       body: FormData | object | null = null,
-      query: KeyValuePair = {},
-      headers: KeyValuePair = {},
+      query: KeyValuePair | null = {},
+      headers: KeyValuePair | null = {},
       resolveType: 'json' | 'text' | 'blob' | 'arraybuffer' = 'json'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       return this.#handleRequest('POST', path, query, headers, body, resolveType);
@@ -240,8 +249,8 @@ export class Fetcher {
    async put(
       path: string,
       body: FormData | object | null = null,
-      query: KeyValuePair = {},
-      headers: KeyValuePair = {},
+      query: KeyValuePair | null = {},
+      headers: KeyValuePair | null = {},
       resolveType: 'json' | 'text' | 'blob' | 'arraybuffer' = 'json'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       return this.#handleRequest('PUT', path, query, headers, body, resolveType);
@@ -259,8 +268,8 @@ export class Fetcher {
    async delete(
       path: string,
       body: FormData | object | null = null,
-      query: KeyValuePair = {},
-      headers: KeyValuePair = {},
+      query: KeyValuePair | null = {},
+      headers: KeyValuePair | null = {},
       resolveType: 'json' | 'text' | 'blob' | 'arraybuffer' = 'json'
    ): Promise<{ data: any | null; errors: APIError | null }> {
       return this.#handleRequest('DELETE', path, query, headers, body, resolveType);

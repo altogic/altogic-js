@@ -110,7 +110,7 @@ export class DBObject extends APIBase {
       values: object,
       options?: CreateOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('values', values);
+      checkRequired('create values', values);
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/create`, {
          values: values,
@@ -136,8 +136,8 @@ export class DBObject extends APIBase {
       parentId: string,
       options?: SetOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('values', values);
-      checkRequired('parentId', parentId);
+      checkRequired('set values', values);
+      checkRequired('set parentId', parentId);
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/set`, {
          values: values,
@@ -164,8 +164,8 @@ export class DBObject extends APIBase {
       parentId: string,
       options?: AppendOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('values', values);
-      checkRequired('parentId', parentId);
+      checkRequired('append values', values);
+      checkRequired('append parentId', parentId);
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/append`, {
          values: values,
@@ -207,8 +207,8 @@ export class DBObject extends APIBase {
       values: object,
       options?: UpdateOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('id', this.#id);
-      objectRequired('values', values);
+      checkRequired('update id', this.#id);
+      objectRequired('update values', values);
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/update`, {
          values: values,
@@ -230,7 +230,7 @@ export class DBObject extends APIBase {
       fieldUpdates: [FieldUpdate],
       options?: UpdateOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('id', this.#id);
+      checkRequired('update id', this.#id);
       arrayRequired('fieldUpdates', fieldUpdates);
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/update-fields`, {

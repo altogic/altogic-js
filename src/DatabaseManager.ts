@@ -31,7 +31,7 @@ export class DatabaseManager extends APIBase {
     * @returns Returns a new query builder object that will be issuing database commands (e.g., CRUD operations, queries) on the specified model
     */
    model(name: string): QueryBuilder {
-      checkRequired('name', name);
+      checkRequired('model name', name);
 
       return new QueryBuilder(name, this.fetcher);
    }

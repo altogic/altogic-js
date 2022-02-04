@@ -37,6 +37,9 @@ import {
    GroupComputation,
    BucketListOptions,
    BucketSortEntry,
+   FileListOptions,
+   FileSortEntry,
+   FileUploadOptions,
 } from './types';
 import { polyfillGlobalThis } from './utils/polyfills';
 
@@ -94,4 +97,7 @@ export {
    BucketManager,
    BucketListOptions,
    BucketSortEntry,
+   FileListOptions,
+   FileSortEntry,
+   FileUploadOptions,
 };

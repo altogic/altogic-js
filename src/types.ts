@@ -787,21 +787,31 @@ export interface FileListOptions {
  */
 export interface FileSortEntry {
    /**
-    * The name of the bucket field that will be used in sorting the returned objects
+    * The name of the file field that will be used in sorting the returned objects
     * @type {string}
     */
-   field:
-      | 'fileName'
-      | 'size'
-      | 'disposition'
-      | 'encoding'
-      | 'mimeType'
-      | 'isPublic'
-      | 'uploadedAt'
-      | 'updatedAt';
+   field: 'fileName' | 'size' | 'encoding' | 'mimeType' | 'isPublic' | 'uploadedAt' | 'updatedAt';
    /**
     * Sort direction
     * @type {string}
     */
    direction: 'asc' | 'desc';
+}
+
+/**
+ * Defines the options available that can be set during file upload
+ * @export
+ * @interface FileUploadOptions
+ */
+export interface FileUploadOptions {
+   /**
+    * The `Content-Type` header value. This value needs to be specified if using a `fileBody` that is neither `Blob` nor `File` nor `FormData`, otherwise will default to `text/plain;charset=UTF-8`.
+    * @type {string}
+    */
+   contentType: string;
+   /**
+    * Specifies whether file is publicy accessible or not. Defaults to `true`.
+    * @type {boolean}
+    */
+   isPublic: boolean;
 }

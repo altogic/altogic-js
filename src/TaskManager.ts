@@ -49,7 +49,7 @@ export class TaskManager extends APIBase {
    async getTaskStatus(
       taskId: string
    ): Promise<{ info: TaskInfo | null; errors: APIError | null }> {
-      checkRequired('messageId', taskId);
+      checkRequired('taskId', taskId);
 
       let { data, errors } = await this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
 

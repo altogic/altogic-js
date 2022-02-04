@@ -331,7 +331,7 @@ export class QueryBuilder extends APIBase {
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder {
-      checkRequired('fieldName', fieldName);
+      checkRequired('sort fieldName', fieldName);
 
       if (sortDirection !== 'asc' && sortDirection !== 'desc')
          throw new ClientError(
@@ -352,7 +352,7 @@ export class QueryBuilder extends APIBase {
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    omit(...fields: string[]): QueryBuilder {
-      arrayRequired('fields', fields);
+      arrayRequired('omit fields', fields);
 
       if (this.#action.omit) this.#action.omit.push(...fields);
       else this.#action.omit = [...fields];
@@ -374,7 +374,7 @@ export class QueryBuilder extends APIBase {
     */
    group(fields: [string]): QueryBuilder;
    group(fieldsOrExpression: [string] | string): QueryBuilder {
-      checkRequired('fieldsOrExpression', fieldsOrExpression);
+      checkRequired('group fieldsOrExpression', fieldsOrExpression);
       if (typeof fieldsOrExpression !== 'string' && !Array.isArray(fieldsOrExpression))
          throw new ClientError(
             'invalid_group_definition',
@@ -407,7 +407,7 @@ export class QueryBuilder extends APIBase {
    async create(
       values: object | object[]
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-      objectRequired('values', values);
+      objectRequired('create values', values);
 
       return await this.fetcher.post(`/_api/rest/v1/db/create`, {
          values: values,
@@ -442,8 +442,8 @@ export class QueryBuilder extends APIBase {
       parentId: string,
       returnTop: boolean = false
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      objectRequired('values', values);
-      checkRequired('parentId', parentId);
+      objectRequired('set values', values);
+      checkRequired('set parentId', parentId);
 
       return await this.fetcher.post(`/_api/rest/v1/db/set`, {
          values: values,
@@ -480,8 +480,8 @@ export class QueryBuilder extends APIBase {
       parentId: string,
       returnTop: boolean = false
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-      objectRequired('values', values);
-      checkRequired('parentId', parentId);
+      objectRequired('append values', values);
+      checkRequired('append parentId', parentId);
 
       return await this.fetcher.post(`/_api/rest/v1/db/append`, {
          values: values,
@@ -624,7 +624,7 @@ export class QueryBuilder extends APIBase {
     * @returns Returns information about the update operation
     */
    async update(values: object): Promise<{ data: UpdateInfo; errors: APIError | null }> {
-      objectRequired('values', values);
+      objectRequired('update values', values);
 
       if (!this.#action.expression)
          throw new ClientError(
