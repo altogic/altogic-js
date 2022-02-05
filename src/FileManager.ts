@@ -46,7 +46,7 @@ export class FileManager extends APIBase {
     *
     * @returns Returns basic file metadata informaton.
     */
-   async get(): Promise<{ data: object | null; errors: APIError | null }> {
+   async getInfo(): Promise<{ data: object | null; errors: APIError | null }> {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/get`, {
          file: this.#fileNameOrId,
          bucket: this.#bucketNameOrId,
@@ -83,10 +83,16 @@ export class FileManager extends APIBase {
     * @returns Returns the contents of the file in a `Blob`
     */
    async download(): Promise<{ data: Blob | null; errors: APIError | null }> {
-      return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/download`, {
-         file: this.#fileNameOrId,
-         bucket: this.#bucketNameOrId,
-      });
+      return await this.fetcher.post(
+         `/_api/rest/v1/storage/bucket/file/download`,
+         {
+            file: this.#fileNameOrId,
+            bucket: this.#bucketNameOrId,
+         },
+         null,
+         null,
+         'blob'
+      );
    }
 
    /**
@@ -106,9 +112,9 @@ export class FileManager extends APIBase {
    }
 
    /**
-    * Duplicates an existing file. If the `duplicateName` is not specified, automatically creates a new name for the file
+    * Duplicates an existing file within the same bucket.
     *
-    * @param {string} [duplicateName] The new duplicate file name
+    * @param {string} duplicateName The new duplicate file name. If not specified, it ensures the duplicated file name to be unique in its bucket.
     * @returns Returns the new duplicate file information
     */
    async duplicate(
@@ -122,13 +128,15 @@ export class FileManager extends APIBase {
    }
 
    /**
-    * Deletes the file.
+    * Deletes the file from the bucket.
     */
    async delete(): Promise<{ errors: APIError | null }> {
-      return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/delete`, {
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/delete`, {
          file: this.#fileNameOrId,
          bucket: this.#bucketNameOrId,
       });
+
+      return { errors };
    }
 
    /**
@@ -180,16 +188,33 @@ export class FileManager extends APIBase {
    }
 
    /**
-    * Moves the file to another bucket.
+    * Moves the file to another bucket. The file will be removed from its current bucket and will be moved to its new bucket. If there already exists a file with the same name in destination bucket, it ensures the moved file name to be unique in its new destination.
     *
     * @param {string} bucketNameOrId The name or id of the bucket to move the file into.
     * @throws Throws an exception if `bucketNameOrId` is not specified
-    * @returns Returns the updated file information
+    * @returns Returns the moved file information
     */
-   async move(bucketNameOrId: string): Promise<{ data: object | null; errors: APIError | null }> {
+   async moveTo(bucketNameOrId: string): Promise<{ data: object | null; errors: APIError | null }> {
       checkRequired('moved bucket name or id', bucketNameOrId);
 
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/move`, {
+         bucketNameOrId: bucketNameOrId,
+         file: this.#fileNameOrId,
+         bucket: this.#bucketNameOrId,
+      });
+   }
+
+   /**
+    * Copies the file to another bucket. If there already exists a file with the same name in destination bucket, If there already exists a file with the same name in destination bucket, it ensures the copied file name to be unique in its new destination.
+    *
+    * @param {string} bucketNameOrId The name or id of the bucket to copy the file into.
+    * @throws Throws an exception if `bucketNameOrId` is not specified
+    * @returns Returns the copied file information
+    */
+   async copyTo(bucketNameOrId: string): Promise<{ data: object | null; errors: APIError | null }> {
+      checkRequired('copied bucket name or id', bucketNameOrId);
+
+      return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/copy`, {
          bucketNameOrId: bucketNameOrId,
          file: this.#fileNameOrId,
          bucket: this.#bucketNameOrId,

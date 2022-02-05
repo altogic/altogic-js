@@ -41,7 +41,9 @@ export class BucketManager extends APIBase {
     * @param {boolean} detailed Specifies whether to get detailed bucket statistics or not
     * @returns Returns basic bucket metadata informaton. If `detailed=true` provides additional information about contained files.
     */
-   async get(detailed: boolean = false): Promise<{ data: object | null; errors: APIError | null }> {
+   async getInfo(
+      detailed: boolean = false
+   ): Promise<{ data: object | null; errors: APIError | null }> {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/get`, {
          detailed: detailed,
          bucket: this.#bucketNameOrId,
@@ -174,7 +176,7 @@ export class BucketManager extends APIBase {
    }
 
    /**
-    * Uploads a file to an existing bucket.
+    * Uploads a file to an existing bucket. If there already exists a file with the same name in destination bucket, it ensures the uploaded file name to be unique in its bucket.
     *
     * @param {string} filePath The relative path of the file. Should be either *filename.jpg* or if you have a folder structure *folder/subfolder/filename.jpg*
     * @param {string} fileBody The body of the file that will be stored in the bucket
