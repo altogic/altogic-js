@@ -90,6 +90,7 @@ export class AltogicClient {
     * Create a new client for web applications.
     * @param {string} baseUrl The unique app environment base URL which is automatically generated when you create an environment for your backend app
     * @param {ClientOptions} [options] Configuration options for the api client
+    * @throws Throws an exception if `baseUrl` is not specified or not a valid URL path
     */
    constructor(baseUrl: string, options?: ClientOptions) {
       if (

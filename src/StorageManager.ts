@@ -2,7 +2,7 @@ import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { checkRequired } from './utils/helpers';
 import { BucketManager } from './BucketManager';
-import { APIError, BucketListOptions } from './types';
+import { APIError, BucketListOptions, FileListOptions } from './types';
 import { ClientError } from './utils/ClientError';
 
 /**
@@ -34,13 +34,14 @@ export class StorageManager extends APIBase {
     *
     * Algotic automatically provides a default **`root`** bucket where you can store your files. You can pretty much do everthing with the **`root`** bucket that you can do with a normal bucket except you cannot delete or rename it.
     *
-    * @param {string} name The name of the bucket.
+    * @param {string} nameOrId The name or id of the bucket.
+    * @throws Throws an exception if `nameOrId` not specified
     * @returns Returns a new {@link BucketManager} object that will be used for managing the bucket
     */
-   bucket(name: string): BucketManager {
-      checkRequired('Bucket name', name);
+   bucket(nameOrId: string): BucketManager {
+      checkRequired('bucket name or id', nameOrId);
 
-      return new BucketManager(name, this.fetcher);
+      return new BucketManager(nameOrId, this.fetcher);
    }
 
    /**
@@ -50,6 +51,7 @@ export class StorageManager extends APIBase {
     *
     * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
     * @param {boolean} isPublic The name of the bucket to create (case sensitive).
+    * @throws Throws an exception if `name` not specified
     * @returns Returns info about newly created bucket
     */
    async createBucket(
@@ -79,6 +81,7 @@ export class StorageManager extends APIBase {
     *
     * @param {string} expression The query expression string that will be used to filter buckets
     * @param {BucketListOptions} options Options to configure how buckets will be listed, primarily used to set pagination and sorting settings
+    * @throws Throws an exception (in case `expression` or `options` is specified) if `expression` is not a string or `options` is not an object
     * @returns Returns the array of matching buckets. If `returnCountInfo=true` in {@link BucketListOptions}, it returns an object which includes the count information and the matching buckets array.
     */
    async listBuckets(
@@ -116,5 +119,54 @@ export class StorageManager extends APIBase {
     */
    get root(): BucketManager {
       return new BucketManager('root', this.fetcher);
+   }
+
+   /**
+    * Returns the overall information about your apps cloud storage including total number of files stored, total storage size in bytes and average, min and max file size in bytes.
+    *
+    * @returns Returns information about your app's cloud storage
+    */
+   async getStats(): Promise<{ data: object | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/storage/stats`);
+   }
+
+   /**
+    * Gets the list of files matching the search expression across all buckets. You can use the following file fields in your search expression.
+    *
+    * | Field name | Type | Description
+    * | :--- | :--- | :--- |
+    * | _id | `text` *(`identifier`)* | Unique identifier of the file |
+    * | bucketId | `text` *(`identifier`)* | Identifier of the bucket |
+    * | fileName | `text` | Name of the file |
+    * | isPublic | `boolean` | Whether file is publicy accessible or not |
+    * | size | `integer` | Size of the file in bytes |
+    * | encoding | `text` | The encoding type of the file such as `7bit`, `utf8` |
+    * | mimeType | `text` | The mime-type of the file such as `image/gif`, `text/html` |
+    * | publicPath | `text` | The public path (URL) of the file |
+    * | uploadedAt | `datetime` *(`text`)* | The upload date and time of the file |
+    * | updatedAt | `datetime` *(`text`)* | The last modification date and time of file metadata |
+    *
+    * You can paginate through your files and sort them using the input {@link FileListOptions} parameter.
+    *
+    * @param {string} expression The search expression string that will be used to filter file objects
+    * @param {FileListOptions} options Pagination and sorting options
+    * @throws Throws an exception if `expression` is not specified or `options` (if specified) is not an object
+    * @returns Returns the files mathcing the search query. If `returnCountInfo=true` in {@link FileListOptions}, returns an object which includes count information and array of matching files.
+    */
+   async searchFiles(
+      expression: string,
+      options?: FileListOptions
+   ): Promise<{ data: object[] | null; errors: APIError | null }> {
+      let optionsVal = null;
+      checkRequired('search expression', expression);
+      if (options) {
+         if (typeof options === 'object') optionsVal = options;
+         else throw new ClientError('invalid_value', `File search options need to be an object`);
+      }
+
+      return await this.fetcher.post(`/_api/rest/v1/storage/search-files`, {
+         expression,
+         options: optionsVal,
+      });
    }
 }

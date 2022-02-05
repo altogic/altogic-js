@@ -42,11 +42,12 @@ export function getParamValue(paramName: string): string | null {
 }
 
 /**
- * Checks whether the input field value is null or undefiend. If it is null or undefined throws an exception.
+ * Checks whether the input field value is specified or not.
  * @export
  * @param {string} fieldName Field name to check for a value
  * @param {any} fieldValue Field value
  * @param {any} checkEmptyString Flag to check empty strings or not
+ * @throws Throws an exception if `fieldValue` is `null` or `undefined`. If `checkEmptyString=true`, throws an exception if string is empty.
  */
 export function checkRequired(
    fieldName: string,
@@ -74,7 +75,8 @@ export function checkRequired(
  * @export
  * @param {string} fieldName Field name to check for a value
  * @param {any} fieldValue Field value
- * @param {any} checkEmptyString Flag to check empty arrays or not
+ * @param {any} checkEmptyArray Flag to check empty arrays or not
+ * @throws Throws an exception if `fieldValue` is not an array. If `checkEmptyArray=true`, throws an exception if array is empty.
  */
 export function arrayRequired(
    fieldName: string,
@@ -99,6 +101,7 @@ export function arrayRequired(
  * @param {string} fieldName Field name to check for a value
  * @param {any} fieldValue Field value
  * @param {any} checkPositive Flag to check whether the number is positive or not
+ * @throws Throws an exception if `fieldValue` is not an integer. If `checkPositive=true`, throws an exception if `fieldValue<=0`.
  */
 export function integerRequired(fieldName: string, fieldValue: any, checkPositive: boolean = true) {
    checkRequired(fieldName, fieldValue, false);
@@ -116,6 +119,7 @@ export function integerRequired(fieldName: string, fieldValue: any, checkPositiv
  * @param {string} fieldName Field name to check for a value
  * @param {any} fieldValue Field value
  * @param {any} checkArray Flag to check whether the object is an array or not
+ * @throws Throws an exception if `fieldValue` is not an object. If `checkArray=true`, throws an exception if `fieldValue` is also not an Array.
  */
 export function objectRequired(fieldName: string, fieldValue: any, checkArray: boolean = false) {
    checkRequired(fieldName, fieldValue, false);

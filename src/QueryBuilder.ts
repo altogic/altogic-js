@@ -15,7 +15,7 @@ import { checkRequired, integerRequired, objectRequired, arrayRequired } from '.
 import { ClientError } from './utils/ClientError';
 
 /**
- * The query builder is primarily used to build database queries or run CRUD operataions on a model (i.e., table, collection) of your application.
+ * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
  * @export
  * @class QueryBuilder
@@ -267,6 +267,7 @@ export class QueryBuilder extends APIBase {
     *
     * The first data query above searches for products that are of type plastic and has a stock quantity between 100-200 items. The second data query search for products either metal and with a weight to volume ration greater than 2 or plastics with a weight to volume ration less than or equal to 2.
     * @param {string} expression The query expression string
+    * @throws Throws an exception if `expression` is not specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    filter(expression: string): QueryBuilder {
@@ -281,6 +282,7 @@ export class QueryBuilder extends APIBase {
     *
     * If multiple lookup method calls are chained then each call is concatenated to a list, so that you can perform multiple lookups.
     * @param {SimpleLookup | ComplexLookup} lookup The lookup to make (left outer join) while getting the object from the database
+    * @throws Throws an exception if `lookup` is not specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    lookup(lookup: SimpleLookup | ComplexLookup): QueryBuilder {
@@ -296,6 +298,7 @@ export class QueryBuilder extends APIBase {
     *
     * If multiple page method calls are chained then the last one overwrites the previous page values
     * @param {number} pageNumber An integer that specifies the page number
+    * @throws Throws an exception if `pageNumber` is not specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    page(pageNumber: number): QueryBuilder {
@@ -310,6 +313,7 @@ export class QueryBuilder extends APIBase {
     *
     * If multiple limit method calls are chained then the last one overwrites the previous limit values
     * @param {number} limitCount An integer that specifies the max number of objects to return
+    * @throws Throws an exception if `limitCount` is not specified or `limitCount=0`
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    limit(limitCount: number): QueryBuilder {
@@ -328,6 +332,7 @@ export class QueryBuilder extends APIBase {
     * If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields.
     * @param {string} fieldName The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @param {'asc' | 'desc'} sortDirection Sort direction whether ascending or descending
+    * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder {
@@ -349,6 +354,7 @@ export class QueryBuilder extends APIBase {
     *
     * If multiple omit method calls are chained then each call is concatenated to a list
     * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
+    * @throws Throws an exception if no omitted fields is specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    omit(...fields: string[]): QueryBuilder {
@@ -363,6 +369,7 @@ export class QueryBuilder extends APIBase {
     * Groups the objects of the model by the specified expression. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
     * @param {string} expression Grouping expression string
+    * @throws Throws an exception if `expression` is not specified or if it is not a string value
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    group(expression: string): QueryBuilder;
@@ -370,6 +377,7 @@ export class QueryBuilder extends APIBase {
     * Groups the objects of the model by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
     * @param {[string]} fields List of field names that will be used for grouping. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
+    * @throws Throws an exception if `fields` is not specified or if it is not an array of string values
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
     */
    group(fields: [string]): QueryBuilder;
@@ -402,6 +410,7 @@ export class QueryBuilder extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
+    * @throws Throws an exception if `values` is not specified
     * @returns Returns the newly create object or list of objects in the database.
     */
    async create(
@@ -435,6 +444,7 @@ export class QueryBuilder extends APIBase {
     * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
+    * @throws Throws an exception if `values` or `parentId` is not specified
     * @returns Returns the newly create object in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the set sub-model object.
     */
    async set(
@@ -473,6 +483,7 @@ export class QueryBuilder extends APIBase {
     * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
+    * @throws Throws an exception if `values` or `parentId` is not specified
     * @returns Returns the newly create object(s) in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the appended sub-model object(s).
     */
    async append(
@@ -540,6 +551,7 @@ export class QueryBuilder extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
+    * @throws Throws an exception if `computations` is not specified
     * @returns Returns the computation results
     */
    async compute(
@@ -594,6 +606,7 @@ export class QueryBuilder extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {number} count An integer that specifies the number of items to randomly select
+    * @throws Throws an exception if `count` is not specified
     * @returns Returns the array of objects selected randomly.
     */
    async getRandom(count: number): Promise<{ data: object[] | null; errors: APIError | null }> {
@@ -621,6 +634,7 @@ export class QueryBuilder extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to update in the database
+    * @throws Throws an exception if `values` is not specified
     * @returns Returns information about the update operation
     */
    async update(values: object): Promise<{ data: UpdateInfo; errors: APIError | null }> {
@@ -654,6 +668,7 @@ export class QueryBuilder extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {FieldUpdate} fieldUpdates List of update instructions
+    * @throws Throws an exception if `fieldUpdates` is not specified
     * @returns Returns information about the update operation
     */
    async updateFields(
@@ -688,6 +703,7 @@ export class QueryBuilder extends APIBase {
     * | sort |   |
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * @throws Throws an exception if no `filter` method is called in the query builder chain
     * @returns Returns information about the delete operation
     */
    async delete(): Promise<{ data: DeleteInfo; errors: APIError | null }> {

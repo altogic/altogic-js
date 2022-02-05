@@ -63,6 +63,7 @@ export class Fetcher {
     * @param  {KeyValuePair} headers Additional request headers which will be merged with default headers
     * @param  {any} body Request body if any. If provided can be a **JSON object** or a **FormData** object. For file uploads you can use FormData object.
     * @param  {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
+    * @throws Throws an exception if `path` is not specified or if it does not start with a leading slash '/'
     * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
     */
    async #handleRequest(

@@ -1,16 +1,18 @@
 import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { APIError, FileListOptions, FileUploadOptions } from './types';
-import { checkRequired } from './utils/helpers';
+import { checkRequired, arrayRequired } from './utils/helpers';
 import { ClientError } from './utils/ClientError';
+import { FileManager } from './FileManager';
 
 const DEFAULT_FILE_OPTIONS = {
    contentType: 'text/plain;charset=UTF-8',
-   isPublic: true,
 };
 
 /**
- * The query builder is primarily used to build database queries or run CRUD operataions on a model (i.e., table, collection) of your application.
+ * BucketManager is primarily used to manage a bucket and its contents (e.g., files, documents, images). Using the {@link StorageManager.bucket} method, you can create a BucketManager instance for a specific bucket identified by its unique name or id.
+ *
+ * > Each object uploaded to a bucket needs to have a unique name. You cannot upload a file with the same name multiple times to a bucket.
  *
  * @export
  * @class BucketManager
@@ -21,16 +23,16 @@ export class BucketManager extends APIBase {
     * @private
     * @type {string}
     */
-   #bucketName: string;
+   #bucketNameOrId: string;
 
    /**
     * Creates an instance of BucketManager to manage a specific bucket of your cloud storage
-    * @param {string} name The name of the bucket that this bucket manager will be operating on
+    * @param {string} nameOrId The name or id of the bucket that this bucket manager will be operating on
     * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
     */
-   constructor(name: string, fetcher: Fetcher) {
+   constructor(nameOrId: string, fetcher: Fetcher) {
       super(fetcher);
-      this.#bucketName = name;
+      this.#bucketNameOrId = nameOrId;
    }
 
    /**
@@ -42,7 +44,7 @@ export class BucketManager extends APIBase {
    async get(detailed: boolean = false): Promise<{ data: object | null; errors: APIError | null }> {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/get`, {
          detailed: detailed,
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
    }
 
@@ -51,7 +53,7 @@ export class BucketManager extends APIBase {
     */
    async empty(): Promise<{ errors: APIError | null }> {
       let { errors } = await this.fetcher.post(`/_api/rest/v1/storage/bucket/empty`, {
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
 
       return { errors };
@@ -60,27 +62,33 @@ export class BucketManager extends APIBase {
    /**
     * Renames the bucket.
     * @param {string} newName The new name of the bucket. `root` is a reserved name and cannot be used.
+    * @throws Throws an exception if `newName` is not specified or `newName='root'`
     * @returns Returns the updated bucket information
     */
    async rename(newName: string): Promise<{ data: object | null; errors: APIError | null }> {
-      if (this.#bucketName === 'root')
-         throw new ClientError('invalid_operation', "'root' bucket cannot be renamed.");
+      checkRequired('new bucket name', newName);
+      if (newName === 'root')
+         throw new ClientError(
+            'invalid_operation',
+            "'root' is a reserved name and cannot be used to rename a bucket."
+         );
 
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/rename`, {
          newName: newName,
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
    }
 
    /**
     * Deletes the bucket and all objects (e.g., files) inside the bucket.
+    * @throws Throws an exception if bucket is `root`
     */
    async delete(): Promise<{ errors: APIError | null }> {
-      if (this.#bucketName === 'root')
+      if (this.#bucketNameOrId === 'root')
          throw new ClientError('invalid_operation', "'root' bucket cannot be deleted.");
 
       let { errors } = await this.fetcher.post(`/_api/rest/v1/storage/bucket/delete`, {
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
 
       return { errors };
@@ -90,11 +98,14 @@ export class BucketManager extends APIBase {
     * Sets the default privacy of the bucket to **true**. You may also choose to make the contents of the bucket publicly readable by specifying `includeFiles=true`. This will automatically set `isPublic=true` for every file in the bucket.
     *
     * @param {boolean} includeFiles Specifies whether to make each file in the bucket public.
+    * @returns Returns the updated bucket information
     */
-   async makePublic(includeFiles: boolean = false): Promise<{ errors: APIError | null }> {
+   async makePublic(
+      includeFiles: boolean = false
+   ): Promise<{ data: object | null; errors: APIError | null }> {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/make-public`, {
          includeFiles: includeFiles,
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
    }
 
@@ -102,11 +113,14 @@ export class BucketManager extends APIBase {
     * Sets the default privacy of the bucket to **false**. You may also choose to make the contents of the bucket private by specifying `includeFiles=true`. This will automatically set `isPublic=false` for every file in the bucket.
     *
     * @param {boolean} includeFiles Specifies whether to make each file in the bucket private.
+    * @returns Returns the updated bucket information
     */
-   async makePrivate(includeFiles: boolean = false): Promise<{ errors: APIError | null }> {
+   async makePrivate(
+      includeFiles: boolean = false
+   ): Promise<{ data: object | null; errors: APIError | null }> {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/make-private`, {
          includeFiles: includeFiles,
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
    }
 
@@ -122,12 +136,15 @@ export class BucketManager extends APIBase {
     * | size | `integer` | Size of the file in bytes |
     * | encoding | `text` | The encoding type of the file such as `7bit`, `utf8` |
     * | mimeType | `text` | The mime-type of the file such as `image/gif`, `text/html` |
+    * | publicPath | `text` | The public path (URL) of the file |
     * | uploadedAt | `datetime` *(`text`)* | The upload date and time of the file |
     * | updatedAt | `datetime` *(`text`)* | The last modification date and time of file metadata |
     *
     * You can paginate through your files and sort them using the input {@link FileListOptions} parameter.
     *
     * @param {string} expression The query expression string that will be used to filter file objects
+    * @param {FileListOptions} options Pagination and sorting options
+    * @throws Throws an exception if `expression` is not a string or `options` is not an object
     * @returns Returns the array of files. If `returnCountInfo=true` in {@link FileListOptions}, returns an object which includes count information and array of files.
     */
    async listFiles(
@@ -152,7 +169,7 @@ export class BucketManager extends APIBase {
       return await this.fetcher.post(`/_api/rest/v1/storage/bucket/list-files`, {
          expression: expVal,
          options: optionsVal,
-         bucket: this.#bucketName,
+         bucket: this.#bucketNameOrId,
       });
    }
 
@@ -161,7 +178,8 @@ export class BucketManager extends APIBase {
     *
     * @param {string} filePath The relative path of the file. Should be either *filename.jpg* or if you have a folder structure *folder/subfolder/filename.jpg*
     * @param {string} fileBody The body of the file that will be stored in the bucket
-    * @param {FileOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to `true`.
+    * @param {FileOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
+    * @throws Throws an exception if `filePath` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
     * @returns Returns the metadata of the uploaded file
     */
    async upload(
@@ -178,11 +196,13 @@ export class BucketManager extends APIBase {
          (typeof File !== 'undefined' && fileBody instanceof File)
       ) {
          return await this.fetcher.post(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
+            bucket: this.#bucketNameOrId,
             filePath,
             options: { ...DEFAULT_FILE_OPTIONS, ...options },
          });
       } else {
-         if (!options || !options.contentType) {
+         let optionsVal = { ...DEFAULT_FILE_OPTIONS, ...options };
+         if (!optionsVal.contentType) {
             throw new ClientError(
                'missing_content_type',
                "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified."
@@ -193,11 +213,42 @@ export class BucketManager extends APIBase {
             `/_api/rest/v1/storage/bucket/upload-object`,
             fileBody,
             {
+               bucket: this.#bucketNameOrId,
                filePath,
-               options: { ...DEFAULT_FILE_OPTIONS, ...options },
+               options: optionsVal,
             },
-            { 'Content-Type': options.contentType }
+            { 'Content-Type': optionsVal.contentType }
          );
       }
+   }
+
+   /**
+    * Creates a new {@link FileManager} object for the specified file.
+    *
+    * @param {string} fileNameOrId The name or id of the file.
+    * @throws Throws an exception if `nameOrId` not specified
+    * @returns Returns a new {@link FileManager} object that will be used for managing the file
+    */
+   file(fileNameOrId: string): FileManager {
+      checkRequired('file name or id', fileNameOrId);
+
+      return new FileManager(this.#bucketNameOrId, fileNameOrId, this.fetcher);
+   }
+
+   /**
+    * Deletes multiple files identified either by their names or ids.
+    *
+    * @param {...string[]} fileNamesOrIds The name or ids of the files to delete
+    * @throws Throws an exception if no file name or id is specified
+    */
+   async deleteFiles(...fileNamesOrIds: string[]): Promise<{ errors: APIError | null }> {
+      arrayRequired('file names if ids', fileNamesOrIds);
+
+      let { errors } = await this.fetcher.post(`/_api/rest/v1/storage/bucket/delete-files`, {
+         fileNamesOrIds: fileNamesOrIds,
+         bucket: this.#bucketNameOrId,
+      });
+
+      return { errors };
    }
 }

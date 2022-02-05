@@ -10,6 +10,7 @@ import { QueryBuilder } from './QueryBuilder';
 import { DBObject } from './DBObject';
 import { StorageManager } from './StorageManager';
 import { BucketManager } from './BucketManager';
+import { FileManager } from './FileManager';
 import { Fetcher } from './utils/Fetcher';
 import {
    KeyValuePair,
@@ -100,4 +101,5 @@ export {
    FileListOptions,
    FileSortEntry,
    FileUploadOptions,
+   FileManager,
 };

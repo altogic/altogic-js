@@ -790,7 +790,16 @@ export interface FileSortEntry {
     * The name of the file field that will be used in sorting the returned objects
     * @type {string}
     */
-   field: 'fileName' | 'size' | 'encoding' | 'mimeType' | 'isPublic' | 'uploadedAt' | 'updatedAt';
+   field:
+      | 'bucketId'
+      | 'fileName'
+      | 'size'
+      | 'encoding'
+      | 'mimeType'
+      | 'isPublic'
+      | 'publicPath'
+      | 'uploadedAt'
+      | 'updatedAt';
    /**
     * Sort direction
     * @type {string}

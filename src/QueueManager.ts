@@ -30,6 +30,7 @@ export class QueueManager extends APIBase {
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} queueNameOrId The name or id of the message queue.
     * @param {object} message The message payload (JSON object) that will be submitted to the message queue
+    * @throws Throws an exception if `queueNameOrId` or `message` not specified
     * @returns If successful, returns information about the submitted message. You can use `messageId` to check the processing status of your message by calling {@link getMessageStatus} method. In case of an errors, returns the errors that occurred.
     */
    async submitMessage(
@@ -52,6 +53,7 @@ export class QueueManager extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} messageId The id of the message
+    * @throws Throws an exception if `messageId` not specified
     * @returns If successful, returns status information about the submitted message
     */
    async getMessageStatus(

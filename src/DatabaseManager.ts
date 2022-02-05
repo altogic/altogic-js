@@ -28,6 +28,7 @@ export class DatabaseManager extends APIBase {
     * > In case you need to work on a sub-model object, such as your users might have a list of addresses and these addresses can be stored under a users object, you can create a {@link QueryBuilder} for `addresses` sub-model using the *dot-notation* by calling `altogic.db.model('users.addresses')`.
     *
     * @param {string} name The name of the model
+    * @throws Throws an exception if `name` is not specified
     * @returns Returns a new query builder object that will be issuing database commands (e.g., CRUD operations, queries) on the specified model
     */
    model(name: string): QueryBuilder {

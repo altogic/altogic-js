@@ -27,6 +27,7 @@ export class CacheManager extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to retrieve
+    * @throws Throws an exception if `key` is not specified
     */
    async get(key: string): Promise<{ data: object | object[] | null; errors: APIError | null }> {
       checkRequired('key', key);
@@ -41,6 +42,7 @@ export class CacheManager extends APIBase {
     * @param {string} key The key to update
     * @param {any} value The value to set
     * @param {number} ttl Time to live in seconds
+    * @throws Throws an exception if `key` or `value` is not specified
     */
    async set(key: string, value: any, ttl?: number): Promise<{ errors: APIError | null }> {
       checkRequired('key', key);
@@ -59,6 +61,7 @@ export class CacheManager extends APIBase {
     *
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to delete
+    * @throws Throws an exception if `key` is not specified
     */
    async delete(key: string): Promise<{ errors: APIError | null }> {
       checkRequired('key', key);
@@ -74,6 +77,7 @@ export class CacheManager extends APIBase {
     * @param {string} key The key to increment
     * @param {number} [increment=1] The amount to increment the value by
     * @param {number} ttl Time to live in seconds
+    * @throws Throws an exception if `key` is not specified
     * @returns Returns the value of key after the increment
     */
    async increment(
@@ -98,6 +102,7 @@ export class CacheManager extends APIBase {
     * @param {string} key The key to decrement
     * @param {number} [decrement=1] The amount to decrement the value by
     * @param {number} ttl Time to live in seconds
+    * @throws Throws an exception if `key` is not specified
     * @returns Returns the value of key after the decrement
     */
    async decrement(
@@ -121,6 +126,7 @@ export class CacheManager extends APIBase {
     * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to set its expiry duration
     * @param {number} ttl Time to live in seconds
+    * @throws Throws an exception if `key` or `ttl` is not specified
     */
    async expire(key: string, ttl: number): Promise<{ errors: APIError | null }> {
       checkRequired('key', key);

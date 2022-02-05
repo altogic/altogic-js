@@ -122,6 +122,7 @@ export class AuthManager extends APIBase {
     * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
     * @param {string} password Password of the user, should be at least 6 characters long
     * @param {string} name Name of the user
+    * @throws Throws an exception if `email` or `password` is not specified
     */
    async signUpWithEmail(
       email: string,
@@ -159,6 +160,7 @@ export class AuthManager extends APIBase {
     * @param {string} phone Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
     * @param {string} password Password of the user, should be at least 6 characters long
     * @param {string} name Name of the user
+    * @throws Throws an exception if `phone` or `password` is not specified
     */
    async signUpWithPhone(
       phone: string,
@@ -196,6 +198,7 @@ export class AuthManager extends APIBase {
     *
     * @param {string} email Email of the user
     * @param {string} password Password of the user
+    * @throws Throws an exception if `email` or `password` is not specified
     */
    async signInWithEmail(
       email: string,
@@ -224,6 +227,7 @@ export class AuthManager extends APIBase {
     *
     * @param {string} phone Phone of the user
     * @param {string} password Password of the user
+    * @throws Throws an exception if `phone` or `password` is not specified
     */
    async signInWithPhone(
       phone: string,
@@ -254,6 +258,7 @@ export class AuthManager extends APIBase {
     *
     * @param {string} phone Phone of the user
     * @param {string} code SMS code (OTP - one time password)
+    * @throws Throws an exception if `phone` or `code` is not specified
     */
    async signInWithCode(
       phone: string,
@@ -281,6 +286,7 @@ export class AuthManager extends APIBase {
     *
     * If this is the first time a user is using this provider then a new user record is creted in the database, otherwise the lastLoginAt field value of the existing user record is updated.
     * @param {string} provider
+    * @throws Throws an exception if `provider` is not specified
     */
    signInWithProvider(provider: 'google' | 'facebook' | 'twitter' | 'discord' | 'github'): void {
       checkRequired('provider', provider);
@@ -369,6 +375,7 @@ export class AuthManager extends APIBase {
     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} newPassword The new password of the user
     * @param {string} oldPassword The current password of the user
+    * @throws Throws an exception if `newPassword` or `oldPassword` is not specified
     */
    async changePassword(
       newPassword: string,
@@ -389,6 +396,7 @@ export class AuthManager extends APIBase {
     *
     * If successful this method also saves the user and session data to local storage and sets the **Session** header in {@link Fetcher}
     * @param {string} accessToken The access token that will be used to get the authorization grants of a user
+    * @throws Throws an exception if `accessToken` is not specified
     */
    async getAuthGrant(
       accessToken?: string
@@ -409,6 +417,7 @@ export class AuthManager extends APIBase {
    /**
     * Resends the email to verify the user's email address. If the user's email has already been validated or email confirmation is **disabled** in your app authentication settings, it returns an error.
     * @param {string} email The email address of the user to send the verification email
+    * @throws Throws an exception if `email` is not specified
     */
    async resendVerificationEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
@@ -426,6 +435,7 @@ export class AuthManager extends APIBase {
     *
     * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
     * @param {string} email The email address of the user to send the verification email
+    * @throws Throws an exception if `email` is not specified
     */
    async sendMagicLinkEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
@@ -443,6 +453,7 @@ export class AuthManager extends APIBase {
     *
     * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
     * @param {string} email The email address of the user to send the verification email
+    * @throws Throws an exception if `email` is not specified
     */
    async sendResetPwdEmail(email: string): Promise<{ errors: APIError | null }> {
       checkRequired('email', email);
@@ -460,6 +471,7 @@ export class AuthManager extends APIBase {
     *
     * If sign in using authorization codes is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
     * @param {string} phone The phone number of the user to send the SMS code
+    * @throws Throws an exception if `phone` is not specified
     */
    async sendSignInCode(phone: string): Promise<{ errors: APIError | null }> {
       checkRequired('phone', phone);
@@ -474,6 +486,7 @@ export class AuthManager extends APIBase {
     * Resets the password of the user using the access token provided through the {@link sendResetPwdEmail} flow.
     * @param {string} accessToken The access token that is retrieved from the redirect URL query string parameter
     * @param {string} newPassword The new password of the user
+    * @throws Throws an exception if `accessToken` or `newPassword` is not specified
     */
    async resetPassword(
       accessToken: string,
@@ -498,6 +511,7 @@ export class AuthManager extends APIBase {
     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} currentPassword The password of the user
     * @param {string} newEmail The new email address of the user
+    * @throws Throws an exception if `currentPassword` or `newEmail` is not specified
     */
    async changeEmail(
       currentPassword: string,
@@ -520,6 +534,7 @@ export class AuthManager extends APIBase {
     * If the code is invalid or expired, it returns an error message.
     * @param {string} phone The mobile phone number of the user where the SMS code was sent
     * @param {string} code The code sent in SMS (e.g., 6-digit number)
+    * @throws Throws an exception if `phone` or `code` is not specified
     */
    async verifyPhone(
       phone: string,
