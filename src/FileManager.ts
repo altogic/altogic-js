@@ -42,6 +42,18 @@ export class FileManager extends APIBase {
    }
 
    /**
+    * Check if the file exists. It returns false if bucket does not exist, .
+    *
+    * @returns Returns true if file exists, false otherwise
+    */
+   async exists(): Promise<{ data: boolean | null; errors: APIError | null }> {
+      return await this.fetcher.post(`/_api/rest/v1/storage/bucket/file/exists`, {
+         file: this.#fileNameOrId,
+         bucket: this.#bucketNameOrId,
+      });
+   }
+
+   /**
     * Gets information about the file.
     *
     * @returns Returns basic file metadata informaton.
@@ -114,7 +126,7 @@ export class FileManager extends APIBase {
    /**
     * Duplicates an existing file within the same bucket.
     *
-    * @param {string} duplicateName The new duplicate file name. If not specified, it ensures the duplicated file name to be unique in its bucket.
+    * @param {string} duplicateName The new duplicate file name. If not specified, uses the `fileName` as template and ensures the duplicated file name to be unique in its bucket.
     * @returns Returns the new duplicate file information
     */
    async duplicate(
@@ -140,7 +152,7 @@ export class FileManager extends APIBase {
    }
 
    /**
-    * Replaces an existing file with another.
+    * Replaces an existing file with another. It keeps the name of the file but replaces file contents, encoding and mime-type with the newly uploaded file info.
     *
     * @param {string} fileBody The body of the new file that will be used to replace the existing file
     * @param {FileOptions} options Content type and privacy setting of the new file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
@@ -162,6 +174,7 @@ export class FileManager extends APIBase {
             `/_api/rest/v1/storage/bucket/file/replace-formdata`,
             fileBody,
             {
+               file: this.#fileNameOrId,
                bucket: this.#bucketNameOrId,
                options: { ...DEFAULT_FILE_OPTIONS, ...options },
             }
@@ -179,6 +192,7 @@ export class FileManager extends APIBase {
             `/_api/rest/v1/storage/bucket/file/replace-object`,
             fileBody,
             {
+               file: this.#fileNameOrId,
                bucket: this.#bucketNameOrId,
                options: optionsVal,
             },

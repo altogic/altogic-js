@@ -36,6 +36,19 @@ export class BucketManager extends APIBase {
    }
 
    /**
+    * Check if the bucket exists.
+    *
+    * @returns Returns true if bucket exists, false otherwise
+    */
+   async exists(): Promise<{ data: boolean | null; errors: APIError | null }> {
+      if (this.#bucketNameOrId === 'root') return { data: true, errors: null };
+
+      return await this.fetcher.post(`/_api/rest/v1/storage/bucket/exists`, {
+         bucket: this.#bucketNameOrId,
+      });
+   }
+
+   /**
     * Gets information about the bucket. If `detailed=true`, it provides additional information about the total number of files contained, their overall total size in bytes, average, min and max file size in bytes etc.
     *
     * @param {boolean} detailed Specifies whether to get detailed bucket statistics or not
@@ -178,18 +191,18 @@ export class BucketManager extends APIBase {
    /**
     * Uploads a file to an existing bucket. If there already exists a file with the same name in destination bucket, it ensures the uploaded file name to be unique in its bucket.
     *
-    * @param {string} filePath The relative path of the file. Should be either *filename.jpg* or if you have a folder structure *folder/subfolder/filename.jpg*
+    * @param {string} fileName The name of the file e.g., *filename.jpg*
     * @param {string} fileBody The body of the file that will be stored in the bucket
     * @param {FileOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
-    * @throws Throws an exception if `filePath` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
+    * @throws Throws an exception if `fileName` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
     * @returns Returns the metadata of the uploaded file
     */
    async upload(
-      filePath: string,
+      fileName: string,
       fileBody: any,
       options: FileUploadOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
-      checkRequired('filePath', filePath);
+      checkRequired('fileName', fileName);
       checkRequired('fileBody', fileBody);
 
       if (
@@ -199,7 +212,7 @@ export class BucketManager extends APIBase {
       ) {
          return await this.fetcher.post(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
             bucket: this.#bucketNameOrId,
-            filePath,
+            fileName,
             options: { ...DEFAULT_FILE_OPTIONS, ...options },
          });
       } else {
@@ -216,7 +229,7 @@ export class BucketManager extends APIBase {
             fileBody,
             {
                bucket: this.#bucketNameOrId,
-               filePath,
+               fileName,
                options: optionsVal,
             },
             { 'Content-Type': optionsVal.contentType }
@@ -240,11 +253,11 @@ export class BucketManager extends APIBase {
    /**
     * Deletes multiple files identified either by their names or ids.
     *
-    * @param {...string[]} fileNamesOrIds The name or ids of the files to delete
+    * @param {string[]} fileNamesOrIds Array of name or ids of the files to delete
     * @throws Throws an exception if no file name or id is specified
     */
-   async deleteFiles(...fileNamesOrIds: string[]): Promise<{ errors: APIError | null }> {
-      arrayRequired('file names if ids', fileNamesOrIds);
+   async deleteFiles(fileNamesOrIds: string[]): Promise<{ errors: APIError | null }> {
+      arrayRequired('array of file names/ids', fileNamesOrIds, true);
 
       let { errors } = await this.fetcher.post(`/_api/rest/v1/storage/bucket/delete-files`, {
          fileNamesOrIds: fileNamesOrIds,

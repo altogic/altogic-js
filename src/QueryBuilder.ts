@@ -162,7 +162,7 @@ export class QueryBuilder extends APIBase {
     * Instead of the logical operators, you can also use **AND** function for &&, **OR** function for \|\| and NOT function for ! operator. Using the functions instead of operators the above example can be written as:
     *
     * ```
-    * OR(AND(profile.firstName, profile.lastName), profile.fullName)`
+    * OR(AND(profile.firstName, profile.lastName), profile.fullName)
     * ```
     *
     * #### **Relational operators**
