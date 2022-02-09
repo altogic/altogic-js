@@ -122,7 +122,7 @@ export interface Session {
  */
 export interface ClientOptions {
    /**
-    * The unique app environment API Key which needs to be created using the Altogic app designer
+    * The unique app environment API Key which needs to be created using the Altogic app designer. The `apiKey`is passed in *Authorization Header* when making RESTful API calls to your app endpoints. This key is different than the `clientKey` used when creating an instance of Altogic client library. `clientKey` is primarily used to manage access rigths of the client library whereas `apiKey` is used to manage access to your app endoints.
     * @type {string}
     */
    apiKey?: string;
@@ -138,15 +138,6 @@ export interface ClientOptions {
     * @type {string}
     */
    signInRedirect?: string;
-
-   /**
-    * Flag to set on/off session check by your backend app for each method call of the client library. If this flag is set on, then a user needs to be signed in to call methods of the client library objects, otherwise, no user sign in is required.
-    *
-    * The value of this flag is ignored for {@link AuthManager.signOut}, {@link AuthManager.signOutAll}, {@link AuthManager.signOutAllExceptCurrent}, {@link AuthManager.getAllSessions}, {@link AuthManager.getUserFromDB}, {@link AuthManager.changePassword}, {@link AuthManager.changeEmail}, {@link EndpointManager.get}, {@link EndpointManager.post}, {@link EndpointManager.put} and {@link EndpointManager.delete} methods.
-    *
-    * @type {boolean}
-    */
-   enforceSession: boolean;
 }
 
 /**
@@ -823,4 +814,13 @@ export interface FileUploadOptions {
     * @type {boolean}
     */
    isPublic: boolean;
+   /**
+    * Callback function to call during file upload.
+    *
+    * **For the moment, this method can only be used in clients where `XMLHttpRequest` object is available (e.g., browsers).**
+    * @param uploaded Total bytes uploaded
+    * @param total Total size of file in bytes
+    * @param percentComplete Percent uploaded (an integer between 0-100), basicly `uploaded/total` rounded to the nearest integer
+    */
+   onProgress(uploaded: number, total: number, percentComplete: number): any;
 }

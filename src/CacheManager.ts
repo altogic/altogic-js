@@ -25,7 +25,7 @@ export class CacheManager extends APIBase {
    /**
     * Gets an item from the cache by key. If key is not found, then `null` is returned as data.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to retrieve
     * @throws Throws an exception if `key` is not specified
     */
@@ -38,7 +38,7 @@ export class CacheManager extends APIBase {
    /**
     * Sets an item in the cache. Overwrites any existing value already set. If **ttl** specified, sets the stored entry to automatically expire in specified seconds. Any previous time to live associated with the key is discarded on successful set operation.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to update
     * @param {any} value The value to set
     * @param {number} ttl Time to live in seconds
@@ -59,7 +59,7 @@ export class CacheManager extends APIBase {
    /**
     * Removes the specified key from the cache. Irrespective of whether the key is found or not, success response is returned.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to delete
     * @throws Throws an exception if `key` is not specified
     */
@@ -73,7 +73,7 @@ export class CacheManager extends APIBase {
    /**
     * Increments the value of the number stored at the key by the increment amount. If increment amount not specified, increments the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation. If **ttl** specified, sets the stored entry to automatically expire in specified seconds. Any previous time to live associated with the key is discarded on successful increment operation.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to increment
     * @param {number} [increment=1] The amount to increment the value by
     * @param {number} ttl Time to live in seconds
@@ -98,7 +98,7 @@ export class CacheManager extends APIBase {
    /**
     * Decrements the value of the number stored at the key by the decrement amount. If decrement amount not specified, decrements the number stored at key by one. If the key does not exist, it is set to 0 before performing the operation. If **ttl** specified, sets the stored entry to automatically expire in specified seconds. Any previous time to live associated with the key is discarded on successful decrement operation.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to decrement
     * @param {number} [decrement=1] The amount to decrement the value by
     * @param {number} ttl Time to live in seconds
@@ -123,7 +123,7 @@ export class CacheManager extends APIBase {
    /**
     * Sets a timeout on key. After the timeout has expired, the key will automatically be deleted.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} key The key to set its expiry duration
     * @param {number} ttl Time to live in seconds
     * @throws Throws an exception if `key` or `ttl` is not specified

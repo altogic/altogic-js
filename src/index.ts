@@ -48,14 +48,19 @@ import { polyfillGlobalThis } from './utils/polyfills';
 polyfillGlobalThis();
 
 /**
- * Creates a new client to interact with your backend application developed in Altogic.
+ * Creates a new client to interact with your backend application developed in Altogic. You need to specify the `envUrl` and `clientKey` to create a new client object. You can create a new environment or access your app `envUrl` from the **Environments** view and create a new `clientKey` from **App Settings/Client library** view in Altogic designer.
  * @param  {string} envUrl The base URL of the Altogic application environment where a snapshot of the application is deployed
+ * @param  {string} clientKey The client library key of the app
  * @param  {string} [apiKey] A valid API key of the environment
  * @param  {string} options Additional configuration parameters
  * @returns {AltogicClient} The newly created client instance
  */
-const createClient = (envUrl: string, options?: ClientOptions): AltogicClient => {
-   return new AltogicClient(envUrl, options);
+const createClient = (
+   envUrl: string,
+   clientKey: string,
+   options?: ClientOptions
+): AltogicClient => {
+   return new AltogicClient(envUrl, clientKey, options);
 };
 
 export {

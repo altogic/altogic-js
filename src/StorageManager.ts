@@ -50,7 +50,7 @@ export class StorageManager extends APIBase {
     * Files can be specified as **public** or **private**, which defines how the public URL of the file will behave. If a file is marked as private then external apps/parties will not be able to access it through its public URL. With `isPublic` parameter of a bucket, you can specify default privacy setting of the files contained in this bucket, meaning that when you add a file to a bucket and if the file did not specify public/private setting, then the the bucket's privacy setting will be applied. You can always override the default privacy setting of a bucket at the individual file level.
     *
     * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
-    * @param {boolean} isPublic The name of the bucket to create (case sensitive).
+    * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
     * @throws Throws an exception if `name` not specified
     * @returns Returns info about newly created bucket
     */
@@ -122,7 +122,7 @@ export class StorageManager extends APIBase {
    }
 
    /**
-    * Returns the overall information about your apps cloud storage including total number of files stored, total storage size in bytes and average, min and max file size in bytes.
+    * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
     *
     * @returns Returns information about your app's cloud storage
     */

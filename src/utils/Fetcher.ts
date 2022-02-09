@@ -304,4 +304,133 @@ export class Fetcher {
    getBaseUrl(): string {
       return this.restUrl;
    }
+
+   /**
+    *
+    * @param path
+    * @param body
+    * @param query
+    * @param headers
+    * @param progressCallback
+    * @returns
+    */
+
+   /**
+    * Uploads a file using `XMLHttpRequest` object instead of fetcher in order to track upload progress and call a callback function.
+    * @param {string} path The path of the request that will be appended to the {restUrl}
+    * @param {any} body The body of the request
+    * @param {KeyValuePair} query Query string parameters as key:value pair object
+    * @param {KeyValuePair} headers Additional request headers that will be sent with the request
+    * @param {any} progressCallback Callback function that will be called during file upload to inform the progres
+    * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then a *single JSON object* providing information about the uploaded file is returned and the *errors* object is marked as `null`.
+    */
+
+   upload(
+      path: string,
+      body: any,
+      query: KeyValuePair | null = {},
+      headers: KeyValuePair | null = {},
+      progressCallback: any = null
+   ): Promise<{ data: any | null; errors: APIError | null }> {
+      return new Promise((resolve, reject) => {
+         //Check the path format
+         if (!path || !path.trim().startsWith('/'))
+            throw new ClientError(
+               'invalid_request_path',
+               "A valid request path with a leading slash '/' needs to be specified e.g., /path"
+            );
+
+         //Get the body of the request in the right format
+         let requestBody = undefined;
+         //Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
+         //we will not have the FormData object by default
+         if (typeof FormData !== 'undefined' && body instanceof FormData) {
+            requestBody = body;
+         } else {
+            requestBody = new FormData();
+            requestBody.append('file', body);
+         }
+
+         //Create the request object
+         const xhr = new XMLHttpRequest();
+         //Build query parameters string
+         let queryString = Object.keys(query || {}).reduce((previousValue, key) => {
+            let value = query ? query[key] : '';
+            value = value ?? '';
+            if (typeof value === 'object') {
+               try {
+                  value = JSON.stringify(value);
+               } catch (err) {
+                  value = '';
+               }
+            }
+
+            if (previousValue) return `${previousValue}&${key}=${encodeURIComponent(value)}`;
+            else return `?${key}=${encodeURIComponent(value)}`;
+         }, '');
+
+         xhr.onload = () => {
+            if (xhr.status === 200) resolve({ data: JSON.parse(xhr.response), errors: null });
+            else {
+               //Error response
+               let errResp = JSON.parse(xhr.response);
+               if (
+                  errResp?.errors &&
+                  Array.isArray(errResp.errors) &&
+                  errResp.errors.find(
+                     (entry: any) =>
+                        entry.code === INVALID_SESSION_TOKEN || entry.code === MISSING_SESSION_TOKEN
+                  )
+               ) {
+                  this.apiClient.auth.invalidateSession();
+               }
+
+               resolve({
+                  data: null,
+                  errors: {
+                     status: xhr.status,
+                     statusText: xhr.statusText,
+                     items: errResp?.errors
+                        ? Array.isArray(errResp.errors)
+                           ? errResp.errors
+                           : [errResp.errors]
+                        : Array.isArray(errResp.errors)
+                        ? errResp
+                        : [errResp],
+                  },
+               });
+            }
+         };
+
+         xhr.onerror = (event) => {
+            reject(event);
+         };
+
+         //Listen for upload progress events
+         xhr.upload.onprogress = (event) => {
+            if (progressCallback && typeof progressCallback === 'function' && event.total)
+               progressCallback(
+                  event.loaded,
+                  event.total,
+                  parseInt(((event.loaded / event.total) * 100).toFixed())
+               );
+         };
+
+         //Open and send the request
+         xhr.open('POST', this.restUrl + path.trim() + queryString);
+
+         //Set the headers of the request. Browser will set the content type to the correct value,
+         //we should not have a content type entry in headers for request with FormData body.
+         let headersObj = { ...this.headers, ...(headers || {}) };
+         let keys = Object.keys(headersObj);
+         for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (key.trim().toLowerCase() !== 'content-type') {
+               xhr.setRequestHeader(key, headersObj[key]);
+            }
+         }
+
+         xhr.send(requestBody);
+      });
+   }
 }

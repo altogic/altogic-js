@@ -219,7 +219,7 @@ export class FileManager extends APIBase {
    }
 
    /**
-    * Copies the file to another bucket. If there already exists a file with the same name in destination bucket, If there already exists a file with the same name in destination bucket, it ensures the copied file name to be unique in its new destination.
+    * Copies the file to another bucket. If there already exists a file with the same name in destination bucket, it ensures the copied file name to be unique in its new destination.
     *
     * @param {string} bucketNameOrId The name or id of the bucket to copy the file into.
     * @throws Throws an exception if `bucketNameOrId` is not specified

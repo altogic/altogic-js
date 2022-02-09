@@ -1,7 +1,7 @@
 import { APIBase } from './APIBase';
 import { Fetcher } from './utils/Fetcher';
 import { APIError, MessageInfo } from './types';
-import { checkRequired } from './utils/helpers';
+import { checkRequired, objectRequired } from './utils/helpers';
 
 /**
  * The cache manager allows different parts of your application to communicate and perform activities asynchronously.
@@ -27,7 +27,7 @@ export class QueueManager extends APIBase {
     *
     * The structure of the message (e.g., key-value pairs) is defined by the Start Node of your queue service.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} queueNameOrId The name or id of the message queue.
     * @param {object} message The message payload (JSON object) that will be submitted to the message queue
     * @throws Throws an exception if `queueNameOrId` or `message` not specified
@@ -38,7 +38,7 @@ export class QueueManager extends APIBase {
       message: object
    ): Promise<{ info: MessageInfo | null; errors: APIError | null }> {
       checkRequired('queueNameOrId', queueNameOrId);
-      checkRequired('message', message);
+      objectRequired('message', message);
 
       let { data, errors } = await this.fetcher.post('/_api/rest/v1/queue', {
          queueNameOrId,
@@ -51,7 +51,7 @@ export class QueueManager extends APIBase {
    /**
     * Gets the latest status of the message. The last seven days message logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for MessageInfo.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} messageId The id of the message
     * @throws Throws an exception if `messageId` not specified
     * @returns If successful, returns status information about the submitted message

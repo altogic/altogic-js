@@ -382,7 +382,7 @@ export class QueryBuilder extends APIBase {
     */
    group(fields: [string]): QueryBuilder;
    group(fieldsOrExpression: [string] | string): QueryBuilder {
-      checkRequired('group fieldsOrExpression', fieldsOrExpression);
+      checkRequired('group fields or expression', fieldsOrExpression);
       if (typeof fieldsOrExpression !== 'string' && !Array.isArray(fieldsOrExpression))
          throw new ClientError(
             'invalid_group_definition',
@@ -408,7 +408,7 @@ export class QueryBuilder extends APIBase {
     *
     * > If a list of objects is provided as input and if any one of the objects in this list fails during creation, none of the objects will be created in the database, i.e., database transaction will be rolled back
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
     * @throws Throws an exception if `values` is not specified
     * @returns Returns the newly create object or list of objects in the database.
@@ -440,7 +440,7 @@ export class QueryBuilder extends APIBase {
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an *object* field called `profile`, which is a sub-model, that you store details about your users. When creating users, you most probably will not be collecting profile information but at a later stage you might collect this information and would like to set the value of the profile. You can use this **set** method to set the profile field of a users object identified by the parentId.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
@@ -479,7 +479,7 @@ export class QueryBuilder extends APIBase {
     *
     * As an example, assuming you have a `users` top-level model where you define your app users and in this model you have an **object-list** field called `addresses`, which is a sub-model list, that you store addresses of your users. When creating users, you most probably will not be collecting address information but at a later stage you might collect this information and would like to add these addresses to your users' addresses list. You can use this **append** method to add child object(s) to a user identified by the parentId.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
     * @param {string} parentId The id of the parent object
     * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
@@ -516,7 +516,7 @@ export class QueryBuilder extends APIBase {
     * | page |  &#10004; |
     * | sort |  &#10004; |
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
     * @returns Returns the array of objects matching the query. If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
     */
@@ -549,7 +549,7 @@ export class QueryBuilder extends APIBase {
     *
     * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
     * @throws Throws an exception if `computations` is not specified
     * @returns Returns the computation results
@@ -557,7 +557,7 @@ export class QueryBuilder extends APIBase {
    async compute(
       computations: GroupComputation | GroupComputation[]
    ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-      checkRequired('computations', computations);
+      checkRequired('computations', computations, false);
 
       return await this.fetcher.post(`/_api/rest/v1/db/compute`, {
          query: this.#action,
@@ -579,7 +579,7 @@ export class QueryBuilder extends APIBase {
     * | page |   |
     * | sort |   |
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @returns Returns the object matching the query.
     */
    async getSingle(): Promise<{ data: object | null; errors: APIError | null }> {
@@ -604,7 +604,7 @@ export class QueryBuilder extends APIBase {
     *
     * If {@link filter} modifier is used with this method, Altogic first narrows down the set of objects that can be selected using the filter query and among these filtered objects performs random selection.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {number} count An integer that specifies the number of items to randomly select
     * @throws Throws an exception if `count` is not specified
     * @returns Returns the array of objects selected randomly.
@@ -632,7 +632,7 @@ export class QueryBuilder extends APIBase {
     * | page |   |
     * | sort |   |
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {object} values An object that contains the fields and their values to update in the database
     * @throws Throws an exception if `values` is not specified
     * @returns Returns information about the update operation
@@ -666,7 +666,7 @@ export class QueryBuilder extends APIBase {
     * | page |   |
     * | sort |   |
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {FieldUpdate} fieldUpdates List of update instructions
     * @throws Throws an exception if `fieldUpdates` is not specified
     * @returns Returns information about the update operation
@@ -702,7 +702,7 @@ export class QueryBuilder extends APIBase {
     * | page |   |
     * | sort |   |
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @throws Throws an exception if no `filter` method is called in the query builder chain
     * @returns Returns information about the delete operation
     */

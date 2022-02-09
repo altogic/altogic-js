@@ -1,5 +1,5 @@
 import { ClientError } from './utils/ClientError';
-import { normalizeUrl } from './utils/helpers';
+import { checkRequired, normalizeUrl } from './utils/helpers';
 import { Fetcher } from './utils/Fetcher';
 import { KeyValuePair, ClientOptions } from './types';
 import { AuthManager } from './AuthManager';
@@ -12,8 +12,8 @@ import { StorageManager } from './StorageManager';
 
 const DEFAULT_OPTIONS = {
    apiKey: undefined,
+   signInRedirect: undefined,
    localStorage: globalThis.window?.localStorage,
-   enforceSession: false,
 };
 
 /**
@@ -89,10 +89,11 @@ export class AltogicClient {
    /**
     * Create a new client for web applications.
     * @param {string} baseUrl The unique app environment base URL which is automatically generated when you create an environment for your backend app
+    * @param  {string} clientKey The client library key of the app
     * @param {ClientOptions} [options] Configuration options for the api client
     * @throws Throws an exception if `baseUrl` is not specified or not a valid URL path
     */
-   constructor(baseUrl: string, options?: ClientOptions) {
+   constructor(baseUrl: string, clientKey: string, options?: ClientOptions) {
       if (
          !baseUrl ||
          !(baseUrl.trim().startsWith('https://') || baseUrl.trim().startsWith('http://'))
@@ -101,6 +102,11 @@ export class AltogicClient {
             'missing_required_value',
             'baseUrl is a required parameter and needs to start with https://'
          );
+
+      //Client key is also required
+      checkRequired('clientKey', clientKey);
+      if (typeof clientKey !== 'string')
+         throw new ClientError('invalid_client_key', 'clientKey needs to be a valid key string');
 
       //Initialize internal objects
       this.#authManager = null;
@@ -117,7 +123,7 @@ export class AltogicClient {
       //Set the default headers
       const headers: KeyValuePair = {
          'X-Client': 'altogic-js',
-         'X-Enforce-Session': this.settings.enforceSession ? true : false,
+         'X-Client-Key': clientKey,
       };
 
       //If apiKey is provided, add it to the default headers

@@ -191,6 +191,8 @@ export class BucketManager extends APIBase {
    /**
     * Uploads a file to an existing bucket. If there already exists a file with the same name in destination bucket, it ensures the uploaded file name to be unique in its bucket.
     *
+    * If `onProgress` callback function is defined in {@link FileOptions}, it periodically calls this function to inform about upload progress. Please note that for the moment **`onProgress` callback function can only be used in clients where `XMLHttpRequest` object is available (e.g., browsers).**
+    *
     * @param {string} fileName The name of the file e.g., *filename.jpg*
     * @param {string} fileBody The body of the file that will be stored in the bucket
     * @param {FileOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
@@ -210,13 +212,31 @@ export class BucketManager extends APIBase {
          (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
          (typeof File !== 'undefined' && fileBody instanceof File)
       ) {
-         return await this.fetcher.post(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
-            bucket: this.#bucketNameOrId,
-            fileName,
-            options: { ...DEFAULT_FILE_OPTIONS, ...options },
-         });
+         if (typeof XMLHttpRequest !== 'undefined' && options?.onProgress) {
+            return await this.fetcher.upload(
+               `/_api/rest/v1/storage/bucket/upload-formdata`,
+               fileBody,
+               {
+                  bucket: this.#bucketNameOrId,
+                  fileName,
+                  options: { ...DEFAULT_FILE_OPTIONS, ...options, onProgress: undefined },
+               },
+               null,
+               options.onProgress
+            );
+         } else {
+            return await this.fetcher.post(
+               `/_api/rest/v1/storage/bucket/upload-formdata`,
+               fileBody,
+               {
+                  bucket: this.#bucketNameOrId,
+                  fileName,
+                  options: { ...DEFAULT_FILE_OPTIONS, ...options, onProgress: undefined },
+               }
+            );
+         }
       } else {
-         let optionsVal = { ...DEFAULT_FILE_OPTIONS, ...options };
+         let optionsVal = { ...DEFAULT_FILE_OPTIONS, ...options, onProgress: undefined };
          if (!optionsVal.contentType) {
             throw new ClientError(
                'missing_content_type',

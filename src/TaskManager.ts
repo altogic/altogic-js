@@ -23,7 +23,7 @@ export class TaskManager extends APIBase {
    /**
     * Triggers the execution of the specified task. After the task is triggered, the routed service defined in your scheduled task configuration is invoked. This routed service executes the task and performs necessary actions defined in its service flow.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} queueNameOrId The name or id of the message queue.
     * @throws Throws an exception if `taskNameOrId` is not specified
     * @returns If successful, returns information about the triggered task. You can use `taskId` to check the exectuion status of your task by calling {@link getTaskStatus} method. In case of errors, returns the errors that occurred.
@@ -43,7 +43,7 @@ export class TaskManager extends APIBase {
    /**
     * Gets the latest status of the task.
     *
-    * > *If `enforceSession` of the {@link ClientOptions} is set to `true` when creating the Algotic client, an active user session is required (e.g., user needs to be logged in) to call this method.*
+    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {string} taskId The id of the task
     * @throws Throws an exception if `taskId` is not specified
     * @returns If successful, returns status information about the triggered task
