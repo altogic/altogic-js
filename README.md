@@ -2,25 +2,32 @@
 
 Javascript client for Altogic backend apps.
 
-[Altogic](https://altogic.com) is a **backend application development and execution platform**, enabling people and businesses to design, deploy and manage scalable applications. It simplifies application development by eliminating repetitive tasks, providing pre-integrated and ready-to-use execution environments, and automating key stages in the application development process.
+[Altogic](https://altogic.com) is a **backend application development and execution platform**,
+enabling people and businesses to design, deploy and manage scalable applications. It simplifies
+application development by eliminating repetitive tasks, providing pre-integrated and ready-to-use
+execution environments, and automating key stages in the application development process.
 
-You can access detailed Client API reference documentation from [https://clientapi.altogic.com](https://clientapi.altogic.com)
+You can access detailed Client API reference documentation from
+[https://clientapi.altogic.com](https://clientapi.altogic.com)
 
 ## Installation
 
-In order to use the Altogic client library you need to <u>create an app and a client key in Altogic</u>. Additionally, if you will be using the Authentication module of this library, you might need to do additional configuration in you app settings.
+In order to use the Altogic client library you need to <u>create an app and a client key in
+Altogic</u>. Additionally, if you will be using the Authentication module of this library, you might
+need to do additional configuration in you app settings.
 
 #### NPM
 
 To install via [NPM](https://www.npmjs.com/)
 
-```
+```sh
 npm install altogic
 ```
 
-If you're using a bundler (like [webpack](https://webpack.js.org/)), you can import the Altogic and create your Altogic client instance.
+If you're using a bundler (like [webpack](https://webpack.js.org/)), you can import the Altogic and
+create your Altogic client instance.
 
-```
+```js
 import { createClient } from 'altogic';
 
 //Create a client for interacting with backend app
@@ -33,18 +40,18 @@ const altogic = createClient('http://fqle-avzr.c1-na.altogic.com', 'client-key')
 To install with a CDN (content delivery network) add the following script to import Altogic client
 library.
 
-```
+```html
 <script src="https://cdn.jsdelivr.net/npm/altogic"></script>
 ```
 
 Then you can use it from a global `altogic` variable:
 
-```
+```html
 <script>
-  const { createClient } = altogic;
-  //Create a client for interacting with backend app
-	//You need to provide envUrl and clientKey as input parameters
-  const client = createClient('http://fqle-avzr.c1-na.altogic.com', 'client-key');
+   const { createClient } = altogic;
+   //Create a client for interacting with backend app
+   //You need to provide envUrl and clientKey as input parameters
+   const client = createClient('http://fqle-avzr.c1-na.altogic.com', 'client-key');
 </script>
 ```
 
@@ -55,7 +62,8 @@ create a new environment or access your app `envUrl` from the **Environments** v
 ## Quick start
 
 This guide will show you how to use the key modules of the client library to execute commands in
-your backend app. For more in-depth coverage, see the [client library guide](https://docs.altogic.com/).
+your backend app. For more in-depth coverage, see the
+[client library guide](https://docs.altogic.com/).
 
 #### Authentication
 
@@ -70,7 +78,7 @@ user to the redirect URL specified in app authentication settings with an `acces
 string parameter. You can use this `access_token` token to get authentication grants, namely the
 user data and a new session object by calling the `getAuthGrant` method.
 
-```
+```js
 //Sign up a new user with email and password
 let { errors } = await altogic.auth.signUpWithEmail(email, password);
 
@@ -87,7 +95,7 @@ If phone number confirmation is **enabled** in your app authentication settings 
 code SMS will be sent to the phone. Until the user validates this code by calling `verifyPhone`, the
 phone number will not be verified.
 
-```
+```js
 //Sign up a new user with mobile phonec number and password
 let { errors } = await altogic.auth.signUpWithPhone(phone, password);
 
@@ -107,7 +115,7 @@ provider sign in completes successfully, Altogic directs the user to the redirec
 user and session data). Please note that you need to make specific configuration at the provider to
 retrieve client id and client secret to use this method.
 
-```
+```js
 //Sign in or sign up a user using Google as the oAuth provider
 altogic.auth.signInWithProvider('google');
 
@@ -119,9 +127,10 @@ let { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 
 ##### **Create a new object:**
 
-To create a new object in one of your models in the database, you have two options. You can use the query manager shown below:
+To create a new object in one of your models in the database, you have two options. You can use the
+query manager shown below:
 
-```
+```js
 //Insert a new top-level model object to the database using the query builder
 let { data, errors } = await altogic.db.model('userOrders').create({
    productId: 'prd000234',
@@ -133,7 +142,7 @@ let { data, errors } = await altogic.db.model('userOrders').create({
 
 Or you can use an object manager:
 
-```
+```js
 //Insert a new top-level model object to the database using the object manager
 let { data, errors } = await altogic.db.model('userOrders').object().create({
    productId: 'prd000234',
@@ -145,9 +154,10 @@ let { data, errors } = await altogic.db.model('userOrders').object().create({
 
 ##### **Update an object:**
 
-You can use two ways to update an object in the database. You can use an object manager shown below to update an object.
+You can use two ways to update an object in the database. You can use an object manager shown below
+to update an object.
 
-```
+```js
 //Upates a users address identified by '61f958dc3692b8462a9d31a1' to a new one
 let { data, errors } = await altogic.db
    .model('users.address')
@@ -167,9 +177,10 @@ let { data, errors } = await altogic.db
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
 ```
 
-Or you can use a query manager to perform update operation. Below examples perform exactly the same updates as the above methods.
+Or you can use a query manager to perform update operation. Below examples perform exactly the same
+updates as the above methods.
 
-```
+```js
 //Upates the an object using a query builder
 let result = await altogic.db
    .model('users.address')
@@ -181,7 +192,7 @@ let result = await altogic.db
       state: 'IL',
       country: 'US',
    });
-   
+
 //Increments the likeCount of a wallpost identified by id '62064c7eff64b91975a599b4' by 1 using the query builder
 let { data, errors } = await altogic.db
    .model('wallposts')
@@ -191,13 +202,10 @@ let { data, errors } = await altogic.db
 
 ##### **Delete an object:**
 
-```
+```js
 //Delete an order identified by id '62064163ae99b3a645705667' from userOrders
-let { errors } = await altogic.db
-   .model('userOrders')
-   .object('62064163ae99b3a645705667')
-   .delete();
-   
+let { errors } = await altogic.db.model('userOrders').object('62064163ae99b3a645705667').delete();
+
 //Alternatively you can use a query builder to delete an object
 let { errors } = await altogic.db
    .model('userOrders')
@@ -207,9 +215,10 @@ let { errors } = await altogic.db
 
 ##### **Query data:**
 
-```
+```js
 //Gets the first 100 orders with basket size greater than $50 and having more than 3 items and sorts them by descending orderDate
-altogic.db.model('userOrders')
+altogic.db
+   .model('userOrders')
    .filter('totalAmount > 50 && totalQuantity > 3')
    .sort('orderDate', 'desc')
    .limit(100)
@@ -217,15 +226,15 @@ altogic.db.model('userOrders')
    .get();
 ```
 
-
-
 #### Document storage
 
-This module allows you manage your app's cloud storage buckets and files. You store your files, documents, images etc. under buckets, which are the basic containers that hold your application data. You typically create a bucket and upload files/objects to this bucket.
+This module allows you manage your app's cloud storage buckets and files. You store your files,
+documents, images etc. under buckets, which are the basic containers that hold your application
+data. You typically create a bucket and upload files/objects to this bucket.
 
 ##### **Create a bucket:**
 
-```
+```js
 /*
 Creates a bucket names profile-images with default privacy setting of public, meaning that when you add a file to a bucket and if the file did not specify public/private setting, then it will be marked as publicly accessible through its URL
 */
@@ -234,7 +243,7 @@ await altogic.storage.createBucket('profile-images', true);
 
 ##### **Upload a file:**
 
-```
+```js
 //Uploads a file to the profiles-images bucket
 const fileToUpload = event.target.files[0];
 let result = await altogic.storage.bucket('profile-images').upload(fileToUpload.name, fileToUpload);
@@ -250,7 +259,7 @@ let result = await altogic.storage
 
 ##### **List files in a bucket:**
 
-```
+```js
 //Returns the list of files in bucket profile-images sorted by their size in ascending order
 let result = await altogic.storage.bucket('profile-images').listFiles({
    returnCountInfo: true,
@@ -268,8 +277,6 @@ let result = await altogic.storage.bucket('profile-images').listFiles('isPublic 
 });
 ```
 
-
-
 #### Cache
 
 You can use the Altogic client library to cache simple key-value pairs at a high-speed data storage
@@ -277,7 +284,7 @@ layer (Redis) to speed up data set and get operations.
 
 ##### **Store item in cache:**
 
-```
+```js
 //Store items in cache
 let { errors } = await altogic.cache.set('lastUserOrder', {
    productId: 'prd000234',
@@ -312,7 +319,7 @@ for asychronous processing. After the message is submitted, the routed service d
 message queue configuration is invoked. This routed service processes the input message and performs
 necessary tasks defined in its service flow.
 
-```
+```js
 //Submit a message to a queuer for asychronous processing
 let { info, errors } = await altogic.queue.submitMessage(queueName, messageBody);
 
@@ -329,7 +336,7 @@ Typically, a scheduled task runs according to its defined execution schedule. Ho
 Altogic's client library by calling the `runOnce` method, you can manually run scheduled tasks ahead
 of their actual execution schedule.
 
-```
+```js
 //Manually run a task
 let { info, errors } = await altogic.queue.runOnce(taskName);
 
