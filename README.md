@@ -80,13 +80,13 @@ user data and a new session object by calling the `getAuthGrant` method.
 
 ```js
 //Sign up a new user with email and password
-let { errors } = await altogic.auth.signUpWithEmail(email, password);
+const { errors } = await altogic.auth.signUpWithEmail(email, password);
 
 //... after email address verified, you can get user and session data using the accessToken
-let { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
+const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 
 //After the users are created and their email verified, the next time the users wants to sign in to their account, you can use the sign in method to authenticate them
-let { user, session, errors } = await altogic.auth.signInWithEmail(email, password);
+const { user, session, errors } = await altogic.auth.signInWithEmail(email, password);
 ```
 
 ##### **Sign up new users with mobile phone number:**
@@ -97,13 +97,13 @@ phone number will not be verified.
 
 ```js
 //Sign up a new user with mobile phonec number and password
-let { errors } = await altogic.auth.signUpWithPhone(phone, password);
+const { errors } = await altogic.auth.signUpWithPhone(phone, password);
 
 //Verify the phone number using code sent in SMS and and return the auth grants (e.g., session)
-let { user, session, errors } = await altogic.auth.verifyPhone(phone, code);
+const { user, session, errors } = await altogic.auth.verifyPhone(phone, code);
 
 //After the users are created and their phones numbers are verified, the next time the users wants to sign in to their account, you can use the sign in method to authenticate them
-let { errors } = await altogic.auth.signInWithPhone(phone, password);
+const { errors } = await altogic.auth.signInWithPhone(phone, password);
 ```
 
 ##### **Sign up/sign-in users with an oAuth provider:**
@@ -120,7 +120,7 @@ retrieve client id and client secret to use this method.
 altogic.auth.signInWithProvider('google');
 
 //... after oAuth provider sign-in, you can get user and session data using the accessToken
-let { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
+const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 ```
 
 #### Database
@@ -132,7 +132,7 @@ query manager shown below:
 
 ```js
 //Insert a new top-level model object to the database using the query builder
-let { data, errors } = await altogic.db.model('userOrders').create({
+const { data, errors } = await altogic.db.model('userOrders').create({
    productId: 'prd000234',
    quantity: 12,
    customerId: '61fbf6ceeeed063ab062ac05',
@@ -144,7 +144,7 @@ Or you can use an object manager:
 
 ```js
 //Insert a new top-level model object to the database using the object manager
-let { data, errors } = await altogic.db.model('userOrders').object().create({
+const { data, errors } = await altogic.db.model('userOrders').object().create({
    productId: 'prd000234',
    quantity: 12,
    customerId: '61fbf6ceeeed063ab062ac05',
@@ -159,7 +159,7 @@ to update an object.
 
 ```js
 //Upates a users address identified by '61f958dc3692b8462a9d31a1' to a new one
-let { data, errors } = await altogic.db
+const { data, errors } = await altogic.db
    .model('users.address')
    .object('61f958dc3692b8462a9d31a1')
    .update({
@@ -171,7 +171,7 @@ let { data, errors } = await altogic.db
    });
 
 //Increments the likeCount of a wallpost identified by id '62064c7eff64b91975a599b4' by 1
-let { data, errors } = await altogic.db
+const { data, errors } = await altogic.db
    .model('wallposts')
    .object('62064c7eff64b91975a599b4')
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
@@ -182,7 +182,7 @@ updates as the above methods.
 
 ```js
 //Upates the an object using a query builder
-let result = await altogic.db
+const result = await altogic.db
    .model('users.address')
    .filter('_id == "61f958dc3692b8462a9d31a1"')
    .update({
@@ -194,7 +194,7 @@ let result = await altogic.db
    });
 
 //Increments the likeCount of a wallpost identified by id '62064c7eff64b91975a599b4' by 1 using the query builder
-let { data, errors } = await altogic.db
+const { data, errors } = await altogic.db
    .model('wallposts')
    .filter('_id == "62064c7eff64b91975a599b4"')
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
@@ -204,10 +204,10 @@ let { data, errors } = await altogic.db
 
 ```js
 //Delete an order identified by id '62064163ae99b3a645705667' from userOrders
-let { errors } = await altogic.db.model('userOrders').object('62064163ae99b3a645705667').delete();
+const { errors } = await altogic.db.model('userOrders').object('62064163ae99b3a645705667').delete();
 
 //Alternatively you can use a query builder to delete an object
-let { errors } = await altogic.db
+const { errors } = await altogic.db
    .model('userOrders')
    .filter('_id == "62064163ae99b3a645705667"')
    .delete();
@@ -246,10 +246,12 @@ await altogic.storage.createBucket('profile-images', true);
 ```js
 //Uploads a file to the profiles-images bucket
 const fileToUpload = event.target.files[0];
-let result = await altogic.storage.bucket('profile-images').upload(fileToUpload.name, fileToUpload);
+const result = await altogic.storage
+   .bucket('profile-images')
+   .upload(fileToUpload.name, fileToUpload);
 
 //If you would like to have a progress indicator during file upload you can also provide a callback function
-let result = await altogic.storage
+const result = await altogic.storage
    .bucket('profile-images')
    .upload(fileToUpload.name, fileToUpload, {
       onProgress: (uploaded, total, percent) =>
@@ -261,7 +263,7 @@ let result = await altogic.storage
 
 ```js
 //Returns the list of files in bucket profile-images sorted by their size in ascending order
-let result = await altogic.storage.bucket('profile-images').listFiles({
+const result = await altogic.storage.bucket('profile-images').listFiles({
    returnCountInfo: true,
    sort: { field: 'size', direction: 'asc' },
 });
@@ -269,7 +271,7 @@ let result = await altogic.storage.bucket('profile-images').listFiles({
 /*
 You can also apply filters and paginate over the files. Below call returns the first 100 of files which are marked as public and sorted by their size in ascending order
 */
-let result = await altogic.storage.bucket('profile-images').listFiles('isPublic == true', {
+const result = await altogic.storage.bucket('profile-images').listFiles('isPublic == true', {
    returnCountInfo: true,
    limit: 100,
    page: 1,
@@ -286,7 +288,7 @@ layer (Redis) to speed up data set and get operations.
 
 ```js
 //Store items in cache
-let { errors } = await altogic.cache.set('lastUserOrder', {
+const { errors } = await altogic.cache.set('lastUserOrder', {
    productId: 'prd000234',
    quantity: 12,
    customerId: '61fbf6ceeeed063ab062ac05',
@@ -294,7 +296,7 @@ let { errors } = await altogic.cache.set('lastUserOrder', {
 });
 
 //Get the item stored in cache
-let result = await altogic.cache.get('lastUserOrder');
+const result = await altogic.cache.get('lastUserOrder');
 
 /*
 This will return the following:
@@ -321,10 +323,10 @@ necessary tasks defined in its service flow.
 
 ```js
 //Submit a message to a queuer for asychronous processing
-let { info, errors } = await altogic.queue.submitMessage(queueName, messageBody);
+const { info, errors } = await altogic.queue.submitMessage(queueName, messageBody);
 
 //Get the status of submitted message whether it has been completed processing or not
-let result = await altogic.queue.getMessageStatus(info.messageId);
+const result = await altogic.queue.getMessageStatus(info.messageId);
 ```
 
 #### Schedule tasks
@@ -338,10 +340,10 @@ of their actual execution schedule.
 
 ```js
 //Manually run a task
-let { info, errors } = await altogic.queue.runOnce(taskName);
+const { info, errors } = await altogic.queue.runOnce(taskName);
 
 //Get the status of the manually triggered task whether it has been completed processing or not
-let result = await altogic.queue.getTaskStatus(info.taskId);
+const result = await altogic.queue.getTaskStatus(info.taskId);
 ```
 
 ## Learn more
