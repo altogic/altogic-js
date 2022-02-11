@@ -67,7 +67,7 @@ your backend app. For more in-depth coverage, see the
 
 #### Authentication
 
-##### **Sign up new users with email:**
+**Sign up new users with email:**
 
 If email confirmation is **enabled** in your app authentication settings then a confirm sign up
 email will be sent to the user with a link to click and this method will return the user data with a
@@ -89,7 +89,7 @@ const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 const { user, session, errors } = await altogic.auth.signInWithEmail(email, password);
 ```
 
-##### **Sign up new users with mobile phone number:**
+**Sign up new users with mobile phone number:**
 
 If phone number confirmation is **enabled** in your app authentication settings then a confirmation
 code SMS will be sent to the phone. Until the user validates this code by calling `verifyPhone`, the
@@ -106,7 +106,7 @@ const { user, session, errors } = await altogic.auth.verifyPhone(phone, code);
 const { errors } = await altogic.auth.signInWithPhone(phone, password);
 ```
 
-##### **Sign up/sign-in users with an oAuth provider:**
+**Sign up/sign-in users with an oAuth provider:**
 
 Signs in a user using the Oauth2 flow of the specified provider. Calling this method with the name
 of the sign in provider will redirect user to the relevant login page of the provider. If the
@@ -125,7 +125,7 @@ const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 
 #### Database
 
-##### **Create a new object:**
+**Create a new object:**
 
 To create a new object in one of your models in the database, you have two options. You can use the
 query manager shown below:
@@ -152,7 +152,7 @@ const { data, errors } = await altogic.db.model('userOrders').object().create({
 });
 ```
 
-##### **Update an object:**
+**Update an object:**
 
 You can use two ways to update an object in the database. You can use an object manager shown below
 to update an object.
@@ -200,7 +200,7 @@ const { data, errors } = await altogic.db
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
 ```
 
-##### **Delete an object:**
+**Delete an object:**
 
 ```js
 //Delete an order identified by id '62064163ae99b3a645705667' from userOrders
@@ -213,7 +213,7 @@ const { errors } = await altogic.db
    .delete();
 ```
 
-##### **Query data:**
+**Query data:**
 
 ```js
 //Gets the first 100 orders with basket size greater than $50 and having more than 3 items and sorts them by descending orderDate
@@ -232,7 +232,7 @@ This module allows you manage your app's cloud storage buckets and files. You st
 documents, images etc. under buckets, which are the basic containers that hold your application
 data. You typically create a bucket and upload files/objects to this bucket.
 
-##### **Create a bucket:**
+**Create a bucket:**
 
 ```js
 /*
@@ -241,7 +241,7 @@ Creates a bucket names profile-images with default privacy setting of public, me
 await altogic.storage.createBucket('profile-images', true);
 ```
 
-##### **Upload a file:**
+**Upload a file:**
 
 ```js
 //Uploads a file to the profiles-images bucket
@@ -259,7 +259,7 @@ const result = await altogic.storage
    });
 ```
 
-##### **List files in a bucket:**
+**List files in a bucket:**
 
 ```js
 //Returns the list of files in bucket profile-images sorted by their size in ascending order
@@ -284,7 +284,7 @@ const result = await altogic.storage.bucket('profile-images').listFiles('isPubli
 You can use the Altogic client library to cache simple key-value pairs at a high-speed data storage
 layer (Redis) to speed up data set and get operations.
 
-##### **Store item in cache:**
+**Store item in cache:**
 
 ```js
 //Store items in cache
@@ -297,19 +297,6 @@ const { errors } = await altogic.cache.set('lastUserOrder', {
 
 //Get the item stored in cache
 const result = await altogic.cache.get('lastUserOrder');
-
-/*
-This will return the following:
-{
-   data: {
-      productId: 'prd000234',
-      quantity: 12,
-      customerId: '61fbf6ceeeed063ab062ac05',
-      createdAt: '2022-02-09T10:55:34.562+00:00',
-   },
-   errors: null,
-}
-*/
 ```
 
 #### Message queue
