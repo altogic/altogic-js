@@ -341,11 +341,11 @@ You can use the following resources to learn more and get help
 -  📜 [Altogic Docs](https://docs.altogic.com)
 -  💬 Discord community
 
-## Bugs / Feature Requests
+## Bugs Report
 
-Think you’ve found a bug? Want to see a new feature? Please, send us an email support@altogic.com
+Think you’ve found a bug? Please, send us an email support@altogic.com
 
 ## Support / Feedback
 
-For issues with, questions about, or feedback for the client library, please, send us an email
+For issues with, questions about, or feedback for the client library, or want to see a new feature please, send us an email
 support@altogic.com or reach out to our community forums https://community.altogic.com
