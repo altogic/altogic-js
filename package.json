@@ -1,12 +1,14 @@
 {
    "name": "altogic",
    "version": "1.0.3",
-   "description": "Javascript client for Altogic.",
+   "description": "Javascript client for Altogic backend apps.",
    "keywords": [
       "javascript",
       "typescript",
       "altogic",
-      "backend"
+      "backend",
+      "restful",
+      "api"
    ],
    "main": "dist/index.js",
    "module": "dist/index.js",

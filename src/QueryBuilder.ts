@@ -17,6 +17,17 @@ import { ClientError } from './utils/ClientError';
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
+ * There are several modifiers (e.g., filter, lookup, omit, sort, limit, page) that you can use to build your queries. For convenience, these modifiers can be chained to build complex queries. As an example, assuming that you have a userOrders model where you keep orders of your users, you can create the following query by chaining multiple modifiers to get the first 100 orders with basket size greater than 50 and sorted by orderDate descending.
+ * ```
+ * let { data, errors } = await altogic.db
+ *    .model('userOrders')
+ *    .filter('basketSize > 50')
+ *    .sort('orderDate', 'desc')
+ *    .limit(100)
+ *    .page(1)
+ *    .get();
+ * ```
+ *
  * @export
  * @class QueryBuilder
  */
@@ -68,7 +79,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Sets the query expression for selecting/filtering data from your app's database.
     *
-    * If multiple filter method calls are chained then the last one overwrites the previous filters
+    * If multiple filter method calls are chained then the last one overwrites the previous filters.
     *
     * ### Expressions
     *
@@ -296,7 +307,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Paginates to the specified page number. In combination with {@link limit}, primarily used to paginate through your data.
     *
-    * If multiple page method calls are chained then the last one overwrites the previous page values
+    * If multiple page method calls are chained then the last one overwrites the previous page values.
     * @param {number} pageNumber An integer that specifies the page number
     * @throws Throws an exception if `pageNumber` is not specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -311,7 +322,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Limits the max number of objects returned from the database, namely defines the page size for pagination. In combination with {@link page}, primarily used to paginate through your data. Even if you do not specify a limit in your database queries, Altogic automatically limits the number of objects returned from the database by setting the default limits.
     *
-    * If multiple limit method calls are chained then the last one overwrites the previous limit values
+    * If multiple limit method calls are chained then the last one overwrites the previous limit values.
     * @param {number} limitCount An integer that specifies the max number of objects to return
     * @throws Throws an exception if `limitCount` is not specified or `limitCount=0`
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -352,7 +363,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Applies a field mask to the result and returns all the fields except the omitted ones.
     *
-    * If multiple omit method calls are chained then each call is concatenated to a list
+    * If multiple omit method calls are chained then each call is concatenated to a list.
     * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @throws Throws an exception if no omitted fields is specified
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -368,6 +379,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Groups the objects of the model by the specified expression. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
+    * If multiple group method calls are chained then the last one overwrites the previous page values.
     * @param {string} expression Grouping expression string
     * @throws Throws an exception if `expression` is not specified or if it is not a string value
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -376,6 +388,7 @@ export class QueryBuilder extends APIBase {
    /**
     * Groups the objects of the model by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
     *
+    * If multiple group method calls are chained then the last one overwrites the previous page values.
     * @param {[string]} fields List of field names that will be used for grouping. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
     * @throws Throws an exception if `fields` is not specified or if it is not an array of string values
     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -654,7 +667,7 @@ export class QueryBuilder extends APIBase {
    }
 
    /**
-    * Updates the objects matching the query using the input {@link FieldUpdate} instructions. See table below for applicable modifiers that can be used with this method.
+    * Updates the objects matching the query using the input {@link FieldUpdate} instruction(s). See table below for applicable modifiers that can be used with this method.
     *
     * | Modifier | Chained with updateFields? |
     * | :--- | :--- |
@@ -667,14 +680,18 @@ export class QueryBuilder extends APIBase {
     * | sort |   |
     *
     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-    * @param {FieldUpdate} fieldUpdates List of update instructions
+    * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
     * @throws Throws an exception if `fieldUpdates` is not specified
     * @returns Returns information about the update operation
     */
    async updateFields(
-      fieldUpdates: [FieldUpdate]
+      fieldUpdates: FieldUpdate | [FieldUpdate]
    ): Promise<{ data: UpdateInfo; errors: APIError | null }> {
-      arrayRequired('fieldUpdates', fieldUpdates);
+      objectRequired('fieldUpdates', fieldUpdates);
+
+      let updates = null;
+      if (Array.isArray(fieldUpdates)) updates = fieldUpdates;
+      else updates = [fieldUpdates];
 
       if (!this.#action.expression)
          throw new ClientError(
@@ -683,7 +700,7 @@ export class QueryBuilder extends APIBase {
          );
 
       return await this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
-         updates: fieldUpdates,
+         updates: updates,
          query: this.#action,
          model: this.#modelName,
       });

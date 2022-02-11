@@ -4,11 +4,11 @@ import { APIError } from './types';
 import { checkRequired } from './utils/helpers';
 
 /**
- * The cache manager provides simple key-value storage at a high-speed data storage layer speeding up data set and get operations.
+ * The cache manager provides simple key-value storage at a high-speed data storage layer (Redis) speeding up data set and get operations.
  *
  * The values stored can be a single JSON object, an array of objects or primitive values (e.g., numbes, text, boolean). Values can be stored with an optional time-to-live (TTL) to automatically expire entries.
  *
- * You can directly store primitive values such as integers, strings, etc., however, when you try to get them Altogic returns them wrapped in a simple object with a key named `value`. As an example if you store a text field "Hello world!" at a key named 'welcome', when you try to get the value of this key using the {@link get} method, you will receive the following response: { value: "Hellow World"}.
+ * You can directly store primitive values such as integers, strings, etc., however, when you try to get them Altogic returns them wrapped in a simple object with a key named `value`. As an example if you store a text field "Hello world!" at a key named 'welcome', when you try to get the value of this key using the {@link get} method, you will receive the following response: { value: "Hellow world"}.
  *
  * @export
  * @class CacheManager

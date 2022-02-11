@@ -5,6 +5,15 @@ import { getParamValue, checkRequired } from './utils/helpers';
 
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
+ *
+ * You are free to design the way to authenticate your users and manage sessions in Altogic through defining your custom services. However, by default Altogic provides three methods to manage user accounts through the client library.
+ *
+ * 1. **Email and password based account management:** This is the default authentication method and it requires email address validation. You can customize to enable/disable email confirmations, use your own SMTP server to send email (by default signup email confirmation emails are sent from noreply@mail.app.altogic.com domain) and define your email templates.
+ * 2. **Phone number and password based account management:** You can also allow your uses to sign up using their phone numbers and validate these phone numbers by sending a validation code through SMS. In order to use this method of authentication, you need to configure the SMS provider. Altogic currently supports Twilio, MessageBird, and Vonage for sending SMS messages.
+ * 3. **Authentication through 3rd party Oauth providers** such as Google, Facebook, Twitter, GitHub, Discord: This method enables to run the oauth flow of specific provider in your front-end applications. In order to use this method you need to make specific configuration at the provider to retrieve client id and client secret.
+ *
+ * To use any of the above authentication methods you need to configure your app authentication settings. You can customize these settings in Altogic desigler under **App Settings/Authentication**.
+ *
  * @export
  * @class AuthManager
  */
@@ -157,7 +166,7 @@ export class AuthManager extends APIBase {
     * If phone number confirmation is **enabled** in your app authentication settings then a confirmation code SMS will be sent to the phone and this method will return the user data and a `null` session. Until the user validates this code by calling {@link verifyPhone}, the phone number will not be verified. If a user tries to signIn to an account where phone number has not been confirmed yet, an error message will be retured asking for phone number verification.
     *
     * If phone number confirmation is **disabled**, a newly created session object and the user data will be returned.
-    * @param {string} phone Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
+    * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
     * @param {string} password Password of the user, should be at least 6 characters long
     * @param {string} name Name of the user
     * @throws Throws an exception if `phone` or `password` is not specified
@@ -449,7 +458,7 @@ export class AuthManager extends APIBase {
     *
     * This method works only if email confirmation is **enabled** in your app authentication settings and the user's email address has already been verified.
     *
-    * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect action=reset-password in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
+    * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-password` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
     *
     * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
     * @param {string} email The email address of the user to send the verification email

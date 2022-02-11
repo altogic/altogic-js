@@ -24,7 +24,11 @@ const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
- * If id is provided when creatign an instance, you can use {@link get}, {@link update}, {@link delete} and {@link updateFields} methods. If no id specified in constructor, you can use {@link create}, {@link set}, and {@link append} methods to create a new object in the database. {@link create} method is used to creat a top-level object, which does not have any parent, in the database. {@link set} method is used to set the value of an `object` field of a parent object and finally {@link append} is used to add a child object to an `object-list` field of a parent object.
+ * If id is provided when creatign an instance, you can use {@link get}, {@link update}, {@link delete} and {@link updateFields} methods. If no id specified in constructor, you can use {@link create}, {@link set}, and {@link append} methods to create a new object in the database.
+ *
+ * {@link create} method is used to creat a top-level object, which does not have any parent. {@link set} method is used to set the value of an `object` field of a parent object and finally {@link append} is used to add a child object to an `object-list` field of a parent object.
+ *
+ * Since both {@link set} and {@link append} operate on a sub-model or sub-model list object respectively, you need to pass a `parentId` as an input parameter.
  * @export
  * @class DBObject
  */
@@ -56,7 +60,7 @@ export class DBObject extends APIBase {
    }
 
    /**
-    * Gets the object referred to by this DBObject and identified by the `id` from the database. If the `id` of the db object is not specified, it throws an exception.
+    * Gets the object referred to by this db object and identified by the `id` from the database. If the `id` of the db object is not specified, it throws an exception.
     *
     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
@@ -64,7 +68,7 @@ export class DBObject extends APIBase {
     */
    async get(options?: GetOptions): Promise<{ data: object | null; errors: APIError | null }>;
    /**
-    * Gets the object referred to by this DBObject and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it throws an exception.
+    * Gets the object referred to by this db object and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it throws an exception.
     *
     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
     * @param {[SimpleLookup | ComplexLookup]} lookups The list of lookups to make (left outer join) while getting the object from the database
@@ -207,7 +211,7 @@ export class DBObject extends APIBase {
     * @param {object} values An object that contains the fields and their values to update in the database
     * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
     * @throws Throws an exception if `id` of db object or `values` is not specified
-    * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.
+    * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
     */
    async update(
       values: object,
@@ -225,23 +229,27 @@ export class DBObject extends APIBase {
    }
 
    /**
-    * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instructions.
+    * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instruction(s).
     *
     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-    * @param {FieldUpdate} fieldUpdates List of update instructions
+    * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
     * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
     * @throws Throws an exception if `id` of db object or `fieldUpdates` is not specified
-    * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.
+    * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
     */
    async updateFields(
-      fieldUpdates: [FieldUpdate],
+      fieldUpdates: FieldUpdate | [FieldUpdate],
       options?: UpdateOptions
    ): Promise<{ data: object | null; errors: APIError | null }> {
       checkRequired('update id', this.#id);
-      arrayRequired('fieldUpdates', fieldUpdates);
+      objectRequired('fieldUpdates', fieldUpdates);
+
+      let updates = null;
+      if (Array.isArray(fieldUpdates)) updates = fieldUpdates;
+      else updates = [fieldUpdates];
 
       return await this.fetcher.post(`/_api/rest/v1/db/object/update-fields`, {
-         updates: fieldUpdates,
+         updates: updates,
          options: { ...DEFAULT_UPDATE_OPTIONS, ...options },
          id: this.#id,
          model: this.#modelName,

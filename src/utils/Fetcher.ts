@@ -6,9 +6,9 @@ import { ClientError } from './ClientError';
 const INVALID_SESSION_TOKEN = 'invalid_session_token';
 const MISSING_SESSION_TOKEN = 'missing_session_token';
 /**
- * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization.
+ * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization. The client library uses [cross-fetch](https://www.npmjs.com/package/cross-fetch) under the hood to make requests to you app's execution environment.
  *
- * When creating the client if apiKey is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
+ * When creating the client if `apiKey` is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
  *
  * Similarly, if there is an active user session, Fetcher also adds the session token to a **Session** header and sends it in all RESTful API requests to your backend app.
  * @export
@@ -46,7 +46,7 @@ export class Fetcher {
    /**
     *Creates an instance of Fetcher.
     * @param {string} restUrl The base URL that will be prepended to all RESTful API calls
-    * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the execution environment
+    * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the app's execution environment
     */
    constructor(apiClient: AltogicClient, restUrl: string, headers: KeyValuePair) {
       this.apiClient = apiClient;
@@ -56,12 +56,13 @@ export class Fetcher {
    }
 
    /**
-    * Internal method to handle all public request methods (get, post, put and delete). If the request response is invalid session token error, invalidates the current user session.
+    * Internal method to handle all public request methods (get, post, put and delete). If the request response is an invalid session token error, invalidates the current user session.
     * @private
     * @param  {'GET' | 'POST' | 'PUT' | 'DELETE'} method The request method
-    * @param  {string} path The path of the request, needs to start with a slash 'character' e.g., /users
+    * @param  {string} path The path of the request, needs to start with a slash 'character' e.g., `/users`,
+    * @param  {KeyValuePair} query The query string parameters that will be sent to your app backend. This is a simpel JSON object with key and value pairs.
     * @param  {KeyValuePair} headers Additional request headers which will be merged with default headers
-    * @param  {any} body Request body if any. If provided can be a **JSON object** or a **FormData** object. For file uploads you can use FormData object.
+    * @param  {any} body Request body if any. If provided can be a **JSON**, **FormData**, **Blob** or **File** object. For file uploads you can use FormData, Blob or File object.
     * @param  {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
     * @throws Throws an exception if `path` is not specified or if it does not start with a leading slash '/'
     * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
