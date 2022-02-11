@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { BucketManager } from "./BucketManager";
-import { APIError, BucketListOptions, FileListOptions } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { BucketManager } from './BucketManager';
+import { APIError, BucketListOptions, FileListOptions } from './types';
 /**
  * Allows you manage your app's cloud storage buckets and files. With StorageManager you can create and list buckets and use the {@link BucketManager} to manage a specific bucket and and its contained files.
  *
@@ -113,6 +113,16 @@ export declare class StorageManager extends APIBase {
      */
     searchFiles(expression: string, options?: FileListOptions): Promise<{
         data: object[] | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Deletes a file identified by the url string. You can directly use this method to delete any file that you know its url (e.g., no need to specify bucket name/id and file name/id)
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} fileUrl The url of the file that will be deleted
+     * @throws Throws an exception `fileUrl` is not specified
+     */
+    deleteFile(fileUrl: string): Promise<{
         errors: APIError | null;
     }>;
 }

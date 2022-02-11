@@ -466,9 +466,7 @@ export class AuthManager extends APIBase {
    * @param {string} accessToken The access token that will be used to get the authorization grants of a user
    * @throws Throws an exception if `accessToken` is not specified
    */
-  async getAuthGrant(
-    accessToken?: string
-  ): Promise<{
+  async getAuthGrant(accessToken?: string): Promise<{
     user: User | null;
     session: Session | null;
     errors: APIError | null;

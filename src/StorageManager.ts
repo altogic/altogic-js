@@ -181,4 +181,19 @@ export class StorageManager extends APIBase {
       options: optionsVal,
     });
   }
+
+  /**
+   * Deletes a file identified by the url string. You can directly use this method to delete any file that you know its url (e.g., no need to specify bucket name/id and file name/id)
+   *
+   * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+   * @param {string} fileUrl The url of the file that will be deleted
+   * @throws Throws an exception `fileUrl` is not specified
+   */
+  async deleteFile(fileUrl: string): Promise<{ errors: APIError | null }> {
+    checkRequired("fileUrl", fileUrl);
+
+    return await this.fetcher.post(`/_api/rest/v1/storage/delete-file`, {
+      fileUrl,
+    });
+  }
 }

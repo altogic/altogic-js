@@ -47,7 +47,7 @@ class StorageManager extends APIBase_1.APIBase {
      * @returns Returns a new {@link BucketManager} object that will be used for managing the bucket
      */
     bucket(nameOrId) {
-        (0, helpers_1.checkRequired)("bucket name or id", nameOrId);
+        (0, helpers_1.checkRequired)('bucket name or id', nameOrId);
         return new BucketManager_1.BucketManager(nameOrId, this.fetcher);
     }
     /**
@@ -63,7 +63,7 @@ class StorageManager extends APIBase_1.APIBase {
      */
     createBucket(name, isPublic = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("Bucket name", name);
+            (0, helpers_1.checkRequired)('Bucket name', name);
             return yield this.fetcher.post(`/_api/rest/v1/storage/create-bucket`, {
                 name,
                 isPublic,
@@ -94,18 +94,18 @@ class StorageManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === "string")
+                if (typeof expression === 'string')
                     expVal = expression;
-                else if (typeof expression === "object")
+                else if (typeof expression === 'object')
                     optionsVal = expression;
                 else
-                    throw new ClientError_1.ClientError("invalid_value", `Bucket listing expression needs to be a string`);
+                    throw new ClientError_1.ClientError('invalid_value', `Bucket listing expression needs to be a string`);
             }
             if (options) {
-                if (typeof options === "object")
+                if (typeof options === 'object')
                     optionsVal = options;
                 else
-                    throw new ClientError_1.ClientError("invalid_value", `Bucket listing options need to be an object`);
+                    throw new ClientError_1.ClientError('invalid_value', `Bucket listing options need to be an object`);
             }
             return yield this.fetcher.post(`/_api/rest/v1/storage/list-buckets`, {
                 expression: expVal,
@@ -119,7 +119,7 @@ class StorageManager extends APIBase_1.APIBase {
      * @type {BucketManager}
      */
     get root() {
-        return new BucketManager_1.BucketManager("root", this.fetcher);
+        return new BucketManager_1.BucketManager('root', this.fetcher);
     }
     /**
      * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
@@ -159,16 +159,31 @@ class StorageManager extends APIBase_1.APIBase {
     searchFiles(expression, options) {
         return __awaiter(this, void 0, void 0, function* () {
             let optionsVal = null;
-            (0, helpers_1.checkRequired)("search expression", expression);
+            (0, helpers_1.checkRequired)('search expression', expression);
             if (options) {
-                if (typeof options === "object")
+                if (typeof options === 'object')
                     optionsVal = options;
                 else
-                    throw new ClientError_1.ClientError("invalid_value", `File search options need to be an object`);
+                    throw new ClientError_1.ClientError('invalid_value', `File search options need to be an object`);
             }
             return yield this.fetcher.post(`/_api/rest/v1/storage/search-files`, {
                 expression,
                 options: optionsVal,
+            });
+        });
+    }
+    /**
+     * Deletes a file identified by the url string. You can directly use this method to delete any file that you know its url (e.g., no need to specify bucket name/id and file name/id)
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} fileUrl The url of the file that will be deleted
+     * @throws Throws an exception `fileUrl` is not specified
+     */
+    deleteFile(fileUrl) {
+        return __awaiter(this, void 0, void 0, function* () {
+            (0, helpers_1.checkRequired)('fileUrl', fileUrl);
+            return yield this.fetcher.post(`/_api/rest/v1/storage/delete-file`, {
+                fileUrl,
             });
         });
     }

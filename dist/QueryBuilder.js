@@ -290,7 +290,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     filter(expression) {
-        (0, helpers_1.checkRequired)("expression", expression);
+        (0, helpers_1.checkRequired)('expression', expression);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").expression = expression;
         return this;
     }
@@ -303,7 +303,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     lookup(lookup) {
-        (0, helpers_1.objectRequired)("lookup", lookup);
+        (0, helpers_1.objectRequired)('lookup', lookup);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").lookups)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").lookups.push(lookup);
         else
@@ -319,7 +319,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     page(pageNumber) {
-        (0, helpers_1.integerRequired)("pageNumber", pageNumber);
+        (0, helpers_1.integerRequired)('pageNumber', pageNumber);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").page = pageNumber;
         return this;
     }
@@ -332,9 +332,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     limit(limitCount) {
-        (0, helpers_1.integerRequired)("limitCount", limitCount);
+        (0, helpers_1.integerRequired)('limitCount', limitCount);
         if (limitCount === 0)
-            throw new ClientError_1.ClientError("invalid_limit", `Limit value needs to be at least 1.`);
+            throw new ClientError_1.ClientError('invalid_limit', `Limit value needs to be at least 1.`);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").limit = limitCount;
         return this;
     }
@@ -348,9 +348,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     sort(fieldName, sortDirection) {
-        (0, helpers_1.checkRequired)("sort fieldName", fieldName);
-        if (sortDirection !== "asc" && sortDirection !== "desc")
-            throw new ClientError_1.ClientError("invalid_sort_direction", `${sortDirection} is not a valid sort direction. Sort direction can be either 'asc' or 'desc'.`);
+        (0, helpers_1.checkRequired)('sort fieldName', fieldName);
+        if (sortDirection !== 'asc' && sortDirection !== 'desc')
+            throw new ClientError_1.ClientError('invalid_sort_direction', `${sortDirection} is not a valid sort direction. Sort direction can be either 'asc' or 'desc'.`);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").sort)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").sort.push({ field: fieldName, direction: sortDirection });
         else
@@ -366,7 +366,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     omit(...fields) {
-        (0, helpers_1.arrayRequired)("omit fields", fields);
+        (0, helpers_1.arrayRequired)('omit fields', fields);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").omit)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").omit.push(...fields);
         else
@@ -376,16 +376,15 @@ class QueryBuilder extends APIBase_1.APIBase {
     /**
      * Groups the objects of the model by the specified expression or by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
      *
-     * If multiple group method calls are chained then the last one overwrites the previous page values.
+     * If multiple group method calls are chained then the last one overwrites the previous group values.
      * @param {[string]} fields Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
      * @throws Throws an exception if `expression` or `fields` is not specified correctly
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     group(fieldsOrExpression) {
-        (0, helpers_1.checkRequired)("group fields or expression", fieldsOrExpression);
-        if (typeof fieldsOrExpression !== "string" &&
-            !Array.isArray(fieldsOrExpression))
-            throw new ClientError_1.ClientError("invalid_group_definition", `The group method accepts either a grouping expression string or a string array of field names/paths.`);
+        (0, helpers_1.checkRequired)('group fields or expression', fieldsOrExpression);
+        if (typeof fieldsOrExpression !== 'string' && !Array.isArray(fieldsOrExpression))
+            throw new ClientError_1.ClientError('invalid_group_definition', `The group method accepts either a grouping expression string or a string array of field names/paths.`);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").group = fieldsOrExpression;
         return this;
     }
@@ -411,7 +410,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     create(values) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("create values", values);
+            (0, helpers_1.objectRequired)('create values', values);
             return yield this.fetcher.post(`/_api/rest/v1/db/create`, {
                 values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -443,8 +442,8 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     set(values, parentId, returnTop = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("set values", values);
-            (0, helpers_1.checkRequired)("set parentId", parentId);
+            (0, helpers_1.objectRequired)('set values', values);
+            (0, helpers_1.checkRequired)('set parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/set`, {
                 values,
                 parentId,
@@ -478,8 +477,8 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     append(values, parentId, returnTop = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("append values", values);
-            (0, helpers_1.checkRequired)("append parentId", parentId);
+            (0, helpers_1.objectRequired)('append values', values);
+            (0, helpers_1.checkRequired)('append parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/append`, {
                 values,
                 parentId,
@@ -541,7 +540,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     compute(computations) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("computations", computations, false);
+            (0, helpers_1.checkRequired)('computations', computations, false);
             return yield this.fetcher.post(`/_api/rest/v1/db/compute`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 computations: Array.isArray(computations) ? computations : [computations],
@@ -595,7 +594,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     getRandom(count) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.integerRequired)("count", count);
+            (0, helpers_1.integerRequired)('count', count);
             return yield this.fetcher.post(`/_api/rest/v1/db/get-random`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 count,
@@ -623,9 +622,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     update(values) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("update values", values);
+            (0, helpers_1.objectRequired)('update values', values);
             if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The update method requires a filter query to select the objects to update in the database.`);
+                throw new ClientError_1.ClientError('missing_filter_query', `The update method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update`, {
                 values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -653,14 +652,14 @@ class QueryBuilder extends APIBase_1.APIBase {
      */
     updateFields(fieldUpdates) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("fieldUpdates", fieldUpdates);
+            (0, helpers_1.objectRequired)('fieldUpdates', fieldUpdates);
             let updates = null;
             if (Array.isArray(fieldUpdates))
                 updates = fieldUpdates;
             else
                 updates = [fieldUpdates];
             if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The updateFields method requires a filter query to select the objects to update in the database.`);
+                throw new ClientError_1.ClientError('missing_filter_query', `The updateFields method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
                 updates,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -688,7 +687,7 @@ class QueryBuilder extends APIBase_1.APIBase {
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The delete method requires a filter query to select the objects to delete in the database.`);
+                throw new ClientError_1.ClientError('missing_filter_query', `The delete method requires a filter query to select the objects to delete in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/delete`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
