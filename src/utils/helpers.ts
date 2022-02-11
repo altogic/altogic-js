@@ -1,4 +1,4 @@
-import { ClientError } from './ClientError';
+import { ClientError } from "./ClientError";
 
 /**
  * Removes trailing slash character from input url string.
@@ -7,7 +7,7 @@ import { ClientError } from './ClientError';
  * @returns Trailed url string
  */
 export function removeTrailingSlash(url: string) {
-   return url.replace(/\/$/, '');
+  return url.replace(/\/$/, "");
 }
 
 /**
@@ -17,7 +17,7 @@ export function removeTrailingSlash(url: string) {
  * @returns Normalized url string
  */
 export function normalizeUrl(url: string) {
-   return removeTrailingSlash(url.trim());
+  return removeTrailingSlash(url.trim());
 }
 
 /**
@@ -27,18 +27,18 @@ export function normalizeUrl(url: string) {
  * @returns {string | null} The value of the parameter if found in query string part of the url or null otherwise
  */
 export function getParamValue(paramName: string): string | null {
-   if (globalThis.window && paramName) {
-      let url = globalThis.window.location.href;
+  if (globalThis.window && paramName) {
+    const url = globalThis.window.location.href;
 
-      paramName = paramName.replace(/[\[\]]/g, '\\$&');
-      const regex = new RegExp('[?&#]' + paramName + '(=([^&#]*)|&|#|$)');
-      let results = regex.exec(url);
-      if (!results) return null;
-      if (!results[2]) return null;
-      return decodeURIComponent(results[2].replace(/\+/g, ' '));
-   }
+    paramName = paramName.replace(/[\[\]]/g, "\\$&");
+    const regex = new RegExp("[?&#]" + paramName + "(=([^&#]*)|&|#|$)");
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return null;
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  }
 
-   return null;
+  return null;
 }
 
 /**
@@ -50,24 +50,25 @@ export function getParamValue(paramName: string): string | null {
  * @throws Throws an exception if `fieldValue` is `null` or `undefined`. If `checkEmptyString=true`, throws an exception if string is empty.
  */
 export function checkRequired(
-   fieldName: string,
-   fieldValue: any,
-   checkEmptyString: boolean = true
+  fieldName: string,
+  fieldValue: any,
+  checkEmptyString: boolean = true
 ) {
-   if (fieldValue === null || fieldValue === undefined)
-      throw new ClientError(
-         'missing_required_value',
-         `${fieldName} is a required parameter, cannot be left empty`
-      );
+  if (fieldValue === null || fieldValue === undefined)
+    throw new ClientError(
+      "missing_required_value",
+      `${fieldName} is a required parameter, cannot be left empty`
+    );
 
-   if (
-      checkEmptyString &&
-      (fieldValue === '' || (typeof fieldValue === 'string' && fieldValue.trim() === ''))
-   )
-      throw new ClientError(
-         'missing_required_value',
-         `${fieldName} is a required parameter, cannot be left empty`
-      );
+  if (
+    checkEmptyString &&
+    (fieldValue === "" ||
+      (typeof fieldValue === "string" && fieldValue.trim() === ""))
+  )
+    throw new ClientError(
+      "missing_required_value",
+      `${fieldName} is a required parameter, cannot be left empty`
+    );
 }
 
 /**
@@ -79,20 +80,20 @@ export function checkRequired(
  * @throws Throws an exception if `fieldValue` is not an array. If `checkEmptyArray=true`, throws an exception if array is empty.
  */
 export function arrayRequired(
-   fieldName: string,
-   fieldValue: any,
-   checkEmptyArray: boolean = false
+  fieldName: string,
+  fieldValue: any,
+  checkEmptyArray: boolean = false
 ) {
-   checkRequired(fieldName, fieldValue, false);
+  checkRequired(fieldName, fieldValue, false);
 
-   if (!Array.isArray(fieldValue))
-      throw new ClientError('invalid_value', `${fieldName} needs to be an array`);
+  if (!Array.isArray(fieldValue))
+    throw new ClientError("invalid_value", `${fieldName} needs to be an array`);
 
-   if (checkEmptyArray && fieldValue.length === 0)
-      throw new ClientError(
-         'emtpy_array',
-         `${fieldName} needs to be an array with at least one entry`
-      );
+  if (checkEmptyArray && fieldValue.length === 0)
+    throw new ClientError(
+      "emtpy_array",
+      `${fieldName} needs to be an array with at least one entry`
+    );
 }
 
 /**
@@ -103,14 +104,24 @@ export function arrayRequired(
  * @param {any} checkPositive Flag to check whether the number is positive or not
  * @throws Throws an exception if `fieldValue` is not an integer. If `checkPositive=true`, throws an exception if `fieldValue<=0`.
  */
-export function integerRequired(fieldName: string, fieldValue: any, checkPositive: boolean = true) {
-   checkRequired(fieldName, fieldValue, false);
+export function integerRequired(
+  fieldName: string,
+  fieldValue: any,
+  checkPositive: boolean = true
+) {
+  checkRequired(fieldName, fieldValue, false);
 
-   if (!Number.isInteger(fieldValue))
-      throw new ClientError('invalid_value', `${fieldName} needs to be an integer`);
+  if (!Number.isInteger(fieldValue))
+    throw new ClientError(
+      "invalid_value",
+      `${fieldName} needs to be an integer`
+    );
 
-   if (checkPositive && fieldValue <= 0)
-      throw new ClientError('invalid_value', `${fieldName} needs to be a positive integer`);
+  if (checkPositive && fieldValue <= 0)
+    throw new ClientError(
+      "invalid_value",
+      `${fieldName} needs to be a positive integer`
+    );
 }
 
 /**
@@ -121,12 +132,19 @@ export function integerRequired(fieldName: string, fieldValue: any, checkPositiv
  * @param {any} checkArray Flag to check whether the object is an array or not
  * @throws Throws an exception if `fieldValue` is not an object. If `checkArray=true`, throws an exception if `fieldValue` is also not an Array.
  */
-export function objectRequired(fieldName: string, fieldValue: any, checkArray: boolean = false) {
-   checkRequired(fieldName, fieldValue, false);
+export function objectRequired(
+  fieldName: string,
+  fieldValue: any,
+  checkArray: boolean = false
+) {
+  checkRequired(fieldName, fieldValue, false);
 
-   if (typeof fieldValue !== 'object')
-      throw new ClientError('invalid_value', `${fieldName} needs to be an object`);
+  if (typeof fieldValue !== "object")
+    throw new ClientError(
+      "invalid_value",
+      `${fieldName} needs to be an object`
+    );
 
-   if (Array.isArray(fieldValue) && checkArray)
-      throw new ClientError('invalid_value', `${fieldName} needs to be an array`);
+  if (Array.isArray(fieldValue) && checkArray)
+    throw new ClientError("invalid_value", `${fieldName} needs to be an array`);
 }

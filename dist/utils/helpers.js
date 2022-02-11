@@ -30,10 +30,10 @@ exports.normalizeUrl = normalizeUrl;
  */
 function getParamValue(paramName) {
     if (globalThis.window && paramName) {
-        let url = globalThis.window.location.href;
+        const url = globalThis.window.location.href;
         paramName = paramName.replace(/[\[\]]/g, '\\$&');
         const regex = new RegExp('[?&#]' + paramName + '(=([^&#]*)|&|#|$)');
-        let results = regex.exec(url);
+        const results = regex.exec(url);
         if (!results)
             return null;
         if (!results[2])

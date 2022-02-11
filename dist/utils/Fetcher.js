@@ -24,9 +24,9 @@ const ClientError_1 = require("./ClientError");
 const INVALID_SESSION_TOKEN = 'invalid_session_token';
 const MISSING_SESSION_TOKEN = 'missing_session_token';
 /**
- * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization.
+ * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization. The client library uses [cross-fetch](https://www.npmjs.com/package/cross-fetch) under the hood to make requests to you app's execution environment.
  *
- * When creating the client if apiKey is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
+ * When creating the client if `apiKey` is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
  *
  * Similarly, if there is an active user session, Fetcher also adds the session token to a **Session** header and sends it in all RESTful API requests to your backend app.
  * @export
@@ -34,9 +34,9 @@ const MISSING_SESSION_TOKEN = 'missing_session_token';
  */
 class Fetcher {
     /**
-     *Creates an instance of Fetcher.
+     * Creates an instance of Fetcher.
      * @param {string} restUrl The base URL that will be prepended to all RESTful API calls
-     * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the execution environment
+     * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the app's execution environment
      */
     constructor(apiClient, restUrl, headers) {
         _Fetcher_instances.add(this);
@@ -126,15 +126,33 @@ class Fetcher {
     getBaseUrl() {
         return this.restUrl;
     }
+    /**
+     *
+     * @param path
+     * @param body
+     * @param query
+     * @param headers
+     * @param progressCallback
+     * @returns
+     */
+    /**
+     * Uploads a file using `XMLHttpRequest` object instead of fetcher in order to track upload progress and call a callback function.
+     * @param {string} path The path of the request that will be appended to the {restUrl}
+     * @param {any} body The body of the request
+     * @param {KeyValuePair} query Query string parameters as key:value pair object
+     * @param {KeyValuePair} headers Additional request headers that will be sent with the request
+     * @param {any} progressCallback Callback function that will be called during file upload to inform the progres
+     * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then a *single JSON object* providing information about the uploaded file is returned and the *errors* object is marked as `null`.
+     */
     upload(path, body, query = {}, headers = {}, progressCallback = null) {
         return new Promise((resolve, reject) => {
-            //Check the path format
+            // Check the path format
             if (!path || !path.trim().startsWith('/'))
                 throw new ClientError_1.ClientError('invalid_request_path', "A valid request path with a leading slash '/' needs to be specified e.g., /path");
-            //Get the body of the request in the right format
-            let requestBody = undefined;
-            //Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
-            //we will not have the FormData object by default
+            // Get the body of the request in the right format
+            let requestBody;
+            // Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
+            // we will not have the FormData object by default
             if (typeof FormData !== 'undefined' && body instanceof FormData) {
                 requestBody = body;
             }
@@ -142,10 +160,10 @@ class Fetcher {
                 requestBody = new FormData();
                 requestBody.append('file', body);
             }
-            //Create the request object
+            // Create the request object
             const xhr = new XMLHttpRequest();
-            //Build query parameters string
-            let queryString = Object.keys(query || {}).reduce((previousValue, key) => {
+            // Build query parameters string
+            const queryString = Object.keys(query || {}).reduce((previousValue, key) => {
                 let value = query ? query[key] : '';
                 value = value !== null && value !== void 0 ? value : '';
                 if (typeof value === 'object') {
@@ -165,8 +183,8 @@ class Fetcher {
                 if (xhr.status === 200)
                     resolve({ data: JSON.parse(xhr.response), errors: null });
                 else {
-                    //Error response
-                    let errResp = JSON.parse(xhr.response);
+                    // Error response
+                    const errResp = JSON.parse(xhr.response);
                     if ((errResp === null || errResp === void 0 ? void 0 : errResp.errors) &&
                         Array.isArray(errResp.errors) &&
                         errResp.errors.find((entry) => entry.code === INVALID_SESSION_TOKEN || entry.code === MISSING_SESSION_TOKEN)) {
@@ -191,19 +209,18 @@ class Fetcher {
             xhr.onerror = (event) => {
                 reject(event);
             };
-            //Listen for upload progress events
+            // Listen for upload progress events
             xhr.upload.onprogress = (event) => {
                 if (progressCallback && typeof progressCallback === 'function' && event.total)
-                    progressCallback(event.loaded, event.total, parseInt(((event.loaded / event.total) * 100).toFixed()));
+                    progressCallback(event.loaded, event.total, parseInt(((event.loaded / event.total) * 100).toFixed(), 10));
             };
-            //Open and send the request
+            // Open and send the request
             xhr.open('POST', this.restUrl + path.trim() + queryString);
-            //Set the headers of the request. Browser will set the content type to the correct value,
-            //we should not have a content type entry in headers for request with FormData body.
-            let headersObj = Object.assign(Object.assign({}, this.headers), (headers || {}));
-            let keys = Object.keys(headersObj);
-            for (let i = 0; i < keys.length; i++) {
-                const key = keys[i];
+            // Set the headers of the request. Browser will set the content type to the correct value,
+            // we should not have a content type entry in headers for request with FormData body.
+            const headersObj = Object.assign(Object.assign({}, this.headers), (headers || {}));
+            const keys = Object.keys(headersObj);
+            for (const key of keys) {
                 if (key.trim().toLowerCase() !== 'content-type') {
                     xhr.setRequestHeader(key, headersObj[key]);
                 }
@@ -216,15 +233,15 @@ exports.Fetcher = Fetcher;
 _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_handleRequest(method, path, query, headers, body, resolveType = 'json') {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
-            //Check the path format
+            // Check the path format
             if (!path || !path.trim().startsWith('/'))
                 throw new ClientError_1.ClientError('invalid_request_path', "A valid request path with a leading slash '/' needs to be specified e.g., /path");
-            //Get the body of the request in the right format
-            let requestBody = undefined;
+            // Get the body of the request in the right format
+            let requestBody;
             if (body) {
                 let isFormDataBody = false;
-                //Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
-                //we will not have the FormData object by default
+                // Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
+                // we will not have the FormData object by default
                 if (typeof FormData !== 'undefined' && body instanceof FormData) {
                     requestBody = body;
                     isFormDataBody = true;
@@ -237,7 +254,7 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                     isFormDataBody = true;
                 }
                 else {
-                    //For everthing else we assume JSON format
+                    // For everthing else we assume JSON format
                     try {
                         requestBody = JSON.stringify(body);
                         if (!headers)
@@ -245,24 +262,23 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                         headers['Content-Type'] = 'application/json';
                     }
                     catch (err) {
-                        //Seems not a json document, directly set the contents to the body, maybe it is binary body data (e.g., file upload)
+                        // Seems not a json document, directly set the contents to the body, maybe it is binary body data (e.g., file upload)
                         requestBody = body;
                     }
                 }
-                //Browser will set the content type to the correct value, we should not have a content type entry in headers
-                //for request with FormData body
+                // Browser will set the content type to the correct value, we should not have a content type entry in headers
+                // for request with FormData body
                 if (headers && isFormDataBody) {
-                    let keys = Object.keys(headers);
-                    for (let i = 0; i < keys.length; i++) {
-                        const key = keys[i];
+                    const keys = Object.keys(headers);
+                    for (const key of keys) {
                         if (key.trim().toLowerCase() === 'content-type') {
                             delete headers[key];
                         }
                     }
                 }
             }
-            //Build query parameters string
-            let queryString = Object.keys(query || {}).reduce((previousValue, key) => {
+            // Build query parameters string
+            const queryString = Object.keys(query || {}).reduce((previousValue, key) => {
                 let value = query ? query[key] : '';
                 value = value !== null && value !== void 0 ? value : '';
                 if (typeof value === 'object') {
@@ -279,11 +295,11 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                     return `?${key}=${encodeURIComponent(value)}`;
             }, '');
             (0, cross_fetch_1.default)(this.restUrl + path.trim() + queryString, {
-                method: method,
+                method,
                 headers: Object.assign(Object.assign({}, this.headers), (headers || {})),
                 body: requestBody,
             }).then((response) => __awaiter(this, void 0, void 0, function* () {
-                //Success reponse
+                // Success reponse
                 if (response.ok) {
                     try {
                         if (resolveType === 'json') {
@@ -303,8 +319,8 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                     }
                 }
                 else {
-                    //Error response
-                    let errResp = yield response.json();
+                    // Error response
+                    const errResp = yield response.json();
                     if ((errResp === null || errResp === void 0 ? void 0 : errResp.errors) &&
                         Array.isArray(errResp.errors) &&
                         errResp.errors.find((entry) => entry.code === INVALID_SESSION_TOKEN ||
@@ -327,26 +343,11 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                     });
                 }
             }), (error) => {
-                //If there is a network error or another reason why the HTTP request couldn't be fulfilled,
-                //the fetch() promise will be rejected with a reference to that error.
+                // If there is a network error or another reason why the HTTP request couldn't be fulfilled,
+                // the fetch() promise will be rejected with a reference to that error.
                 return reject(error);
             });
         });
     });
 };
-function progressHandler(event) {
-    // alert("hete");
-    let text = 'Uploaded ' + event.loaded + ' bytes of ' + event.total;
-    var percent = (event.loaded / event.total) * 100;
-    console.log('***progress', text, percent);
-}
-function completeHandler(event) {
-    console.log('completed');
-}
-function errorHandler(event) {
-    console.log('error');
-}
-function abortHandler(event) {
-    console.log('abort');
-}
 //# sourceMappingURL=Fetcher.js.map

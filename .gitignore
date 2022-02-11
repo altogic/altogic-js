@@ -41,6 +41,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+#ignore compiled code
+/dist
+
 # TypeScript v1 declaration files
 typings/
 
@@ -80,6 +83,7 @@ typings/
 
 # Nuxt.js build / generate output
 .nuxt
+dist
 
 # Gatsby files
 .cache/

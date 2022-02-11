@@ -26,7 +26,7 @@ export declare class ClientError extends Error {
      */
     details?: object;
     /**
-     *Creates an instance of ClientError.
+     * Creates an instance of ClientError.
      * @param {string} code Specific short code of the error message
      * @param {string} message Short description of the error
      * @param {object} [details] Any additional details about the error

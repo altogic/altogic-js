@@ -1,1 +1,1 @@
-{"version":3,"file":"APIBase.js","sourceRoot":"","sources":["../src/APIBase.ts"],"names":[],"mappings":";;;AAEA;;;;;GAKG;AACH,MAAa,OAAO;IAQjB;;;OAGG;IACH,YAAY,OAAgB;QACzB,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC1B,CAAC;CACH;AAfD,0BAeC"}
+{"version":3,"file":"APIBase.js","sourceRoot":"","sources":["../src/APIBase.ts"],"names":[],"mappings":";;;AAEA;;;;;;;GAOG;AACH,MAAa,OAAO;IAQjB;;;OAGG;IACH,YAAY,OAAgB;QACzB,IAAI,CAAC,OAAO,GAAG,OAAO,CAAC;IAC1B,CAAC;CACH;AAfD,0BAeC"}

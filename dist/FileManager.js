@@ -36,7 +36,7 @@ const DEFAULT_FILE_OPTIONS = {
  */
 class FileManager extends APIBase_1.APIBase {
     /**
-     * Creates an instance of FileManager to manage a specific bucket of your cloud storage
+     * Creates an instance of FileManager to manage a specific bucket of your cloud storage.
      * @param {string} bucketNameOfId The name or id of the bucket that this file is contained in
      * @param {string} fileNameOrId The name of id of the file that this file manager will be operating on
      * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
@@ -59,8 +59,9 @@ class FileManager extends APIBase_1.APIBase {
         __classPrivateFieldSet(this, _FileManager_fileNameOrId, fileNameOrId, "f");
     }
     /**
-     * Check if the file exists. It returns false if bucket does not exist, .
+     * Check if the file exists. It returns false if file does not exist.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns true if file exists, false otherwise
      */
     exists() {
@@ -74,6 +75,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Gets information about the file.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns basic file metadata informaton.
      */
     getInfo() {
@@ -87,6 +89,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Sets the default privacy of the file to **true**.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns the updated file information
      */
     makePublic() {
@@ -100,6 +103,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Sets the default privacy of the file to **false**.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns the updated file information
      */
     makePrivate() {
@@ -113,6 +117,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Downloads the file.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns the contents of the file in a `Blob`
      */
     download() {
@@ -125,6 +130,8 @@ class FileManager extends APIBase_1.APIBase {
     }
     /**
      * Renames the file.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newName The new name of the file.
      * @throws Throws an exception if `newName` is not specified
      * @returns Returns the updated file information
@@ -133,7 +140,7 @@ class FileManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('new file name', newName);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/rename`, {
-                newName: newName,
+                newName,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });
@@ -142,13 +149,14 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Duplicates an existing file within the same bucket.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} duplicateName The new duplicate file name. If not specified, uses the `fileName` as template and ensures the duplicated file name to be unique in its bucket.
      * @returns Returns the new duplicate file information
      */
     duplicate(duplicateName) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/duplicate`, {
-                duplicateName: duplicateName,
+                duplicateName,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });
@@ -156,10 +164,12 @@ class FileManager extends APIBase_1.APIBase {
     }
     /**
      * Deletes the file from the bucket.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      */
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/delete`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/delete`, {
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });
@@ -167,8 +177,11 @@ class FileManager extends APIBase_1.APIBase {
         });
     }
     /**
-     * Replaces an existing file with another. It keeps the name of the file but replaces file contents, encoding and mime-type with the newly uploaded file info.
+     * Replaces an existing file with another. It keeps the name of the file but replaces file contents, size, encoding and mime-type with the newly uploaded file info.
      *
+     * If `onProgress` callback function is defined in {@link FileUploadOptions}, it periodically calls this function to inform about upload progress. Please note that for the moment **`onProgress` callback function can only be used in clients where `XMLHttpRequest` object is available (e.g., browsers).**
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} fileBody The body of the new file that will be used to replace the existing file
      * @param {FileOptions} options Content type and privacy setting of the new file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
      * @throws Throws an exception if `fileBody` is not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
@@ -180,14 +193,23 @@ class FileManager extends APIBase_1.APIBase {
             if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
                 (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
                 (typeof File !== 'undefined' && fileBody instanceof File)) {
-                return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/replace-formdata`, fileBody, {
-                    file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
-                    bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
-                    options: Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options),
-                });
+                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+                    return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/replace-formdata`, fileBody, {
+                        bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
+                        file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
+                        options: Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined }),
+                    }, null, options.onProgress);
+                }
+                else {
+                    return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/replace-formdata`, fileBody, {
+                        bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
+                        file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
+                        options: Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined }),
+                    });
+                }
             }
             else {
-                let optionsVal = Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options);
+                const optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
                 if (!optionsVal.contentType) {
                     throw new ClientError_1.ClientError('missing_content_type', "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
                 }
@@ -202,6 +224,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Moves the file to another bucket. The file will be removed from its current bucket and will be moved to its new bucket. If there already exists a file with the same name in destination bucket, it ensures the moved file name to be unique in its new destination.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to move the file into.
      * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the moved file information
@@ -210,7 +233,7 @@ class FileManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('moved bucket name or id', bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/move`, {
-                bucketNameOrId: bucketNameOrId,
+                bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });
@@ -219,6 +242,7 @@ class FileManager extends APIBase_1.APIBase {
     /**
      * Copies the file to another bucket. If there already exists a file with the same name in destination bucket, it ensures the copied file name to be unique in its new destination.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to copy the file into.
      * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the copied file information
@@ -227,7 +251,7 @@ class FileManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('copied bucket name or id', bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/copy`, {
-                bucketNameOrId: bucketNameOrId,
+                bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });

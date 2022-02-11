@@ -29,6 +29,17 @@ const ClientError_1 = require("./utils/ClientError");
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
+ * There are several modifiers (e.g., filter, lookup, omit, sort, limit, page) that you can use to build your queries. For convenience, these modifiers can be chained to build complex queries. As an example, assuming that you have a userOrders model where you keep orders of your users, you can create the following query by chaining multiple modifiers to get the first 100 orders with basket size greater than 50 and sorted by orderDate descending.
+ * ```
+ * const { data, errors } = await altogic.db
+ *    .model('userOrders')
+ *    .filter('basketSize > 50')
+ *    .sort('orderDate', 'desc')
+ *    .limit(100)
+ *    .page(1)
+ *    .get();
+ * ```
+ *
  * @export
  * @class QueryBuilder
  */
@@ -76,7 +87,7 @@ class QueryBuilder extends APIBase_1.APIBase {
     /**
      * Sets the query expression for selecting/filtering data from your app's database.
      *
-     * If multiple filter method calls are chained then the last one overwrites the previous filters
+     * If multiple filter method calls are chained then the last one overwrites the previous filters.
      *
      * ### Expressions
      *
@@ -302,7 +313,7 @@ class QueryBuilder extends APIBase_1.APIBase {
     /**
      * Paginates to the specified page number. In combination with {@link limit}, primarily used to paginate through your data.
      *
-     * If multiple page method calls are chained then the last one overwrites the previous page values
+     * If multiple page method calls are chained then the last one overwrites the previous page values.
      * @param {number} pageNumber An integer that specifies the page number
      * @throws Throws an exception if `pageNumber` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -315,7 +326,7 @@ class QueryBuilder extends APIBase_1.APIBase {
     /**
      * Limits the max number of objects returned from the database, namely defines the page size for pagination. In combination with {@link page}, primarily used to paginate through your data. Even if you do not specify a limit in your database queries, Altogic automatically limits the number of objects returned from the database by setting the default limits.
      *
-     * If multiple limit method calls are chained then the last one overwrites the previous limit values
+     * If multiple limit method calls are chained then the last one overwrites the previous limit values.
      * @param {number} limitCount An integer that specifies the max number of objects to return
      * @throws Throws an exception if `limitCount` is not specified or `limitCount=0`
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -349,7 +360,7 @@ class QueryBuilder extends APIBase_1.APIBase {
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *
-     * If multiple omit method calls are chained then each call is concatenated to a list
+     * If multiple omit method calls are chained then each call is concatenated to a list.
      * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
      * @throws Throws an exception if no omitted fields is specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
@@ -393,7 +404,7 @@ class QueryBuilder extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.objectRequired)('create values', values);
             return yield this.fetcher.post(`/_api/rest/v1/db/create`, {
-                values: values,
+                values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
@@ -426,9 +437,9 @@ class QueryBuilder extends APIBase_1.APIBase {
             (0, helpers_1.objectRequired)('set values', values);
             (0, helpers_1.checkRequired)('set parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/set`, {
-                values: values,
-                parentId: parentId,
-                returnTop: returnTop,
+                values,
+                parentId,
+                returnTop,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
@@ -461,9 +472,9 @@ class QueryBuilder extends APIBase_1.APIBase {
             (0, helpers_1.objectRequired)('append values', values);
             (0, helpers_1.checkRequired)('append parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/append`, {
-                values: values,
-                parentId: parentId,
-                returnTop: returnTop,
+                values,
+                parentId,
+                returnTop,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
@@ -490,7 +501,7 @@ class QueryBuilder extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/db/get-list`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
-                returnCountInfo: returnCountInfo,
+                returnCountInfo,
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
         });
@@ -578,7 +589,7 @@ class QueryBuilder extends APIBase_1.APIBase {
             (0, helpers_1.integerRequired)('count', count);
             return yield this.fetcher.post(`/_api/rest/v1/db/get-random`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
-                count: count,
+                count,
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
         });
@@ -607,14 +618,14 @@ class QueryBuilder extends APIBase_1.APIBase {
             if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
                 throw new ClientError_1.ClientError('missing_filter_query', `The update method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update`, {
-                values: values,
+                values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });
         });
     }
     /**
-     * Updates the objects matching the query using the input {@link FieldUpdate} instructions. See table below for applicable modifiers that can be used with this method.
+     * Updates the objects matching the query using the input {@link FieldUpdate} instruction(s). See table below for applicable modifiers that can be used with this method.
      *
      * | Modifier | Chained with updateFields? |
      * | :--- | :--- |
@@ -627,17 +638,22 @@ class QueryBuilder extends APIBase_1.APIBase {
      * | sort |   |
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {FieldUpdate} fieldUpdates List of update instructions
+     * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
      * @throws Throws an exception if `fieldUpdates` is not specified
      * @returns Returns information about the update operation
      */
     updateFields(fieldUpdates) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.arrayRequired)('fieldUpdates', fieldUpdates);
+            (0, helpers_1.objectRequired)('fieldUpdates', fieldUpdates);
+            let updates = null;
+            if (Array.isArray(fieldUpdates))
+                updates = fieldUpdates;
+            else
+                updates = [fieldUpdates];
             if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
                 throw new ClientError_1.ClientError('missing_filter_query', `The updateFields method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
-                updates: fieldUpdates,
+                updates,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
             });

@@ -26,6 +26,15 @@ const APIBase_1 = require("./APIBase");
 const helpers_1 = require("./utils/helpers");
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
+ *
+ * You are free to design the way to authenticate your users and manage sessions in Altogic through defining your custom services. However, by default Altogic provides three methods to manage user accounts through the client library.
+ *
+ * 1. **Email and password based account management:** This is the default authentication method and it requires email address validation. You can customize to enable/disable email confirmations, use your own SMTP server to send email (by default signup email confirmation emails are sent from noreply@mail.app.altogic.com domain) and define your email templates.
+ * 2. **Phone number and password based account management:** You can also allow your uses to sign up using their phone numbers and validate these phone numbers by sending a validation code through SMS. In order to use this method of authentication, you need to configure the SMS provider. Altogic currently supports Twilio, MessageBird, and Vonage for sending SMS messages.
+ * 3. **Authentication through 3rd party Oauth providers** such as Google, Facebook, Twitter, GitHub, Discord: This method enables to run the oauth flow of specific provider in your front-end applications. In order to use this method you need to make specific configuration at the provider to retrieve client id and client secret.
+ *
+ * To use any of the above authentication methods you need to configure your app authentication settings. You can customize these settings in Altogic desigler under **App Settings/Authentication**.
+ *
  * @export
  * @class AuthManager
  */
@@ -66,7 +75,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getSession() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            let session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('session');
+            const session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('session');
             return session ? JSON.parse(session) : null;
         }
         else
@@ -78,7 +87,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUser() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            let user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('user');
+            const user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('user');
             return user ? JSON.parse(user) : null;
         }
         else
@@ -124,21 +133,21 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('email', email);
             (0, helpers_1.checkRequired)('password', password);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-email', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-email', {
                 email,
                 password,
                 name,
             });
             if (errors)
-                return { user: null, session: null, errors: errors };
-            //In case the email confirmation is disabled in app settings then Altogic returns the user and session data,
-            //otherwise the session and user data will be null, since the user has to first confirm the email address
+                return { user: null, session: null, errors };
+            // In case the email confirmation is disabled in app settings then Altogic returns the user and session data,
+            // otherwise the session and user data will be null, since the user has to first confirm the email address
             if (data.session) {
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
                 this.fetcher.setSession(data.session);
             }
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -147,7 +156,7 @@ class AuthManager extends APIBase_1.APIBase {
      * If phone number confirmation is **enabled** in your app authentication settings then a confirmation code SMS will be sent to the phone and this method will return the user data and a `null` session. Until the user validates this code by calling {@link verifyPhone}, the phone number will not be verified. If a user tries to signIn to an account where phone number has not been confirmed yet, an error message will be retured asking for phone number verification.
      *
      * If phone number confirmation is **disabled**, a newly created session object and the user data will be returned.
-     * @param {string} phone Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
+     * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string} name Name of the user
      * @throws Throws an exception if `phone` or `password` is not specified
@@ -156,21 +165,21 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('phone', phone);
             (0, helpers_1.checkRequired)('password', password);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-phone', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-phone', {
                 phone,
                 password,
                 name,
             });
             if (errors)
-                return { user: null, session: null, errors: errors };
-            //In case the phone number confirmation is disabled in app settings then Altogic returns the user and session data,
-            //otherwise the session and user data will be null, since the user has to first confirm the phone number
+                return { user: null, session: null, errors };
+            // In case the phone number confirmation is disabled in app settings then Altogic returns the user and session data,
+            // otherwise the session and user data will be null, since the user has to first confirm the phone number
             if (data.session) {
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
                 this.fetcher.setSession(data.session);
             }
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -188,16 +197,16 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('email', email);
             (0, helpers_1.checkRequired)('password', password);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-email', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-email', {
                 email,
                 password,
             });
             if (errors)
-                return { user: null, session: null, errors: errors };
+                return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
             this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -213,16 +222,16 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('phone', phone);
             (0, helpers_1.checkRequired)('password', password);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-phone', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-phone', {
                 phone,
                 password,
             });
             if (errors)
-                return { user: null, session: null, errors: errors };
+                return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
             this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -240,13 +249,13 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('phone', phone);
             (0, helpers_1.checkRequired)('code', code);
-            let { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code}&phone=${encodeURIComponent(phone)}`);
             if (errors)
-                return { user: null, session: null, errors: errors };
+                return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
             this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -272,12 +281,12 @@ class AuthManager extends APIBase_1.APIBase {
     signOut(sessionToken) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                let { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout', {
+                const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout', {
                     token: sessionToken,
                 });
-                //Get current session
-                let session = this.getSession();
-                //Clear local user and session data if we are signing out from current session or signed out session token matches with current session token
+                // Get current session
+                const session = this.getSession();
+                // Clear local user and session data if we are signing out from current session or signed out session token matches with current session token
                 if (!errors && (!sessionToken || (session && sessionToken === session.token))) {
                     __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                     this.fetcher.clearSession();
@@ -296,8 +305,8 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all');
-            //Clear local user and session data
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all');
+            // Clear local user and session data
             if (!errors) {
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                 this.fetcher.clearSession();
@@ -312,7 +321,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAllExceptCurrent() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
             return { errors };
         });
     }
@@ -323,8 +332,8 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getAllSessions() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/sessions');
-            return { sessions: data, errors: errors };
+            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/sessions');
+            return { sessions: data, errors };
         });
     }
     /**
@@ -334,8 +343,8 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUserFromDB() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/user');
-            return { user: data, errors: errors };
+            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/user');
+            return { user: data, errors };
         });
     }
     /**
@@ -350,11 +359,11 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('newPassword', newPassword);
             (0, helpers_1.checkRequired)('oldPassword', oldPassword);
-            let { errors } = yield this.fetcher.post('/_api/rest/v1/auth/change-pwd', {
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/change-pwd', {
                 newPassword,
                 oldPassword,
             });
-            return { errors: errors };
+            return { errors };
         });
     }
     /**
@@ -366,15 +375,15 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getAuthGrant(accessToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            let tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)('access_token');
+            const tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)('access_token');
             (0, helpers_1.checkRequired)('accessToken', tokenStr);
-            let { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr}`);
+            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr}`);
             if (errors)
-                return { user: null, session: null, errors: errors };
+                return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
             this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
     /**
@@ -385,8 +394,8 @@ class AuthManager extends APIBase_1.APIBase {
     resendVerificationEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('email', email);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email}`);
-            return { errors: errors };
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email}`);
+            return { errors };
         });
     }
     /**
@@ -403,8 +412,8 @@ class AuthManager extends APIBase_1.APIBase {
     sendMagicLinkEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('email', email);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email}`);
-            return { errors: errors };
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email}`);
+            return { errors };
         });
     }
     /**
@@ -412,7 +421,7 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * This method works only if email confirmation is **enabled** in your app authentication settings and the user's email address has already been verified.
      *
-     * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect action=reset-password in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
+     * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-password` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
@@ -421,8 +430,8 @@ class AuthManager extends APIBase_1.APIBase {
     sendResetPwdEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('email', email);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email}`);
-            return { errors: errors };
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email}`);
+            return { errors };
         });
     }
     /**
@@ -439,8 +448,8 @@ class AuthManager extends APIBase_1.APIBase {
     sendSignInCode(phone) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('phone', phone);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-code?phone=${encodeURIComponent(phone)}`);
-            return { errors: errors };
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-code?phone=${encodeURIComponent(phone)}`);
+            return { errors };
         });
     }
     /**
@@ -453,10 +462,10 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('accessToken', accessToken);
             (0, helpers_1.checkRequired)('newPassword', newPassword);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken}`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken}`, {
                 newPassword,
             });
-            return { errors: errors };
+            return { errors };
         });
     }
     /**
@@ -475,11 +484,11 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('currentPassword', currentPassword);
             (0, helpers_1.checkRequired)('newEmail', newEmail);
-            let { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/change-email`, {
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/change-email`, {
                 currentPassword,
                 newEmail,
             });
-            return { user: data, errors: errors };
+            return { user: data, errors };
         });
     }
     /**
@@ -494,13 +503,13 @@ class AuthManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('phone', phone);
             (0, helpers_1.checkRequired)('code', code);
-            let { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code}&phone=${encodeURIComponent(phone)}`);
             if (errors)
-                return { user: null, session: null, errors: errors };
+                return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
             this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors: errors };
+            return { user: data.user, session: data.session, errors };
         });
     }
 }

@@ -1,9 +1,9 @@
 import { AltogicClient } from '../AltogicClient';
 import { KeyValuePair, Session, APIError } from '../types';
 /**
- * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization.
+ * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization. The client library uses [cross-fetch](https://www.npmjs.com/package/cross-fetch) under the hood to make requests to you app's execution environment.
  *
- * When creating the client if apiKey is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
+ * When creating the client if `apiKey` is specified in {@link ClientOptions}, Fetcher adds the provided apiKey to an **Authorization** header and sends it in all RESTful API requests to your backend app.
  *
  * Similarly, if there is an active user session, Fetcher also adds the session token to a **Session** header and sends it in all RESTful API requests to your backend app.
  * @export
@@ -37,9 +37,9 @@ export declare class Fetcher {
      */
     protected session: Session | null;
     /**
-     *Creates an instance of Fetcher.
+     * Creates an instance of Fetcher.
      * @param {string} restUrl The base URL that will be prepended to all RESTful API calls
-     * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the execution environment
+     * @param {KeyValuePair} headers The default headers that will be sent in each RESTful API request to the app's execution environment
      */
     constructor(apiClient: AltogicClient, restUrl: string, headers: KeyValuePair);
     /**
@@ -109,6 +109,24 @@ export declare class Fetcher {
      * @returns string
      */
     getBaseUrl(): string;
+    /**
+     *
+     * @param path
+     * @param body
+     * @param query
+     * @param headers
+     * @param progressCallback
+     * @returns
+     */
+    /**
+     * Uploads a file using `XMLHttpRequest` object instead of fetcher in order to track upload progress and call a callback function.
+     * @param {string} path The path of the request that will be appended to the {restUrl}
+     * @param {any} body The body of the request
+     * @param {KeyValuePair} query Query string parameters as key:value pair object
+     * @param {KeyValuePair} headers Additional request headers that will be sent with the request
+     * @param {any} progressCallback Callback function that will be called during file upload to inform the progres
+     * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then a *single JSON object* providing information about the uploaded file is returned and the *errors* object is marked as `null`.
+     */
     upload(path: string, body: any, query?: KeyValuePair | null, headers?: KeyValuePair | null, progressCallback?: any): Promise<{
         data: any | null;
         errors: APIError | null;

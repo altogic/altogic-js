@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.APIBase = void 0;
 /**
- * The database manager allows you manage your applications data. With DatabaseManager you can create new objects in your data model, update or delete existing ones, run complex queries and paginate over large data sets.
+ * The base class where all manager classes are derived from.
+ *
+ * All manager classes interact with your app backend through the RESTful API and uses a {@link Fetcher} object. This base class keeps a reference to this fetcher object, and any class that is inherited from this base can use it.
  *
  * @export
  * @class DatabaseManager

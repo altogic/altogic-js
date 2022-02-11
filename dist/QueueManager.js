@@ -13,11 +13,11 @@ exports.QueueManager = void 0;
 const APIBase_1 = require("./APIBase");
 const helpers_1 = require("./utils/helpers");
 /**
- * The cache manager allows different parts of your application to communicate and perform activities asynchronously.
+ * The queue manager allows different parts of your application to communicate and perform activities asynchronously.
  *
  * A message queue provides a buffer that temporarily stores messages and dispatches them to their consuming service. The messages are usually small, and can be things like requests, replies or error messages, etc.
  *
- * Typically you submit messages to a queue in your backend app services using the **Submit Message to Queue** node. However, with Altogic's client API by calling the {@link submitMessage} method, you can manually send messages to your selected queue for processing.
+ * Typically, in Altogic, you submit messages to a queue in your backend app services using the **Submit Message to Queue** node. However, with Altogic's client API by calling the {@link submitMessage} method, you can manually send messages to your selected queue for processing.
  *
  * @export
  * @class QueueManager
@@ -33,7 +33,7 @@ class QueueManager extends APIBase_1.APIBase {
     /**
      * Submits a message to the specified message queue for asychronous processing. After the message is submitted, the routed service defined in your message queue configuration is invoked. This routed service processes the input message and performs necessary tasks defined in its service flow.
      *
-     * The structure of the message (e.g., key-value pairs) is defined by the Start Node of your queue service.
+     * The structure of the message (e.g., key-value pairs) is defined by the *Start Node* of your queue service.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} queueNameOrId The name or id of the message queue.
@@ -45,15 +45,15 @@ class QueueManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('queueNameOrId', queueNameOrId);
             (0, helpers_1.objectRequired)('message', message);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
                 queueNameOrId,
                 message,
             });
-            return { info: data, errors: errors };
+            return { info: data, errors };
         });
     }
     /**
-     * Gets the latest status of the message. The last seven days message logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for MessageInfo.
+     * Gets the latest status of the message. The last seven days task execution logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for {@link MessageInfo}.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} messageId The id of the message
@@ -63,8 +63,8 @@ class QueueManager extends APIBase_1.APIBase {
     getMessageStatus(messageId) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('messageId', messageId);
-            let { data, errors } = yield this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
-            return { info: data, errors: errors };
+            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
+            return { info: data, errors };
         });
     }
 }

@@ -9,7 +9,7 @@ function polyfillGlobalThis() {
         return;
     try {
         Object.defineProperty(Object.prototype, '__magic__', {
-            get: function () {
+            get() {
                 return this;
             },
             configurable: true,

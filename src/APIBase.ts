@@ -1,4 +1,4 @@
-import { Fetcher } from './utils/Fetcher';
+import { Fetcher } from "./utils/Fetcher";
 
 /**
  * The base class where all manager classes are derived from.
@@ -9,18 +9,18 @@ import { Fetcher } from './utils/Fetcher';
  * @class DatabaseManager
  */
 export class APIBase {
-   /**
-    * The http client to make RESTful API calls to the application's execution engine
-    * @protected
-    * @type {Fetcher}
-    */
-   protected fetcher: Fetcher;
+  /**
+   * The http client to make RESTful API calls to the application's execution engine
+   * @protected
+   * @type {Fetcher}
+   */
+  protected fetcher: Fetcher;
 
-   /**
-    * Creates an instance of base class to access services exposed by Altogic
-    * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
-    */
-   constructor(fetcher: Fetcher) {
-      this.fetcher = fetcher;
-   }
+  /**
+   * Creates an instance of base class to access services exposed by Altogic
+   * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
+   */
+  constructor(fetcher: Fetcher) {
+    this.fetcher = fetcher;
+  }
 }

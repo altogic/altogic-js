@@ -19,7 +19,7 @@ const ClientError_1 = require("./utils/ClientError");
  *
  * You store your files, documents, images etc. under buckets, which are the basic containers that hold your application data. You typically create a bucket and upload files/objects to this bucket.
  *
- * When you deploy your app to an environment Altogic creates a default bucket called `root`. The `root` bucket helps you to group your app files that are not under any other bucket. An file upload, which does not specify a bucket, is uploaded to the `root` bucket.
+ * When you deploy your app to an environment Altogic creates a default bucket called `root`. The `root` bucket helps you to group your app files that are not under any other bucket. Any file upload, which does not specify a bucket, is uploaded to the `root` bucket.
  *
  * You cannot rename or delete `root` bucket, but you can empty its contents and change its default privacy setting. By default the files contained in `root` bucket is publicly accessible through their URLs. You can change the default privacy setting of the `root` bucket using the {@link BucketManager.makePublic} or {@link BucketManager.makePrivate} methods.
  *
@@ -40,7 +40,7 @@ class StorageManager extends APIBase_1.APIBase {
      *
      * Buckets are the basic containers that hold your application data (i.e., files). Everything that you store in your app storage must be contained in a bucket. You can use buckets to organize your data and control access to your data, but unlike directories and folders, you cannot nest buckets.
      *
-     * Algotic automatically provides a default **`root`** bucket where you can store your files. You can pretty much do everthing with the **`root`** bucket that you can do with a normal bucket except you cannot delete or rename it.
+     * Altogic automatically provides a default **`root`** bucket where you can store your files. You can pretty much do everthing with the **`root`** bucket that you can do with a normal bucket except you cannot delete or rename it.
      *
      * @param {string} nameOrId The name or id of the bucket.
      * @throws Throws an exception if `nameOrId` not specified
@@ -55,6 +55,7 @@ class StorageManager extends APIBase_1.APIBase {
      *
      * Files can be specified as **public** or **private**, which defines how the public URL of the file will behave. If a file is marked as private then external apps/parties will not be able to access it through its public URL. With `isPublic` parameter of a bucket, you can specify default privacy setting of the files contained in this bucket, meaning that when you add a file to a bucket and if the file did not specify public/private setting, then the the bucket's privacy setting will be applied. You can always override the default privacy setting of a bucket at the individual file level.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
      * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
      * @throws Throws an exception if `name` not specified
@@ -70,7 +71,7 @@ class StorageManager extends APIBase_1.APIBase {
         });
     }
     /**
-     * Gets the list of buckets matching the query expression. If query `expression` is specified, it runs the specified filter query to narrow down returned results, otherwise, returns all buckets contained in your app's cloud storage. You can use the following bucket fields in your query expressions.
+     * Gets the list of buckets in your app cloud storage. If query `expression` is specified, it runs the specified filter query to narrow down returned results, otherwise, returns all buckets contained in your app's cloud storage. You can use the following bucket fields in your query expressions.
      *
      * | Field name | Type | Desciption |
      * | :--- | :--- | :--- |
@@ -82,6 +83,7 @@ class StorageManager extends APIBase_1.APIBase {
      *
      * You can paginate through your buckets and sort them using the input {@link BucketListOptions} parameter.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The query expression string that will be used to filter buckets
      * @param {BucketListOptions} options Options to configure how buckets will be listed, primarily used to set pagination and sorting settings
      * @throws Throws an exception (in case `expression` or `options` is specified) if `expression` is not a string or `options` is not an object
@@ -122,6 +124,7 @@ class StorageManager extends APIBase_1.APIBase {
     /**
      * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns information about your app's cloud storage
      */
     getStats() {
@@ -130,7 +133,7 @@ class StorageManager extends APIBase_1.APIBase {
         });
     }
     /**
-     * Gets the list of files matching the search expression across all buckets. You can use the following file fields in your search expression.
+     * Gets the list of files matching the search expression. This method performs a global search across all the files contained in all the buckets. You can use the following file fields in your search expression.
      *
      * | Field name | Type | Description
      * | :--- | :--- | :--- |
@@ -147,6 +150,7 @@ class StorageManager extends APIBase_1.APIBase {
      *
      * You can paginate through your files and sort them using the input {@link FileListOptions} parameter.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The search expression string that will be used to filter file objects
      * @param {FileListOptions} options Pagination and sorting options
      * @throws Throws an exception if `expression` is not specified or `options` (if specified) is not an object

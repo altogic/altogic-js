@@ -9,7 +9,7 @@ exports.ClientError = void 0;
  */
 class ClientError extends Error {
     /**
-     *Creates an instance of ClientError.
+     * Creates an instance of ClientError.
      * @param {string} code Specific short code of the error message
      * @param {string} message Short description of the error
      * @param {object} [details] Any additional details about the error

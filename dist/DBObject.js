@@ -33,7 +33,11 @@ const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
- * If id is provided when creatign an instance, you can use {@link get}, {@link update}, {@link delete} and {@link updateFields} methods. If no id specified in constructor, you can use {@link create}, {@link set}, and {@link append} methods to create a new object in the database. {@link create} method is used to creat a top-level object, which does not have any parent, in the database. {@link set} method is used to set the value of an `object` field of a parent object and finally {@link append} is used to add a child object to an `object-list` field of a parent object.
+ * If id is provided when creatign an instance, you can use {@link get}, {@link update}, {@link delete} and {@link updateFields} methods. If no id specified in constructor, you can use {@link create}, {@link set}, and {@link append} methods to create a new object in the database.
+ *
+ * {@link create} method is used to creat a top-level object, which does not have any parent. {@link set} method is used to set the value of an `object` field of a parent object and finally {@link append} is used to add a child object to an `object-list` field of a parent object.
+ *
+ * Since both {@link set} and {@link append} operate on a sub-model or sub-model list object respectively, you need to pass a `parentId` as an input parameter.
  * @export
  * @class DBObject
  */
@@ -93,7 +97,7 @@ class DBObject extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('create values', values, false);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/create`, {
-                values: values,
+                values,
                 options: Object.assign(Object.assign({}, DEFAULT_CREATE_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),
@@ -117,10 +121,10 @@ class DBObject extends APIBase_1.APIBase {
             (0, helpers_1.checkRequired)('set values', values, false);
             (0, helpers_1.checkRequired)('set parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/set`, {
-                values: values,
+                values,
                 options: Object.assign(Object.assign({}, DEFAULT_SET_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
-                parentId: parentId,
+                parentId,
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),
             });
         });
@@ -142,10 +146,10 @@ class DBObject extends APIBase_1.APIBase {
             (0, helpers_1.checkRequired)('append values', values, false);
             (0, helpers_1.checkRequired)('append parentId', parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/append`, {
-                values: values,
+                values,
                 options: Object.assign(Object.assign({}, DEFAULT_APPEND_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
-                parentId: parentId,
+                parentId,
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),
             });
         });
@@ -175,14 +179,14 @@ class DBObject extends APIBase_1.APIBase {
      * @param {object} values An object that contains the fields and their values to update in the database
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
      * @throws Throws an exception if `id` of db object or `values` is not specified
-     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.
+     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     update(values, options) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('update id', __classPrivateFieldGet(this, _DBObject_id, "f"));
             (0, helpers_1.objectRequired)('update values', values);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/update`, {
-                values: values,
+                values,
                 options: Object.assign(Object.assign({}, DEFAULT_UPDATE_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),
@@ -190,20 +194,25 @@ class DBObject extends APIBase_1.APIBase {
         });
     }
     /**
-     * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instructions.
+     * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instruction(s).
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {FieldUpdate} fieldUpdates List of update instructions
+     * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
      * @throws Throws an exception if `id` of db object or `fieldUpdates` is not specified
-     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model object, it returns the updated top-level object.
+     * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     updateFields(fieldUpdates, options) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('update id', __classPrivateFieldGet(this, _DBObject_id, "f"));
-            (0, helpers_1.arrayRequired)('fieldUpdates', fieldUpdates);
+            (0, helpers_1.objectRequired)('fieldUpdates', fieldUpdates);
+            let updates = null;
+            if (Array.isArray(fieldUpdates))
+                updates = fieldUpdates;
+            else
+                updates = [fieldUpdates];
             return yield this.fetcher.post(`/_api/rest/v1/db/object/update-fields`, {
-                updates: fieldUpdates,
+                updates,
                 options: Object.assign(Object.assign({}, DEFAULT_UPDATE_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),

@@ -15,7 +15,7 @@ const helpers_1 = require("./utils/helpers");
 /**
  * The task manager allows you to manually trigger service executions of your scheduled tasks which actually ran periodically at fixed times, dates, or intervals.
  *
- * Typically, a scheduled tasks runs according to its defined execution schedule. However, with Altogic's client API by calling the {@link runOnce} method, you can manually run scheduled tasks ahead of their actual execution schedule.
+ * Typically, a scheduled task runs according to its defined execution schedule. However, with Altogic's client API by calling the {@link runOnce} method, you can manually run scheduled tasks ahead of their actual execution schedule.
  *
  * @export
  * @class TaskManager
@@ -39,14 +39,14 @@ class TaskManager extends APIBase_1.APIBase {
     runOnce(taskNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('taskNameOrId', taskNameOrId);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
                 taskNameOrId,
             });
-            return { info: data, errors: errors };
+            return { info: data, errors };
         });
     }
     /**
-     * Gets the latest status of the task.
+     * Gets the latest status of the task. The last seven days message logs are kept. If you try to get the status of a task that has been triggered earlier, this method returns `null` for {@link TaskInfo}.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} taskId The id of the task
@@ -56,8 +56,8 @@ class TaskManager extends APIBase_1.APIBase {
     getTaskStatus(taskId) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('taskId', taskId);
-            let { data, errors } = yield this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
-            return { info: data, errors: errors };
+            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
+            return { info: data, errors };
         });
     }
 }

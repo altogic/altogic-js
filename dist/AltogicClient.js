@@ -35,30 +35,33 @@ const DEFAULT_OPTIONS = {
  * AltogicClient is the main object that you will be using to issue commands to your backend apps. The commands that you can run are grouped below:
  * * {@link auth}: {@link AuthManager} - Manage users and user sessions
  * * {@link endpoint}: {@link EndpointManager} - Make http requests to your app endpoints and execute associated services
- * * {@link db}: {@link DatabaseManager} - Perform CRUD (including filtering, sorting, pagination, lookup) operations in your app database
- * * {@link queue}: {@link QueueManager} - Enables you to perform long-running jobs asynchronously by submitting messages to queues
- * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer
+ * * {@link db}: {@link DatabaseManager} - Perform CRUD (including lookups, filtering, sorting, pagination) operations in your app database
+ * * {@link queue}: {@link QueueManager} - Enables you to run long-running jobs asynchronously by submitting messages to queues
+ * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer (Redis)
  * * {@link task}: {@link TaskManager} - Manually trigger execution of scheduled tasks (e.g., cron jobs)
+ *
+ * Each AltogicClient can interact with one of your app environments (e.g., development, test, production). You cannot create a single client to interact with multiple development, test or production environments at the same time. If you would like to issue commands to other environments, you need to create additional AltogicClient objects using the target environment's `envUrl`.
+ *
  * @export
  * @class AltogicClient
  */
 class AltogicClient {
     /**
      * Create a new client for web applications.
-     * @param {string} baseUrl The unique app environment base URL which is automatically generated when you create an environment for your backend app
-     * @param  {string} clientKey The client library key of the app
+     * @param {string} envUrl The unique app environment base URL which is generated when you create an environment (e.g., development, test, production) for your backend app. You can access `envUrl` of your app environment from the Environments panel in Altogic designer. Note that, an AltogicClient object can only access a single app environment, you cannot use a development environment `envUrl` to access a test or production environment. To access other environments you need to create additional Altogic client objects with their respective `envUrl` values.
+     * @param  {string} clientKey The client library key of the app. You can create client keys from the **App Settings/Client Library** panel in Altogic designer. Besides authenticating your client, client keys are also used to define the authorization rights of each client, e.g., what operations they are allowed to perform on your backend app and define the authorized domains where the client key can be used (e.g., if you list your app domains in your client key configuration, that client key can only be used to make calls to your backend from a front-end app that runs on those specific domains)
      * @param {ClientOptions} [options] Configuration options for the api client
-     * @throws Throws an exception if `baseUrl` is not specified or not a valid URL path
+     * @throws Throws an exception if `envUrl` is not specified or not a valid URL path or `clientKey` is not specified
      */
-    constructor(baseUrl, clientKey, options) {
+    constructor(envUrl, clientKey, options) {
         /**
-         * HTTP client for the browser, Node or React Native.
+         * HTTP client for the browser, Node or React Native. Primarily used to make RESTful API calls you your backend app. Each command that issue through the client library uses the fetcher to relay it to your backend app.
          * @private
          * @type {Fetcher}
          */
         _AltogicClient_fetcher.set(this, void 0);
         /**
-         * AuthManager object is used to manage user authentications and sessions
+         * AuthManager object is used to manage user authentication and sessions
          * @type {AuthManager}
          */
         _AltogicClient_authManager.set(this, void 0);
@@ -68,7 +71,7 @@ class AltogicClient {
          */
         _AltogicClient_epManager.set(this, void 0);
         /**
-         * CacheManager object is used to store and manage objects in cache
+         * CacheManager object is used to store and manage objects in Redis cache
          * @type {CacheManager}
          */
         _AltogicClient_cacheManager.set(this, void 0);
@@ -78,28 +81,27 @@ class AltogicClient {
          */
         _AltogicClient_queueManager.set(this, void 0);
         /**
-         * TaskManager object is used to trigger execution of scheduled tasks (e.g., cron jobs)
+         * TaskManager object is used to trigger execution of scheduled tasks (e.g., cron jobs) manually
          * @type {TaskManager}
          */
         _AltogicClient_taskManager.set(this, void 0);
         /**
-         * DatabaseManager object is used to perform CRUD (create, read, update and delete) and complex query operations in your app's database
+         * DatabaseManager object is used to perform CRUD (create, read, update and delete) and run queries in your app's database
          * @type {DatabaseManager}
          */
         _AltogicClient_databaseManager.set(this, void 0);
         /**
-         * StorageManager object is used to manage the buckets and files your app cloud storage
+         * StorageManager object is used to manage the buckets and files of your app's cloud storage
          * @type {StorageManager}
          */
         _AltogicClient_storageManager.set(this, void 0);
-        if (!baseUrl ||
-            !(baseUrl.trim().startsWith('https://') || baseUrl.trim().startsWith('http://')))
-            throw new ClientError_1.ClientError('missing_required_value', 'baseUrl is a required parameter and needs to start with https://');
-        //Client key is also required
+        if (!envUrl || !(envUrl.trim().startsWith('https://') || envUrl.trim().startsWith('http://')))
+            throw new ClientError_1.ClientError('missing_required_value', 'envUrl is a required parameter and needs to start with https://');
+        // Client key is also required
         (0, helpers_1.checkRequired)('clientKey', clientKey);
         if (typeof clientKey !== 'string')
             throw new ClientError_1.ClientError('invalid_client_key', 'clientKey needs to be a valid key string');
-        //Initialize internal objects
+        // Initialize internal objects
         __classPrivateFieldSet(this, _AltogicClient_authManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_epManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_cacheManager, null, "f");
@@ -107,20 +109,20 @@ class AltogicClient {
         __classPrivateFieldSet(this, _AltogicClient_taskManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_databaseManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_storageManager, null, "f");
-        //Create combination of default and custom options
+        // Create combination of default and custom options
         this.settings = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
-        //Set the default headers
+        // Set the default headers
         const headers = {
             'X-Client': 'altogic-js',
             'X-Client-Key': clientKey,
         };
-        //If apiKey is provided, add it to the default headers
+        // If apiKey is provided, add it to the default headers
         if (this.settings.apiKey)
             headers.Authorization = this.settings.apiKey;
-        //Create the http client to manage RESTful API calls
-        __classPrivateFieldSet(this, _AltogicClient_fetcher, new Fetcher_1.Fetcher(this, (0, helpers_1.normalizeUrl)(baseUrl), headers), "f");
-        //If there is current session info stored in local storage get it an update fetcher session info
-        let session = this.auth.getSession();
+        // Create the http client to manage RESTful API calls
+        __classPrivateFieldSet(this, _AltogicClient_fetcher, new Fetcher_1.Fetcher(this, (0, helpers_1.normalizeUrl)(envUrl), headers), "f");
+        // If there is current session info stored in local storage get it an update fetcher session info
+        const session = this.auth.getSession();
         __classPrivateFieldGet(this, _AltogicClient_fetcher, "f").setSession(session);
     }
     /**
@@ -150,7 +152,7 @@ class AltogicClient {
         }
     }
     /**
-     * Returns the cache manager which is used to store and manage objects in cache.
+     * Returns the cache manager which is used to store and manage objects in Redis cache.
      * @readonly
      * @type {CacheManager}
      */
@@ -189,7 +191,7 @@ class AltogicClient {
         }
     }
     /**
-     * Returns the database manager, which is used to perform CRUD (create, read, update and delete) and complex query operations in your app's database.
+     * Returns the database manager, which is used to perform CRUD (create, read, update and delete) and run queries in your app's database.
      * @readonly
      * @type {DatabaseManager}
      */

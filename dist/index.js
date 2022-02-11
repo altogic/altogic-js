@@ -30,7 +30,7 @@ Object.defineProperty(exports, "FileManager", { enumerable: true, get: function 
 const Fetcher_1 = require("./utils/Fetcher");
 Object.defineProperty(exports, "Fetcher", { enumerable: true, get: function () { return Fetcher_1.Fetcher; } });
 const polyfills_1 = require("./utils/polyfills");
-//Make globalThis available
+// Make globalThis available
 (0, polyfills_1.polyfillGlobalThis)();
 /**
  * Creates a new client to interact with your backend application developed in Altogic. You need to specify the `envUrl` and `clientKey` to create a new client object. You can create a new environment or access your app `envUrl` from the **Environments** view and create a new `clientKey` from **App Settings/Client library** view in Altogic designer.

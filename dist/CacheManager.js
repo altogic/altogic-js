@@ -13,11 +13,11 @@ exports.CacheManager = void 0;
 const APIBase_1 = require("./APIBase");
 const helpers_1 = require("./utils/helpers");
 /**
- * The cache manager provides simple key-value storage at a high-speed data storage layer speeding up data set and get operations.
+ * The cache manager provides simple key-value storage at a high-speed data storage layer (Redis) speeding up data set and get operations.
  *
  * The values stored can be a single JSON object, an array of objects or primitive values (e.g., numbes, text, boolean). Values can be stored with an optional time-to-live (TTL) to automatically expire entries.
  *
- * You can directly store primitive values such as integers, strings, etc., however, when you try to get them Altogic returns them wrapped in a simple object with a key named `value`. As an example if you store a text field "Hello world!" at a key named 'welcome', when you try to get the value of this key using the {@link get} method, you will receive the following response: { value: "Hellow World"}.
+ * You can directly store primitive values such as integers, strings, etc., however, when you try to get them Altogic returns them wrapped in a simple object with a key named `value`. As an example if you store a text field "Hello world!" at a key named 'welcome', when you try to get the value of this key using the {@link get} method, you will receive the following response: { value: "Hellow world"}.
  *
  * @export
  * @class CacheManager
@@ -56,7 +56,7 @@ class CacheManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('key', key);
             (0, helpers_1.checkRequired)('value', value, false);
-            let { errors } = yield this.fetcher.post('/_api/rest/v1/cache', {
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache', {
                 key,
                 value,
                 ttl: ttl ? ttl : undefined,
@@ -74,7 +74,7 @@ class CacheManager extends APIBase_1.APIBase {
     delete(key) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('key', key);
-            let { errors } = yield this.fetcher.delete(`/_api/rest/v1/cache?key=${key}`);
+            const { errors } = yield this.fetcher.delete(`/_api/rest/v1/cache?key=${key}`);
             return { errors };
         });
     }
@@ -91,7 +91,7 @@ class CacheManager extends APIBase_1.APIBase {
     increment(key, increment = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('key', key);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/increment', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/increment', {
                 key,
                 increment,
                 ttl: ttl ? ttl : undefined,
@@ -112,7 +112,7 @@ class CacheManager extends APIBase_1.APIBase {
     decrement(key, decrement = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('key', key);
-            let { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/decrement', {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/decrement', {
                 key,
                 decrement,
                 ttl: ttl ? ttl : undefined,
@@ -132,7 +132,7 @@ class CacheManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.checkRequired)('key', key);
             (0, helpers_1.checkRequired)('ttl', ttl);
-            let { errors } = yield this.fetcher.post('/_api/rest/v1/cache/expire', {
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache/expire', {
                 key,
                 ttl,
             });

@@ -56,6 +56,7 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Check if the bucket exists.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @returns Returns true if bucket exists, false otherwise
      */
     exists() {
@@ -70,23 +71,26 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Gets information about the bucket. If `detailed=true`, it provides additional information about the total number of files contained, their overall total size in bytes, average, min and max file size in bytes etc.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {boolean} detailed Specifies whether to get detailed bucket statistics or not
      * @returns Returns basic bucket metadata informaton. If `detailed=true` provides additional information about contained files.
      */
     getInfo(detailed = false) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/get`, {
-                detailed: detailed,
+                detailed,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
         });
     }
     /**
      * Removes all objects (e.g., files) inside the bucket. This method does not delete the bucket itself. If you also want to delete the bucket, including all its contained objects, you can use {@link delete} method.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      */
     empty() {
         return __awaiter(this, void 0, void 0, function* () {
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/empty`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/empty`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
             return { errors };
@@ -94,6 +98,8 @@ class BucketManager extends APIBase_1.APIBase {
     }
     /**
      * Renames the bucket.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newName The new name of the bucket. `root` is a reserved name and cannot be used.
      * @throws Throws an exception if `newName` is not specified or `newName='root'`
      * @returns Returns the updated bucket information
@@ -104,20 +110,22 @@ class BucketManager extends APIBase_1.APIBase {
             if (newName === 'root')
                 throw new ClientError_1.ClientError('invalid_operation', "'root' is a reserved name and cannot be used to rename a bucket.");
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/rename`, {
-                newName: newName,
+                newName,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
         });
     }
     /**
      * Deletes the bucket and all objects (e.g., files) inside the bucket.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @throws Throws an exception if bucket is `root`
      */
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
             if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === 'root')
                 throw new ClientError_1.ClientError('invalid_operation', "'root' bucket cannot be deleted.");
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
             return { errors };
@@ -126,13 +134,14 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Sets the default privacy of the bucket to **true**. You may also choose to make the contents of the bucket publicly readable by specifying `includeFiles=true`. This will automatically set `isPublic=true` for every file in the bucket.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {boolean} includeFiles Specifies whether to make each file in the bucket public.
      * @returns Returns the updated bucket information
      */
     makePublic(includeFiles = false) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/make-public`, {
-                includeFiles: includeFiles,
+                includeFiles,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
         });
@@ -140,19 +149,20 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Sets the default privacy of the bucket to **false**. You may also choose to make the contents of the bucket private by specifying `includeFiles=true`. This will automatically set `isPublic=false` for every file in the bucket.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {boolean} includeFiles Specifies whether to make each file in the bucket private.
      * @returns Returns the updated bucket information
      */
     makePrivate(includeFiles = false) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/make-private`, {
-                includeFiles: includeFiles,
+                includeFiles,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
         });
     }
     /**
-     * Gets the list of files matching the query expression. If query `expression` is specified, it runs the specified filter query to narrow down returned results, otherwise, returns all files contained in the bucket. You can use the following file fields in your query expressions.
+     * Gets the list of files stored in the bucket. If query `expression` is specified, it runs the specified filter query to narrow down returned results, otherwise, returns all files contained in the bucket. You can use the following file fields in your query expressions.
      *
      * | Field name | Type | Description
      * | :--- | :--- | :--- |
@@ -169,6 +179,7 @@ class BucketManager extends APIBase_1.APIBase {
      *
      * You can paginate through your files and sort them using the input {@link FileListOptions} parameter.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The query expression string that will be used to filter file objects
      * @param {FileListOptions} options Pagination and sorting options
      * @throws Throws an exception if `expression` is not a string or `options` is not an object
@@ -202,9 +213,12 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Uploads a file to an existing bucket. If there already exists a file with the same name in destination bucket, it ensures the uploaded file name to be unique in its bucket.
      *
+     * If `onProgress` callback function is defined in {@link FileUploadOptions}, it periodically calls this function to inform about upload progress. Please note that for the moment **`onProgress` callback function can only be used in clients where `XMLHttpRequest` object is available (e.g., browsers).**
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} fileName The name of the file e.g., *filename.jpg*
      * @param {string} fileBody The body of the file that will be stored in the bucket
-     * @param {FileOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
+     * @param {FileUploadOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
      * @throws Throws an exception if `fileName` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
      * @returns Returns the metadata of the uploaded file
      */
@@ -231,7 +245,7 @@ class BucketManager extends APIBase_1.APIBase {
                 }
             }
             else {
-                let optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
+                const optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
                 if (!optionsVal.contentType) {
                     throw new ClientError_1.ClientError('missing_content_type', "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
                 }
@@ -257,14 +271,15 @@ class BucketManager extends APIBase_1.APIBase {
     /**
      * Deletes multiple files identified either by their names or ids.
      *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string[]} fileNamesOrIds Array of name or ids of the files to delete
      * @throws Throws an exception if no file name or id is specified
      */
     deleteFiles(fileNamesOrIds) {
         return __awaiter(this, void 0, void 0, function* () {
             (0, helpers_1.arrayRequired)('array of file names/ids', fileNamesOrIds, true);
-            let { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete-files`, {
-                fileNamesOrIds: fileNamesOrIds,
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete-files`, {
+                fileNamesOrIds,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
             return { errors };

@@ -115,12 +115,12 @@ export interface Session {
  */
 export interface ClientOptions {
     /**
-     * The unique app environment API Key which needs to be created using the Altogic app designer. The `apiKey`is passed in *Authorization Header* when making RESTful API calls to your app endpoints. This key is different than the `clientKey` used when creating an instance of Altogic client library. `clientKey` is primarily used to manage access rigths of the client library whereas `apiKey` is used to manage access to your app endoints.
+     * The unique app environment API Key which needs to be created using the Altogic app designer. The `apiKey`is passed in *Authorization Header* when making RESTful API calls to your app endpoints. This key is different than the `clientKey` used when creating an instance of Altogic client library. `clientKey` is primarily used to manage access rigths of the client library whereas `apiKey` is used to manage access to your app endpoints.
      * @type {string}
      */
     apiKey?: string;
     /**
-     * Client storage handler to store user and session data. By default uses Window.localStorage of the browser. If client is not a browser then you need to provide an object with setItem(key:string, data:object), getItem(key:string) and removeItem(key:string) methods to manage user and session data storage
+     * Client storage handler to store user and session data. By default uses Window.localStorage of the browser. If client is not a browser then you need to provide an object with setItem(key:string, data:object), getItem(key:string) and removeItem(key:string) methods to manage user and session data storage.
      * @type Storage
      */
     localStorage?: ClientStorage;
@@ -233,6 +233,10 @@ export interface MessageInfo {
      * @type {string}
      */
     status: 'pending' | 'processing' | 'completed' | 'errors';
+    /**
+     * Provides information about the errors occurred during processing of the message
+     * @type {object}
+     */
     errors: object;
 }
 /**
@@ -276,6 +280,10 @@ export interface TaskInfo {
      * @type {string}
      */
     status: 'pending' | 'processing' | 'completed' | 'errors';
+    /**
+     * Provides information about the errors occurred during execution of the task
+     * @type {object}
+     */
     errors: object;
 }
 /**
@@ -685,10 +693,18 @@ export interface FileUploadOptions {
      */
     contentType: string;
     /**
-     * Specifies whether file is publicy accessible or not. Defaults to `true`.
+     * Specifies whether file is publicy accessible or not. Defaults to the bucket's privacy setting if not specified.
      * @type {boolean}
      */
     isPublic: boolean;
+    /**
+     * Callback function to call during file upload.
+     *
+     * **For the moment, this method can only be used in clients where `XMLHttpRequest` object is available (e.g., browsers).**
+     * @param uploaded Total bytes uploaded
+     * @param total Total size of file in bytes
+     * @param percentComplete Percent uploaded (an integer between 0-100), basicly `uploaded/total` rounded to the nearest integer
+     */
     onProgress(uploaded: number, total: number, percentComplete: number): any;
 }
 //# sourceMappingURL=types.d.ts.map
