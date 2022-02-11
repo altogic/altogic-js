@@ -4,10 +4,6 @@ tslint.json
 .prettierrc
 .gitignore
 CHANGELOG.md
-
-# Dependency directories
 node_modules
-# Documentation directory
 docs
-# npm package lock
 package-lock.json
