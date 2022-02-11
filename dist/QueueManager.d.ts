@@ -1,6 +1,6 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { APIError, MessageInfo } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { APIError, MessageInfo } from "./types";
 /**
  * The queue manager allows different parts of your application to communicate and perform activities asynchronously.
  *

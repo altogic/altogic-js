@@ -26,7 +26,7 @@ const APIBase_1 = require("./APIBase");
 const helpers_1 = require("./utils/helpers");
 const ClientError_1 = require("./utils/ClientError");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: 'text/plain;charset=UTF-8',
+    contentType: "text/plain;charset=UTF-8",
 };
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
@@ -125,7 +125,7 @@ class FileManager extends APIBase_1.APIBase {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/download`, {
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
-            }, null, null, 'blob');
+            }, null, null, "blob");
         });
     }
     /**
@@ -138,7 +138,7 @@ class FileManager extends APIBase_1.APIBase {
      */
     rename(newName) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('new file name', newName);
+            (0, helpers_1.checkRequired)("new file name", newName);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/rename`, {
                 newName,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -189,11 +189,11 @@ class FileManager extends APIBase_1.APIBase {
      */
     replace(fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('fileBody', fileBody);
-            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
-                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
-                (typeof File !== 'undefined' && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            (0, helpers_1.checkRequired)("fileBody", fileBody);
+            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
+                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
+                (typeof File !== "undefined" && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/replace-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                         file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -211,13 +211,13 @@ class FileManager extends APIBase_1.APIBase {
             else {
                 const optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
                 if (!optionsVal.contentType) {
-                    throw new ClientError_1.ClientError('missing_content_type', "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
+                    throw new ClientError_1.ClientError("missing_content_type", "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
                 }
                 return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/replace-object`, fileBody, {
                     file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                     bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                     options: optionsVal,
-                }, { 'Content-Type': optionsVal.contentType });
+                }, { "Content-Type": optionsVal.contentType });
             }
         });
     }
@@ -231,7 +231,7 @@ class FileManager extends APIBase_1.APIBase {
      */
     moveTo(bucketNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('moved bucket name or id', bucketNameOrId);
+            (0, helpers_1.checkRequired)("moved bucket name or id", bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/move`, {
                 bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -249,7 +249,7 @@ class FileManager extends APIBase_1.APIBase {
      */
     copyTo(bucketNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('copied bucket name or id', bucketNameOrId);
+            (0, helpers_1.checkRequired)("copied bucket name or id", bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/copy`, {
                 bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),

@@ -16,7 +16,7 @@ class ClientError extends Error {
      */
     constructor(code, message, details) {
         super(message);
-        this.origin = 'client_error';
+        this.origin = "client_error";
         this.code = code;
         this.message = message;
         this.details = details;

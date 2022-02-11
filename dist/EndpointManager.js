@@ -42,8 +42,8 @@ class EndpointManager extends APIBase_1.APIBase {
      */
     get(path, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('path', path);
-            return yield this.fetcher.get(path, queryParams, headers, resolveType || 'json');
+            (0, helpers_1.checkRequired)("path", path);
+            return yield this.fetcher.get(path, queryParams, headers, resolveType || "json");
         });
     }
     /**
@@ -60,8 +60,8 @@ class EndpointManager extends APIBase_1.APIBase {
      */
     post(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('path', path);
-            return yield this.fetcher.post(path, body, queryParams, headers, resolveType || 'json');
+            (0, helpers_1.checkRequired)("path", path);
+            return yield this.fetcher.post(path, body, queryParams, headers, resolveType || "json");
         });
     }
     /**
@@ -78,8 +78,8 @@ class EndpointManager extends APIBase_1.APIBase {
      */
     put(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('path', path);
-            return yield this.fetcher.put(path, body, queryParams, headers, resolveType || 'json');
+            (0, helpers_1.checkRequired)("path", path);
+            return yield this.fetcher.put(path, body, queryParams, headers, resolveType || "json");
         });
     }
     /**
@@ -96,8 +96,8 @@ class EndpointManager extends APIBase_1.APIBase {
      */
     delete(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('path', path);
-            return yield this.fetcher.delete(path, body, queryParams, headers, resolveType || 'json');
+            (0, helpers_1.checkRequired)("path", path);
+            return yield this.fetcher.delete(path, body, queryParams, headers, resolveType || "json");
         });
     }
 }

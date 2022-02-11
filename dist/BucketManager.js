@@ -27,7 +27,7 @@ const helpers_1 = require("./utils/helpers");
 const ClientError_1 = require("./utils/ClientError");
 const FileManager_1 = require("./FileManager");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: 'text/plain;charset=UTF-8',
+    contentType: "text/plain;charset=UTF-8",
 };
 /**
  * BucketManager is primarily used to manage a bucket and its contents (e.g., files, documents, images). Using the {@link StorageManager.bucket} method, you can create a BucketManager instance for a specific bucket identified by its unique name or id.
@@ -61,7 +61,7 @@ class BucketManager extends APIBase_1.APIBase {
      */
     exists() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === 'root')
+            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === "root")
                 return { data: true, errors: null };
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/exists`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
@@ -106,9 +106,9 @@ class BucketManager extends APIBase_1.APIBase {
      */
     rename(newName) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('new bucket name', newName);
-            if (newName === 'root')
-                throw new ClientError_1.ClientError('invalid_operation', "'root' is a reserved name and cannot be used to rename a bucket.");
+            (0, helpers_1.checkRequired)("new bucket name", newName);
+            if (newName === "root")
+                throw new ClientError_1.ClientError("invalid_operation", "'root' is a reserved name and cannot be used to rename a bucket.");
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/rename`, {
                 newName,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
@@ -123,8 +123,8 @@ class BucketManager extends APIBase_1.APIBase {
      */
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === 'root')
-                throw new ClientError_1.ClientError('invalid_operation', "'root' bucket cannot be deleted.");
+            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === "root")
+                throw new ClientError_1.ClientError("invalid_operation", "'root' bucket cannot be deleted.");
             const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
@@ -190,18 +190,18 @@ class BucketManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === 'string')
+                if (typeof expression === "string")
                     expVal = expression;
-                else if (typeof expression === 'object')
+                else if (typeof expression === "object")
                     optionsVal = expression;
                 else
-                    throw new ClientError_1.ClientError('invalid_value', `File listing expression needs to be a string`);
+                    throw new ClientError_1.ClientError("invalid_value", `File listing expression needs to be a string`);
             }
             if (options) {
-                if (typeof options === 'object')
+                if (typeof options === "object")
                     optionsVal = options;
                 else
-                    throw new ClientError_1.ClientError('invalid_value', `File listing options need to be an object`);
+                    throw new ClientError_1.ClientError("invalid_value", `File listing options need to be an object`);
             }
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/list-files`, {
                 expression: expVal,
@@ -224,12 +224,12 @@ class BucketManager extends APIBase_1.APIBase {
      */
     upload(fileName, fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('fileName', fileName);
-            (0, helpers_1.checkRequired)('fileBody', fileBody);
-            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
-                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
-                (typeof File !== 'undefined' && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            (0, helpers_1.checkRequired)("fileName", fileName);
+            (0, helpers_1.checkRequired)("fileBody", fileBody);
+            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
+                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
+                (typeof File !== "undefined" && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                         fileName,
@@ -247,13 +247,13 @@ class BucketManager extends APIBase_1.APIBase {
             else {
                 const optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
                 if (!optionsVal.contentType) {
-                    throw new ClientError_1.ClientError('missing_content_type', "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
+                    throw new ClientError_1.ClientError("missing_content_type", "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
                 }
                 return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/upload-object`, fileBody, {
                     bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                     fileName,
                     options: optionsVal,
-                }, { 'Content-Type': optionsVal.contentType });
+                }, { "Content-Type": optionsVal.contentType });
             }
         });
     }
@@ -265,7 +265,7 @@ class BucketManager extends APIBase_1.APIBase {
      * @returns Returns a new {@link FileManager} object that will be used for managing the file
      */
     file(fileNameOrId) {
-        (0, helpers_1.checkRequired)('file name or id', fileNameOrId);
+        (0, helpers_1.checkRequired)("file name or id", fileNameOrId);
         return new FileManager_1.FileManager(__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"), fileNameOrId, this.fetcher);
     }
     /**
@@ -277,7 +277,7 @@ class BucketManager extends APIBase_1.APIBase {
      */
     deleteFiles(fileNamesOrIds) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.arrayRequired)('array of file names/ids', fileNamesOrIds, true);
+            (0, helpers_1.arrayRequired)("array of file names/ids", fileNamesOrIds, true);
             const { errors } = yield this.fetcher.post(`/_api/rest/v1/storage/bucket/delete-files`, {
                 fileNamesOrIds,
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),

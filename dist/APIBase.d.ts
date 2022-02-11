@@ -1,4 +1,4 @@
-import { Fetcher } from './utils/Fetcher';
+import { Fetcher } from "./utils/Fetcher";
 /**
  * The base class where all manager classes are derived from.
  *

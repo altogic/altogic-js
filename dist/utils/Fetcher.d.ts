@@ -1,5 +1,5 @@
-import { AltogicClient } from '../AltogicClient';
-import { KeyValuePair, Session, APIError } from '../types';
+import { AltogicClient } from "../AltogicClient";
+import { KeyValuePair, Session, APIError } from "../types";
 /**
  * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization. The client library uses [cross-fetch](https://www.npmjs.com/package/cross-fetch) under the hood to make requests to you app's execution environment.
  *
@@ -50,7 +50,7 @@ export declare class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    get(path: string, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
+    get(path: string, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -63,7 +63,7 @@ export declare class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    post(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
+    post(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -76,7 +76,7 @@ export declare class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    put(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
+    put(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -89,7 +89,7 @@ export declare class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    delete(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
+    delete(path: string, body?: FormData | object | null, query?: KeyValuePair | null, headers?: KeyValuePair | null, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;

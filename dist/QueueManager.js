@@ -43,9 +43,9 @@ class QueueManager extends APIBase_1.APIBase {
      */
     submitMessage(queueNameOrId, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('queueNameOrId', queueNameOrId);
-            (0, helpers_1.objectRequired)('message', message);
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
+            (0, helpers_1.checkRequired)("queueNameOrId", queueNameOrId);
+            (0, helpers_1.objectRequired)("message", message);
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/queue", {
                 queueNameOrId,
                 message,
             });
@@ -62,7 +62,7 @@ class QueueManager extends APIBase_1.APIBase {
      */
     getMessageStatus(messageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('messageId', messageId);
+            (0, helpers_1.checkRequired)("messageId", messageId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
             return { info: data, errors };
         });

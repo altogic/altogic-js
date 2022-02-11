@@ -1,6 +1,6 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { APIError } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { APIError } from "./types";
 /**
  * The cache manager provides simple key-value storage at a high-speed data storage layer (Redis) speeding up data set and get operations.
  *

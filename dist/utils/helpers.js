@@ -9,7 +9,7 @@ const ClientError_1 = require("./ClientError");
  * @returns Trailed url string
  */
 function removeTrailingSlash(url) {
-    return url.replace(/\/$/, '');
+    return url.replace(/\/$/, "");
 }
 exports.removeTrailingSlash = removeTrailingSlash;
 /**
@@ -31,14 +31,14 @@ exports.normalizeUrl = normalizeUrl;
 function getParamValue(paramName) {
     if (globalThis.window && paramName) {
         const url = globalThis.window.location.href;
-        paramName = paramName.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&#]' + paramName + '(=([^&#]*)|&|#|$)');
+        paramName = paramName.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp("[?&#]" + paramName + "(=([^&#]*)|&|#|$)");
         const results = regex.exec(url);
         if (!results)
             return null;
         if (!results[2])
             return null;
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
     return null;
 }
@@ -53,10 +53,11 @@ exports.getParamValue = getParamValue;
  */
 function checkRequired(fieldName, fieldValue, checkEmptyString = true) {
     if (fieldValue === null || fieldValue === undefined)
-        throw new ClientError_1.ClientError('missing_required_value', `${fieldName} is a required parameter, cannot be left empty`);
+        throw new ClientError_1.ClientError("missing_required_value", `${fieldName} is a required parameter, cannot be left empty`);
     if (checkEmptyString &&
-        (fieldValue === '' || (typeof fieldValue === 'string' && fieldValue.trim() === '')))
-        throw new ClientError_1.ClientError('missing_required_value', `${fieldName} is a required parameter, cannot be left empty`);
+        (fieldValue === "" ||
+            (typeof fieldValue === "string" && fieldValue.trim() === "")))
+        throw new ClientError_1.ClientError("missing_required_value", `${fieldName} is a required parameter, cannot be left empty`);
 }
 exports.checkRequired = checkRequired;
 /**
@@ -70,9 +71,9 @@ exports.checkRequired = checkRequired;
 function arrayRequired(fieldName, fieldValue, checkEmptyArray = false) {
     checkRequired(fieldName, fieldValue, false);
     if (!Array.isArray(fieldValue))
-        throw new ClientError_1.ClientError('invalid_value', `${fieldName} needs to be an array`);
+        throw new ClientError_1.ClientError("invalid_value", `${fieldName} needs to be an array`);
     if (checkEmptyArray && fieldValue.length === 0)
-        throw new ClientError_1.ClientError('emtpy_array', `${fieldName} needs to be an array with at least one entry`);
+        throw new ClientError_1.ClientError("emtpy_array", `${fieldName} needs to be an array with at least one entry`);
 }
 exports.arrayRequired = arrayRequired;
 /**
@@ -86,9 +87,9 @@ exports.arrayRequired = arrayRequired;
 function integerRequired(fieldName, fieldValue, checkPositive = true) {
     checkRequired(fieldName, fieldValue, false);
     if (!Number.isInteger(fieldValue))
-        throw new ClientError_1.ClientError('invalid_value', `${fieldName} needs to be an integer`);
+        throw new ClientError_1.ClientError("invalid_value", `${fieldName} needs to be an integer`);
     if (checkPositive && fieldValue <= 0)
-        throw new ClientError_1.ClientError('invalid_value', `${fieldName} needs to be a positive integer`);
+        throw new ClientError_1.ClientError("invalid_value", `${fieldName} needs to be a positive integer`);
 }
 exports.integerRequired = integerRequired;
 /**
@@ -101,10 +102,10 @@ exports.integerRequired = integerRequired;
  */
 function objectRequired(fieldName, fieldValue, checkArray = false) {
     checkRequired(fieldName, fieldValue, false);
-    if (typeof fieldValue !== 'object')
-        throw new ClientError_1.ClientError('invalid_value', `${fieldName} needs to be an object`);
+    if (typeof fieldValue !== "object")
+        throw new ClientError_1.ClientError("invalid_value", `${fieldName} needs to be an object`);
     if (Array.isArray(fieldValue) && checkArray)
-        throw new ClientError_1.ClientError('invalid_value', `${fieldName} needs to be an array`);
+        throw new ClientError_1.ClientError("invalid_value", `${fieldName} needs to be an array`);
 }
 exports.objectRequired = objectRequired;
 //# sourceMappingURL=helpers.js.map

@@ -5,10 +5,10 @@ exports.polyfillGlobalThis = void 0;
  * https://mathiasbynens.be/notes/globalthis
  */
 function polyfillGlobalThis() {
-    if (typeof globalThis === 'object')
+    if (typeof globalThis === "object")
         return;
     try {
-        Object.defineProperty(Object.prototype, '__magic__', {
+        Object.defineProperty(Object.prototype, "__magic__", {
             get() {
                 return this;
             },
@@ -20,7 +20,7 @@ function polyfillGlobalThis() {
         delete Object.prototype.__magic__;
     }
     catch (e) {
-        if (typeof self !== 'undefined') {
+        if (typeof self !== "undefined") {
             // @ts-expect-error 'Allow access to globals'
             self.globalThis = self;
         }

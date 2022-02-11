@@ -1,1 +1,1 @@
-{"version":3,"file":"APIBase.d.ts","sourceRoot":"","sources":["../src/APIBase.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,iBAAiB,CAAC;AAE1C;;;;;;;GAOG;AACH,qBAAa,OAAO;IACjB;;;;OAIG;IACH,SAAS,CAAC,OAAO,EAAE,OAAO,CAAC;IAE3B;;;OAGG;gBACS,OAAO,EAAE,OAAO;CAG9B"}
+{"version":3,"file":"APIBase.d.ts","sourceRoot":"","sources":["../src/APIBase.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,OAAO,EAAE,MAAM,iBAAiB,CAAC;AAE1C;;;;;;;GAOG;AACH,qBAAa,OAAO;IAClB;;;;OAIG;IACH,SAAS,CAAC,OAAO,EAAE,OAAO,CAAC;IAE3B;;;OAGG;gBACS,OAAO,EAAE,OAAO;CAG7B"}

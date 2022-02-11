@@ -1,7 +1,7 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { DBObject } from './DBObject';
-import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { DBObject } from "./DBObject";
+import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from "./types";
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -278,7 +278,7 @@ export declare class QueryBuilder extends APIBase {
      * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder;
+    sort(fieldName: string, sortDirection: "asc" | "desc"): QueryBuilder;
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *
@@ -289,23 +289,14 @@ export declare class QueryBuilder extends APIBase {
      */
     omit(...fields: string[]): QueryBuilder;
     /**
-     * Groups the objects of the model by the specified expression. This method is chained with the {@link compute} method to calculated group statistics of your models.
+     * Groups the objects of the model by the specified expression or by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
      *
      * If multiple group method calls are chained then the last one overwrites the previous page values.
-     * @param {string} expression Grouping expression string
-     * @throws Throws an exception if `expression` is not specified or if it is not a string value
+     * @param {[string]} fields Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
+     * @throws Throws an exception if `expression` or `fields` is not specified correctly
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    group(expression: string): QueryBuilder;
-    /**
-     * Groups the objects of the model by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
-     *
-     * If multiple group method calls are chained then the last one overwrites the previous page values.
-     * @param {[string]} fields List of field names that will be used for grouping. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
-     * @throws Throws an exception if `fields` is not specified or if it is not an array of string values
-     * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
-     */
-    group(fields: [string]): QueryBuilder;
+    group(fieldsOrExpression: [string] | string): QueryBuilder;
     /**
      * Creates top level model object(s) in the database. This method ignores all query modifiers except {@link omit}. See table below for applicable modifiers that can be used with this method.
      *

@@ -1,6 +1,6 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { QueryBuilder } from './QueryBuilder';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { QueryBuilder } from "./QueryBuilder";
 /**
  * The database manager allows you manage your applications database. With DatabaseManager you can create new objects in your data model, update or delete existing ones, run queries and paginate over large data sets.
  *

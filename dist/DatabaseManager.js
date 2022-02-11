@@ -32,7 +32,7 @@ class DatabaseManager extends APIBase_1.APIBase {
      * @returns Returns a new query builder object that will be issuing database commands (e.g., CRUD operations, queries) on the specified model
      */
     model(name) {
-        (0, helpers_1.checkRequired)('model name', name);
+        (0, helpers_1.checkRequired)("model name", name);
         return new QueryBuilder_1.QueryBuilder(name, this.fetcher);
     }
 }
