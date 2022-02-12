@@ -14,7 +14,7 @@ You can access detailed Client API reference documentation from
 
 In order to use the Altogic client library you need to <u>create an app and a client key in
 Altogic</u>. Additionally, if you will be using the Authentication module of this library, you might
-need to do additional configuration in you app settings.
+need to do additional configuration in your app settings.
 
 #### NPM
 
@@ -63,7 +63,7 @@ create a new environment or access your app `envUrl` from the **Environments** v
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[client library guide](https://docs.altogic.com/).
+[client library reference](https://clientapi.altogic.com).
 
 #### Authentication
 
@@ -347,5 +347,6 @@ Think you’ve found a bug? Please, send us an email support@altogic.com
 
 ## Support / Feedback
 
-For issues with, questions about, feedback for the client library, or want to see a new feature please, send us an email
-support@altogic.com or reach out to our community forums https://community.altogic.com
+For issues with, questions about, feedback for the client library, or want to see a new feature
+please, send us an email support@altogic.com or reach out to our community forums
+https://community.altogic.com
