@@ -7,8 +7,8 @@ enabling people and businesses to design, deploy and manage scalable application
 application development by eliminating repetitive tasks, providing pre-integrated and ready-to-use
 execution environments, and automating key stages in the application development process.
 
-You can access detailed Client API reference documentation from
-[https://clientapi.altogic.com](https://clientapi.altogic.com)
+For detailed API documentation go to
+[Client API reference](https://clientapi.altogic.com/v1.0.4/modules.html)
 
 ## Installation
 
