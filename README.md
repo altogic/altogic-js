@@ -1,4 +1,4 @@
-# Altogic Client
+# Altogic Client Library
 
 Javascript client for Altogic backend apps.
 
@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For detailed API documentation go to
-[Client API reference](https://clientapi.altogic.com/v1.0.6/modules.html)
+[Client API reference](https://clientapi.altogic.com/v1.0.7/modules.html)
 
 ## Installation
 
@@ -16,7 +16,7 @@ In order to use the Altogic client library you need to <u>create an app and a cl
 Altogic</u>. Additionally, if you will be using the Authentication module of this library, you might
 need to do additional configuration in your app settings.
 
-#### NPM
+### NPM
 
 To install via [NPM](https://www.npmjs.com/)
 
@@ -35,7 +35,7 @@ import { createClient } from 'altogic';
 const altogic = createClient('http://fqle-avzr.c1-na.altogic.com', 'client-key');
 ```
 
-#### CDN
+### CDN
 
 To install with a CDN (content delivery network) add the following script to import Altogic client
 library.
@@ -57,17 +57,17 @@ Then you can use it from a global `altogic` variable:
 
 As input to `createClient` you need to provide your environement base URL and client-key. You can
 create a new environment or access your app `envUrl` from the **Environments** view and create a new
-`clientKey` from **App Settings/Client library** view in Altogic designer.
+`clientKey` from **App Settings/Client library** view in Altogic Designer.
 
 ## Quick start
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[Client API reference](https://clientapi.altogic.com/v1.0.6/modules.html).
+[Client API reference](https://clientapi.altogic.com/v1.0.7/modules.html).
 
-#### Authentication
+### Authentication
 
-**Sign up new users with email:**
+#### **Sign up new users with email:**
 
 If email confirmation is **enabled** in your app authentication settings then a confirm sign up
 email will be sent to the user with a link to click and this method will return the user data with a
@@ -89,7 +89,7 @@ const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 const { user, session, errors } = await altogic.auth.signInWithEmail(email, password);
 ```
 
-**Sign up new users with mobile phone number:**
+#### **Sign up new users with mobile phone number:**
 
 If phone number confirmation is **enabled** in your app authentication settings then a confirmation
 code SMS will be sent to the phone. Until the user validates this code by calling `verifyPhone`, the
@@ -106,7 +106,7 @@ const { user, session, errors } = await altogic.auth.verifyPhone(phone, code);
 const { errors } = await altogic.auth.signInWithPhone(phone, password);
 ```
 
-**Sign up/sign-in users with an oAuth provider:**
+#### **Sign up/sign-in users with an oAuth provider:**
 
 Signs in a user using the Oauth2 flow of the specified provider. Calling this method with the name
 of the sign in provider will redirect user to the relevant login page of the provider. If the
@@ -123,9 +123,9 @@ altogic.auth.signInWithProvider('google');
 const { user, session, errors } = await altogic.auth.getAuthGrant(accessToken);
 ```
 
-#### Database
+### Database
 
-**Create a new object:**
+#### **Create a new object:**
 
 To create a new object in one of your models in the database, you have two options. You can use the
 query manager shown below:
@@ -152,7 +152,7 @@ const { data, errors } = await altogic.db.model('userOrders').object().create({
 });
 ```
 
-**Update an object:**
+#### **Update an object:**
 
 You can use two ways to update an object in the database. You can use an object manager shown below
 to update an object.
@@ -200,7 +200,7 @@ const { data, errors } = await altogic.db
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
 ```
 
-**Delete an object:**
+#### **Delete an object:**
 
 ```js
 //Delete an order identified by id '62064163ae99b3a645705667' from userOrders
@@ -213,11 +213,11 @@ const { errors } = await altogic.db
    .delete();
 ```
 
-**Query data:**
+#### **Query data:**
 
 ```js
 //Gets the first 100 orders with basket size greater than $50 and having more than 3 items and sorts them by descending orderDate
-altogic.db
+await altogic.db
    .model('userOrders')
    .filter('totalAmount > 50 && totalQuantity > 3')
    .sort('orderDate', 'desc')
@@ -226,13 +226,59 @@ altogic.db
    .get();
 ```
 
-#### Document storage
+### RESTful Endpoints (i.e., cloud functions)
+
+In Altogic, you can define your app RESTful endpoints and associted services. You can think of
+services as your cloud functions and you define your app services in Altogic Designer. When the
+endpoint is called, the associated service (i.e., cloud function) is executed. The client library
+endpoints module provide the methods to make POST, PUT, GET and DELETE requests to your app
+endpoints.
+
+```js
+//Make a GET request to /orders/{orderId} endpoint
+//...
+let orderId = '620949ee991edfba3ee644e7';
+const { data, errors } = await altogic.endpoint.get(`/orders/${orderId}`);
+```
+
+```js
+//Make a POST request to /wallposts/{postId}/comments endpoint
+//...
+let postId = '62094b43f7205e7d78082504';
+const { data, errors } = await altogic.endpoint.post(`/wallposts/${postId}/comments`, {
+   userId: '620949ee991edfba3ee644e7',
+   comment: 'Awesome product. Would be better if you could add tagging people in comments.',
+});
+```
+
+```js
+//Make a DELETE request to /wallposts/{postId}/comments/{commentId} endpoint
+//...
+let postId = '62094b4dfcc106baba52c8ec';
+let commentId = '62094b66fc475bdd5a2bfa48';
+const { data, errors } = await altogic.endpoint.delete(`/wallpost/${postId}/comments/${commentId}`);
+```
+
+```js
+//Make a PUT request to /users/{userId}/address
+//...
+let userId = '62094b734848b88ff50c2ab0';
+const { data, errors } = await altogic.endpoint.put(`/users/${userId}/address`, {
+   city: 'Chicago',
+   street: '121 W Chestnut',
+   zipcode: '60610',
+   state: 'IL',
+   country: 'US',
+});
+```
+
+### Document storage
 
 This module allows you manage your app's cloud storage buckets and files. You store your files,
 documents, images etc. under buckets, which are the basic containers that hold your application
 data. You typically create a bucket and upload files/objects to this bucket.
 
-**Create a bucket:**
+#### **Create a bucket:**
 
 ```js
 /*
@@ -241,7 +287,7 @@ Creates a bucket names profile-images with default privacy setting of public, me
 await altogic.storage.createBucket('profile-images', true);
 ```
 
-**Upload a file:**
+#### **Upload a file:**
 
 ```js
 //Uploads a file to the profiles-images bucket
@@ -259,7 +305,7 @@ const result = await altogic.storage
    });
 ```
 
-**List files in a bucket:**
+#### **List files in a bucket:**
 
 ```js
 //Returns the list of files in bucket profile-images sorted by their size in ascending order
@@ -279,12 +325,10 @@ const result = await altogic.storage.bucket('profile-images').listFiles('isPubli
 });
 ```
 
-#### Cache
+### Cache
 
 You can use the Altogic client library to cache simple key-value pairs at a high-speed data storage
 layer (Redis) to speed up data set and get operations.
-
-**Store item in cache:**
 
 ```js
 //Store items in cache
@@ -299,7 +343,7 @@ const { errors } = await altogic.cache.set('lastUserOrder', {
 const result = await altogic.cache.get('lastUserOrder');
 ```
 
-#### Message queue
+### Message queue
 
 The queue manager allows different parts of your application to communicate and perform activities
 asynchronously. A message queue provides a buffer that temporarily stores messages and dispatches
@@ -316,7 +360,7 @@ const { info, errors } = await altogic.queue.submitMessage(queueName, messageBod
 const result = await altogic.queue.getMessageStatus(info.messageId);
 ```
 
-#### Schedule tasks
+### Schedule tasks
 
 The client library task manager allows you to manually trigger service executions of your scheduled
 tasks which actually ran periodically at fixed times, dates, or intervals.
