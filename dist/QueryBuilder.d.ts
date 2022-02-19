@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { DBObject } from "./DBObject";
-import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { DBObject } from './DBObject';
+import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from './types';
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -278,7 +278,7 @@ export declare class QueryBuilder extends APIBase {
      * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    sort(fieldName: string, sortDirection: "asc" | "desc"): QueryBuilder;
+    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder;
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *
@@ -529,6 +529,31 @@ export declare class QueryBuilder extends APIBase {
      */
     delete(): Promise<{
         data: DeleteInfo;
+        errors: APIError | null;
+    }>;
+    /**
+     * Retrieves a list of objects from the database running the text search. It performs a logical `OR` search of the terms unless specified as a phrase between double-quotes. If filter is specified it applies the filter query to further narrow down the results. The retrieved objects are sorted automatically in terms of the scores of the text search results. See table below for applicable modifiers that can be used with this method.
+     *
+     * | Modifier | Chained with getRandom? |
+     * | :--- | :--- |
+     * | filter |  &#10004; |
+     * | group |  |
+     * | limit | &#10004; |
+     * | lookup | &#10004; |
+     * | omit |  &#10004; |
+     * | page |  &#10004; |
+     * | sort |   |
+     *
+     * > *There should be at least one `text` or `rich-text` field marked as **searchable** in model definition to use this method.*
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} text The search string
+     * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
+     * @throws Throws an exception if input search `text` is not specified
+     * @returns Returns the array of objects matching the text search string and filter query (if specified). If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
+     */
+    searchText(text: string, returnCountInfo?: boolean): Promise<{
+        data: object[] | null;
         errors: APIError | null;
     }>;
 }

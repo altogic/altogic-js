@@ -8,7 +8,7 @@ enabling people and businesses to design, deploy and manage scalable application
 application development by eliminating repetitive tasks, providing pre-integrated and ready-to-use
 execution environments, and automating key stages in the application development process.</p>
 <p>For detailed API documentation go to
-<a href="https://clientapi.altogic.com/v1.0.7/modules.html">Client API reference</a></p>
+<a href="https://clientapi.altogic.com/v1.0.8/modules.html">Client API reference</a></p>
 
 <a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
   <h2>Installation</h2>
@@ -47,7 +47,7 @@ create a new environment or access your app <code>envUrl</code> from the <strong
 </a>
 <p>This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-<a href="https://clientapi.altogic.com/v1.0.7/modules.html">Client API reference</a>.</p>
+<a href="https://clientapi.altogic.com/v1.0.8/modules.html">Client API reference</a>.</p>
 
 <a href="#authentication" id="authentication" style="color: inherit; text-decoration: none;">
   <h3>Authentication</h3>
@@ -189,8 +189,8 @@ necessary tasks defined in its service flow.</p>
 <pre><code class="language-js"><span class="hl-4">//Submit a message to a queuer for asychronous processing</span><br/><span class="hl-5">const</span><span class="hl-0"> { </span><span class="hl-6">info</span><span class="hl-0">, </span><span class="hl-6">errors</span><span class="hl-0"> } = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">altogic</span><span class="hl-0">.</span><span class="hl-2">queue</span><span class="hl-0">.</span><span class="hl-7">submitMessage</span><span class="hl-0">(</span><span class="hl-2">queueName</span><span class="hl-0">, </span><span class="hl-2">messageBody</span><span class="hl-0">);</span><br/><br/><span class="hl-4">//Get the status of submitted message whether it has been completed processing or not</span><br/><span class="hl-5">const</span><span class="hl-0"> </span><span class="hl-6">result</span><span class="hl-0"> = </span><span class="hl-1">await</span><span class="hl-0"> </span><span class="hl-2">altogic</span><span class="hl-0">.</span><span class="hl-2">queue</span><span class="hl-0">.</span><span class="hl-7">getMessageStatus</span><span class="hl-0">(</span><span class="hl-2">info</span><span class="hl-0">.</span><span class="hl-2">messageId</span><span class="hl-0">);</span>
 </code></pre>
 
-<a href="#schedule-tasks" id="schedule-tasks" style="color: inherit; text-decoration: none;">
-  <h3>Schedule tasks</h3>
+<a href="#scheduled-tasks-ie-cron-jobs" id="scheduled-tasks-ie-cron-jobs" style="color: inherit; text-decoration: none;">
+  <h3>Scheduled tasks (i.e., cron jobs)</h3>
 </a>
 <p>The client library task manager allows you to manually trigger service executions of your scheduled
 tasks which actually ran periodically at fixed times, dates, or intervals.</p>

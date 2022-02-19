@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { ClientOptions, User, Session, APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { ClientOptions, User, Session, APIError } from './types';
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
  *
@@ -142,7 +142,7 @@ export declare class AuthManager extends APIBase {
      * @param {string} provider
      * @throws Throws an exception if `provider` is not specified
      */
-    signInWithProvider(provider: "google" | "facebook" | "twitter" | "discord" | "github"): void;
+    signInWithProvider(provider: 'google' | 'facebook' | 'twitter' | 'discord' | 'github'): void;
     /**
      * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
      *
@@ -236,7 +236,7 @@ export declare class AuthManager extends APIBase {
      *
      * This method works only if email confirmation is **enabled** in your app authentication settings and the user's email address has already been verified.
      *
-     * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-password` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
+     * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-pwd` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
