@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.0.9 (2022-03-21)
+
+-  Fixed a bug in `FileManager` `replace` method which prevented file being replaced with the new
+   one one
+
 ### 1.0.8 (2022-02-19)
 
 -  Added the new `search` method to the `db` module which performs a text search of string content
