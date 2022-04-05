@@ -38,8 +38,8 @@ class TaskManager extends APIBase_1.APIBase {
      */
     runOnce(taskNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('taskNameOrId', taskNameOrId);
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
+            (0, helpers_1.checkRequired)("taskNameOrId", taskNameOrId);
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/task", {
                 taskNameOrId,
             });
             return { info: data, errors };
@@ -55,7 +55,7 @@ class TaskManager extends APIBase_1.APIBase {
      */
     getTaskStatus(taskId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('taskId', taskId);
+            (0, helpers_1.checkRequired)("taskId", taskId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
             return { info: data, errors };
         });

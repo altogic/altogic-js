@@ -1,6 +1,6 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { APIError, FileUploadOptions } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { APIError, FileUploadOptions } from "./types";
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
  *

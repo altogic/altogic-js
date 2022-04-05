@@ -1,7 +1,7 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { DBObject } from './DBObject';
-import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { DBObject } from "./DBObject";
+import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from "./types";
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -278,7 +278,7 @@ export declare class QueryBuilder extends APIBase {
      * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder;
+    sort(fieldName: string, sortDirection: "asc" | "desc"): QueryBuilder;
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *

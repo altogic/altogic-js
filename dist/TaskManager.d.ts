@@ -1,6 +1,6 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { APIError, TaskInfo } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { APIError, TaskInfo } from "./types";
 /**
  * The task manager allows you to manually trigger service executions of your scheduled tasks which actually ran periodically at fixed times, dates, or intervals.
  *
