@@ -38,15 +38,15 @@ class TaskManager extends APIBase_1.APIBase {
      */
     runOnce(taskNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("taskNameOrId", taskNameOrId);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/task", {
+            (0, helpers_1.checkRequired)('taskNameOrId', taskNameOrId);
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
                 taskNameOrId,
             });
             return { info: data, errors };
         });
     }
     /**
-     * Gets the latest status of the task. The last seven days message logs are kept. If you try to get the status of a task that has been triggered earlier, this method returns `null` for {@link TaskInfo}.
+     * Gets the latest status of the task. The last seven days task execution logs are kept. If you try to get the status of a task that has been triggered earlier, this method returns `null` for {@link TaskInfo}.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} taskId The id of the task
@@ -55,7 +55,7 @@ class TaskManager extends APIBase_1.APIBase {
      */
     getTaskStatus(taskId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("taskId", taskId);
+            (0, helpers_1.checkRequired)('taskId', taskId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
             return { info: data, errors };
         });

@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { ClientOptions, User, Session, APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { ClientOptions, User, Session, APIError } from './types';
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
  *
@@ -23,6 +23,10 @@ export declare class AuthManager extends APIBase {
      * @param {ClientOptions} options Altogic client options
      */
     constructor(fetcher: Fetcher, { localStorage, signInRedirect }: ClientOptions);
+    /**
+     * By default Altogic saves the session and user data in local storage whenever a new session is created (e.g., through sign up or sign in methods). This method clears the locally saved session and user data. In contrast to {@link invalidateSession}, this method does not clear **Session** token request header in {@link Fetcher} and does not redirect to a sign in page.
+     */
+    clearLocalData(): void;
     /**
      * Invalidates the current user session, removes local session data, and clears **Session** token request header in {@link Fetcher}. If **signInRedirect** is specified in {@link ClientOptions} when creating the Altogic api client and if the client is running in a browser, redirects the user to the sign in page.
      */
@@ -142,7 +146,7 @@ export declare class AuthManager extends APIBase {
      * @param {string} provider
      * @throws Throws an exception if `provider` is not specified
      */
-    signInWithProvider(provider: "google" | "facebook" | "twitter" | "discord" | "github"): void;
+    signInWithProvider(provider: 'google' | 'facebook' | 'twitter' | 'discord' | 'github'): void;
     /**
      * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
      *

@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { DBObject } from "./DBObject";
-import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { DBObject } from './DBObject';
+import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from './types';
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -278,7 +278,7 @@ export declare class QueryBuilder extends APIBase {
      * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    sort(fieldName: string, sortDirection: "asc" | "desc"): QueryBuilder;
+    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder;
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *
@@ -292,7 +292,7 @@ export declare class QueryBuilder extends APIBase {
      * Groups the objects of the model by the specified expression or by the specified fields. This method is chained with the {@link compute} method to calculated group statistics of your models.
      *
      * If multiple group method calls are chained then the last one overwrites the previous group values.
-     * @param {[string]} fields Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
+     * @param {[string]} fieldsOrExpression Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
      * @throws Throws an exception if `expression` or `fields` is not specified correctly
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */

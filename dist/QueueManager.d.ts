@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, MessageInfo } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, MessageInfo } from './types';
 /**
  * The queue manager allows different parts of your application to communicate and perform activities asynchronously.
  *
@@ -33,7 +33,7 @@ export declare class QueueManager extends APIBase {
         errors: APIError | null;
     }>;
     /**
-     * Gets the latest status of the message. The last seven days task execution logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for {@link MessageInfo}.
+     * Gets the latest status of the message. The last seven days message queue logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for {@link MessageInfo}.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} messageId The id of the message

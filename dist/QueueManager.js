@@ -43,9 +43,9 @@ class QueueManager extends APIBase_1.APIBase {
      */
     submitMessage(queueNameOrId, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("queueNameOrId", queueNameOrId);
-            (0, helpers_1.objectRequired)("message", message);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/queue", {
+            (0, helpers_1.checkRequired)('queueNameOrId', queueNameOrId);
+            (0, helpers_1.objectRequired)('message', message);
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
                 queueNameOrId,
                 message,
             });
@@ -53,7 +53,7 @@ class QueueManager extends APIBase_1.APIBase {
         });
     }
     /**
-     * Gets the latest status of the message. The last seven days task execution logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for {@link MessageInfo}.
+     * Gets the latest status of the message. The last seven days message queue logs are kept. If you try to get the status of a message that has been submitted earlier, this method returns `null` for {@link MessageInfo}.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} messageId The id of the message
@@ -62,7 +62,7 @@ class QueueManager extends APIBase_1.APIBase {
      */
     getMessageStatus(messageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("messageId", messageId);
+            (0, helpers_1.checkRequired)('messageId', messageId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
             return { info: data, errors };
         });

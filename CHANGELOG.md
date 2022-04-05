@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.1.0 (2022-04-05)
+
+-  Added `clearLocalData` to **auth** module which deletes the locally stored user and session data
+
 ### 1.0.9 (2022-03-21)
 
 -  Fixed a bug in `FileManager` `replace` method which prevented file being replaced with the new
