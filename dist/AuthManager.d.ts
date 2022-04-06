@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { ClientOptions, User, Session, APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { ClientOptions, User, Session, APIError } from './types';
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
  *
@@ -146,7 +146,7 @@ export declare class AuthManager extends APIBase {
      * @param {string} provider
      * @throws Throws an exception if `provider` is not specified
      */
-    signInWithProvider(provider: "google" | "facebook" | "twitter" | "discord" | "github"): void;
+    signInWithProvider(provider: 'google' | 'facebook' | 'twitter' | 'discord' | 'github'): void;
     /**
      * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
      *
@@ -219,6 +219,14 @@ export declare class AuthManager extends APIBase {
      * @throws Throws an exception if `email` is not specified
      */
     resendVerificationEmail(email: string): Promise<{
+        errors: APIError | null;
+    }>;
+    /**
+     * Resends the code to verify the user's phone number. If the user's phone has already been validated or phone confirmation is **disabled** in your app authentication settings, it returns an error.
+     * @param {string} phone The phone number of the user to send the verification SMS code
+     * @throws Throws an exception if `phone` is not specified
+     */
+    resendVerificationCode(phone: string): Promise<{
         errors: APIError | null;
     }>;
     /**

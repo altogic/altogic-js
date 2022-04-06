@@ -510,6 +510,22 @@ export class AuthManager extends APIBase {
   }
 
   /**
+   * Resends the code to verify the user's phone number. If the user's phone has already been validated or phone confirmation is **disabled** in your app authentication settings, it returns an error.
+   * @param {string} phone The phone number of the user to send the verification SMS code
+   * @throws Throws an exception if `phone` is not specified
+   */
+  async resendVerificationCode(
+    phone: string
+  ): Promise<{ errors: APIError | null }> {
+    checkRequired("phone", phone);
+
+    const { errors } = await this.fetcher.post(
+      `/_api/rest/v1/auth/resend-code?phone=${encodeURIComponent(phone)}`
+    );
+    return { errors };
+  }
+
+  /**
    * Sends a magic link to the email of the user.
    *
    * This method works only if email confirmation is **enabled** in your app authentication settings and the user's email address has already been verified.

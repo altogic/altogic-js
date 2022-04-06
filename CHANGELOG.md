@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.1.1 (2022-04-06)
+
+-  Added `resendVerificationCode` to **auth** module which resends the phone number verification SMS
+   message
+
 ### 1.1.0 (2022-04-05)
 
 -  Added `clearLocalData` to **auth** module which deletes the locally stored user and session data
