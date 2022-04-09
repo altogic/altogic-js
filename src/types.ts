@@ -321,6 +321,11 @@ export interface GetOptions {
   cache:
     | "nocache"
     | "noexpiry"
+    | "30sec"
+    | "1min"
+    | "2mins"
+    | "5mins"
+    | "10mins"
     | "15mins"
     | "30mins"
     | "1hour"
@@ -382,6 +387,11 @@ export interface CreateOptions {
   cache:
     | "nocache"
     | "noexpiry"
+    | "30sec"
+    | "1min"
+    | "2mins"
+    | "5mins"
+    | "10mins"
     | "15mins"
     | "30mins"
     | "1hour"
@@ -407,6 +417,11 @@ export interface SetOptions {
   cache:
     | "nocache"
     | "noexpiry"
+    | "30sec"
+    | "1min"
+    | "2mins"
+    | "5mins"
+    | "10mins"
     | "15mins"
     | "30mins"
     | "1hour"
@@ -438,6 +453,11 @@ export interface AppendOptions {
   cache:
     | "nocache"
     | "noexpiry"
+    | "30sec"
+    | "1min"
+    | "2mins"
+    | "5mins"
+    | "10mins"
     | "15mins"
     | "30mins"
     | "1hour"
@@ -488,6 +508,11 @@ export interface UpdateOptions {
   cache:
     | "nocache"
     | "noexpiry"
+    | "30sec"
+    | "1min"
+    | "2mins"
+    | "5mins"
+    | "10mins"
     | "15mins"
     | "30mins"
     | "1hour"
@@ -824,6 +849,11 @@ export interface FileUploadOptions {
    * @type {boolean}
    */
   isPublic: boolean;
+  /**
+   * Specifies whether to create the bucket while uploading the file. If a bucket with the provided name does not exists and if `createBucket` is marked as true then creates a new bucket. Defaults to false.
+   * @type {boolean}
+   */
+  createBucket: boolean;
   /**
    * Callback function to call during file upload.
    *

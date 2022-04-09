@@ -39,7 +39,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     get(key) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
+            (0, helpers_1.checkRequired)('key', key);
             return yield this.fetcher.get(`/_api/rest/v1/cache?key=${key}`);
         });
     }
@@ -54,9 +54,9 @@ class CacheManager extends APIBase_1.APIBase {
      */
     set(key, value, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
-            (0, helpers_1.checkRequired)("value", value, false);
-            const { errors } = yield this.fetcher.post("/_api/rest/v1/cache", {
+            (0, helpers_1.checkRequired)('key', key);
+            (0, helpers_1.checkRequired)('value', value, false);
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache', {
                 key,
                 value,
                 ttl: ttl ? ttl : undefined,
@@ -73,7 +73,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     delete(key) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
+            (0, helpers_1.checkRequired)('key', key);
             const { errors } = yield this.fetcher.delete(`/_api/rest/v1/cache?key=${key}`);
             return { errors };
         });
@@ -90,8 +90,8 @@ class CacheManager extends APIBase_1.APIBase {
      */
     increment(key, increment = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/cache/increment", {
+            (0, helpers_1.checkRequired)('key', key);
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/increment', {
                 key,
                 increment,
                 ttl: ttl ? ttl : undefined,
@@ -111,8 +111,8 @@ class CacheManager extends APIBase_1.APIBase {
      */
     decrement(key, decrement = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/cache/decrement", {
+            (0, helpers_1.checkRequired)('key', key);
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/decrement', {
                 key,
                 decrement,
                 ttl: ttl ? ttl : undefined,
@@ -130,9 +130,9 @@ class CacheManager extends APIBase_1.APIBase {
      */
     expire(key, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("key", key);
-            (0, helpers_1.checkRequired)("ttl", ttl);
-            const { errors } = yield this.fetcher.post("/_api/rest/v1/cache/expire", {
+            (0, helpers_1.checkRequired)('key', key);
+            (0, helpers_1.checkRequired)('ttl', ttl);
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache/expire', {
                 key,
                 ttl,
             });

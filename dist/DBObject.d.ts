@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, GetOptions, CreateOptions, SetOptions, AppendOptions, DeleteOptions, UpdateOptions, SimpleLookup, ComplexLookup, FieldUpdate } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, GetOptions, CreateOptions, SetOptions, AppendOptions, DeleteOptions, UpdateOptions, SimpleLookup, ComplexLookup, FieldUpdate } from './types';
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *

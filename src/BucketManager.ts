@@ -7,6 +7,7 @@ import { FileManager } from "./FileManager";
 
 const DEFAULT_FILE_OPTIONS = {
   contentType: "text/plain;charset=UTF-8",
+  createBucket: false,
 };
 
 /**
@@ -228,7 +229,7 @@ export class BucketManager extends APIBase {
    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
    * @param {string} fileName The name of the file e.g., *filename.jpg*
    * @param {any} fileBody The body of the file that will be stored in the bucket
-   * @param {FileUploadOptions} options Content type and privacy setting of the file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
+   * @param {FileUploadOptions} options Content type of the file, privacy setting of the file and whether to create the bucket if not exists. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting. If `createBucket` is set to true (defaults to false), then creates a new bucket if the bucket does not exist.
    * @throws Throws an exception if `fileName` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
    * @returns Returns the metadata of the uploaded file
    */
@@ -239,7 +240,6 @@ export class BucketManager extends APIBase {
   ): Promise<{ data: object | null; errors: APIError | null }> {
     checkRequired("fileName", fileName);
     checkRequired("fileBody", fileBody);
-
     if (
       (typeof FormData !== "undefined" && fileBody instanceof FormData) ||
       (typeof Blob !== "undefined" && fileBody instanceof Blob) ||

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.2.0 (2022-04-09)
+
+-  Added `changePhone` method to **auth** module which either initiaties the phone number change
+   flow if phone number confirmation is enabled in app authentication settings otherwise, directly
+   updates the phone number and retuns the updated user object
+-  Updated `verifyPhone` method in **auth** module to accept SMS codes to process phone number
+   changes
+-  Added `sendResetPwdCode` method to **auth** module which sends an SMS code to reset user's
+   password
+-  Added `resetPwdWithCode` method to **auth** module which uses the SMS code sent using
+   `sendResetPwdCode` method to reset the password of the user
+-  Renamed method `resetPassword` to `resetPwdWithToken`
+-  Added `createBucket` option to `FileUploadOptions` in `upload` method of **BucketManager**. With
+   this new option while uploading a file, you can create a new bucket with the provided name if the
+   bucket does not exists.
+-  Added `30sec` `1min` `2mins` `5mins` `10mins` caching options
+
 ### 1.1.1 (2022-04-06)
 
 -  Added `resendVerificationCode` to **auth** module which resends the phone number verification SMS

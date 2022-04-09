@@ -12,7 +12,7 @@ import {
   ComplexLookup,
   FieldUpdate,
 } from "./types";
-import { arrayRequired, checkRequired, objectRequired } from "./utils/helpers";
+import { checkRequired, objectRequired } from "./utils/helpers";
 
 const DEFAULT_GET_OPTIONS = { cache: "nocache" };
 const DEFAULT_CREATE_OPTIONS = { cache: "nocache", returnTop: false };

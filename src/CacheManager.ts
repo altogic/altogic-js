@@ -92,7 +92,7 @@ export class CacheManager extends APIBase {
     key: string,
     increment: number = 1,
     ttl?: number
-  ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
+  ): Promise<{ data: object | null; errors: APIError | null }> {
     checkRequired("key", key);
 
     const { data, errors } = await this.fetcher.post(
@@ -120,7 +120,7 @@ export class CacheManager extends APIBase {
     key: string,
     decrement: number = 1,
     ttl?: number
-  ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
+  ): Promise<{ data: object | null; errors: APIError | null }> {
     checkRequired("key", key);
 
     const { data, errors } = await this.fetcher.post(

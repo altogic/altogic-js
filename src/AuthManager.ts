@@ -552,7 +552,7 @@ export class AuthManager extends APIBase {
    *
    * This method works only if email confirmation is **enabled** in your app authentication settings and the user's email address has already been verified.
    *
-   * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-pwd` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPassword} method with the access token and new password to change the password of the user.
+   * When the user clicks on the link in email, Altogic verifies the validity of the reset-password link and if successful redirects the user to the redirect URL specified in you app authentication settings with an access token in a query string parameter named 'access_token.' At this state your app needs to detect `action=reset-pwd` in the redirect URL and display a password reset form to the user. After getting the new password from the user, you can call {@link resetPwdWithToken} method with the access token and new password to change the password of the user.
    *
    * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
    * @param {string} email The email address of the user to send the verification email
@@ -563,6 +563,26 @@ export class AuthManager extends APIBase {
 
     const { errors } = await this.fetcher.post(
       `/_api/rest/v1/auth/send-reset?email=${email}`
+    );
+    return { errors };
+  }
+
+  /**
+   * Sends an SMS code to reset password.
+   *
+   * This method works only if phone number confirmation is **enabled** in your app authentication settings and the user's phone number has already been verified.
+   *
+   * After sending the SMS code, you need to display a password reset form to the user. When you get the new password from the user, you can call {@link resetPwdWithCode} method with the phone number of the user, SMS code and new password.
+   *
+   * If phone number confirmation is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
+   * @param {string} phone The phone number of the user to send the reset password code
+   * @throws Throws an exception if `phone` is not specified
+   */
+  async sendResetPwdCode(phone: string): Promise<{ errors: APIError | null }> {
+    checkRequired("phone", phone);
+
+    const { errors } = await this.fetcher.post(
+      `/_api/rest/v1/auth/send-reset-code?phone=${encodeURIComponent(phone)}`
     );
     return { errors };
   }
@@ -593,7 +613,7 @@ export class AuthManager extends APIBase {
    * @param {string} newPassword The new password of the user
    * @throws Throws an exception if `accessToken` or `newPassword` is not specified
    */
-  async resetPassword(
+  async resetPwdWithToken(
     accessToken: string,
     newPassword: string
   ): Promise<{ errors: APIError | null }> {
@@ -602,6 +622,33 @@ export class AuthManager extends APIBase {
 
     const { errors } = await this.fetcher.post(
       `/_api/rest/v1/auth/reset-pwd?key=${accessToken}`,
+      {
+        newPassword,
+      }
+    );
+    return { errors };
+  }
+
+  /**
+   * Resets the password of the user using the SMS code provided through the {@link sendResetPwdCode} method.
+   * @param {string} phone The phone number of the user
+   * @param {string} code The SMS code that is sent to the users phone number
+   * @param {string} newPassword The new password of the user
+   * @throws Throws an exception if `phone`, `code` or `newPassword` is not specified
+   */
+  async resetPwdWithCode(
+    phone: string,
+    code: string,
+    newPassword: string
+  ): Promise<{ errors: APIError | null }> {
+    checkRequired("phone", phone);
+    checkRequired("code", code);
+    checkRequired("newPassword", newPassword);
+
+    const { errors } = await this.fetcher.post(
+      `/_api/rest/v1/auth/reset-pwd-code?phone=${encodeURIComponent(
+        phone
+      )}&code=${code}`,
       {
         newPassword,
       }
@@ -640,7 +687,37 @@ export class AuthManager extends APIBase {
   }
 
   /**
-   * Verifies the phone number using code sent in SMS and if verified, returns the auth grants (e.g., session) of the user.
+   * Changes the phone number of the user to a new one.
+   *
+   * If phone number confirmation is **disabled** in your app authentication settings, it immediately updates the user's phone number and returns back the updated user data.
+   *
+   * If phone number confirmation is **enabled** in your app authentication settings, it sends a confirmation SMS code to the new phone number and returns the current user's info. After sending the SMS code by calling this method, you need to show a form to the user to enter this SMS code and call `verifyPhone` method with the new phone number and the code to change user's phone number to the new one.
+   *
+   * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+   * @param {string} currentPassword The password of the user
+   * @param {string} newPhone The new phone number of the user
+   * @throws Throws an exception if `currentPassword` or `newPhone` is not specified
+   */
+  async changePhone(
+    currentPassword: string,
+    newPhone: string
+  ): Promise<{ user: User | null; errors: APIError | null }> {
+    checkRequired("currentPassword", currentPassword);
+    checkRequired("newPhone", newPhone);
+
+    const { data, errors } = await this.fetcher.post(
+      `/_api/rest/v1/auth/change-phone`,
+      {
+        currentPassword,
+        newPhone,
+      }
+    );
+
+    return { user: data, errors };
+  }
+
+  /**
+   * Verifies the phone number using code sent in SMS and if verified, returns the auth grants (e.g., user and session data) of the user if the phone is verified due to a new sign up. If the phone is verified using the code send as a result of calling the `changePhone` method, returns the updated user data only.
    *
    * If the code is invalid or expired, it returns an error message.
    * @param {string} phone The mobile phone number of the user where the SMS code was sent

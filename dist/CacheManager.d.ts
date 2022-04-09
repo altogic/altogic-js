@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError } from './types';
 /**
  * The cache manager provides simple key-value storage at a high-speed data storage layer (Redis) speeding up data set and get operations.
  *
@@ -61,7 +61,7 @@ export declare class CacheManager extends APIBase {
      * @returns Returns the value of key after the increment
      */
     increment(key: string, increment?: number, ttl?: number): Promise<{
-        data: object | object[] | null;
+        data: object | null;
         errors: APIError | null;
     }>;
     /**
@@ -75,7 +75,7 @@ export declare class CacheManager extends APIBase {
      * @returns Returns the value of key after the decrement
      */
     decrement(key: string, decrement?: number, ttl?: number): Promise<{
-        data: object | object[] | null;
+        data: object | null;
         errors: APIError | null;
     }>;
     /**
