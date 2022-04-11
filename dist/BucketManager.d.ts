@@ -1,7 +1,7 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { APIError, FileListOptions, FileUploadOptions } from './types';
-import { FileManager } from './FileManager';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { APIError, FileListOptions, FileUploadOptions } from "./types";
+import { FileManager } from "./FileManager";
 /**
  * BucketManager is primarily used to manage a bucket and its contents (e.g., files, documents, images). Using the {@link StorageManager.bucket} method, you can create a BucketManager instance for a specific bucket identified by its unique name or id.
  *

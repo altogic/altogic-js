@@ -342,7 +342,7 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                                 ? Array.isArray(errResp.errors)
                                     ? errResp.errors
                                     : [errResp.errors]
-                                : Array.isArray(errResp.errors)
+                                : Array.isArray(errResp)
                                     ? errResp
                                     : [errResp],
                         },

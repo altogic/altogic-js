@@ -24,12 +24,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBObject = void 0;
 const APIBase_1 = require("./APIBase");
 const helpers_1 = require("./utils/helpers");
-const DEFAULT_GET_OPTIONS = { cache: 'nocache' };
-const DEFAULT_CREATE_OPTIONS = { cache: 'nocache', returnTop: false };
-const DEFAULT_SET_OPTIONS = { cache: 'nocache', returnTop: false };
-const DEFAULT_APPEND_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_GET_OPTIONS = { cache: "nocache" };
+const DEFAULT_CREATE_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_SET_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_APPEND_OPTIONS = { cache: "nocache", returnTop: false };
 const DEFAULT_DELETE_OPTIONS = { removeFromCache: true, returnTop: false };
-const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_UPDATE_OPTIONS = { cache: "nocache", returnTop: false };
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
@@ -67,10 +67,11 @@ class DBObject extends APIBase_1.APIBase {
     }
     get(optionsOrLookups, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('id', __classPrivateFieldGet(this, _DBObject_id, "f"));
+            (0, helpers_1.checkRequired)("id", __classPrivateFieldGet(this, _DBObject_id, "f"));
             let lookupsVal = optionsOrLookups;
             let optionsVal = options;
-            if (!Array.isArray(optionsOrLookups) && typeof optionsOrLookups === 'object') {
+            if (!Array.isArray(optionsOrLookups) &&
+                typeof optionsOrLookups === "object") {
                 optionsVal = optionsOrLookups;
                 lookupsVal = undefined;
             }
@@ -95,7 +96,7 @@ class DBObject extends APIBase_1.APIBase {
      */
     create(values, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('create values', values, false);
+            (0, helpers_1.checkRequired)("create values", values, false);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/create`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_CREATE_OPTIONS), options),
@@ -118,8 +119,8 @@ class DBObject extends APIBase_1.APIBase {
      */
     set(values, parentId, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('set values', values, false);
-            (0, helpers_1.checkRequired)('set parentId', parentId);
+            (0, helpers_1.checkRequired)("set values", values, false);
+            (0, helpers_1.checkRequired)("set parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/set`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_SET_OPTIONS), options),
@@ -143,8 +144,8 @@ class DBObject extends APIBase_1.APIBase {
      */
     append(values, parentId, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('append values', values, false);
-            (0, helpers_1.checkRequired)('append parentId', parentId);
+            (0, helpers_1.checkRequired)("append values", values, false);
+            (0, helpers_1.checkRequired)("append parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/append`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_APPEND_OPTIONS), options),
@@ -164,7 +165,7 @@ class DBObject extends APIBase_1.APIBase {
      */
     delete(options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('id', __classPrivateFieldGet(this, _DBObject_id, "f"));
+            (0, helpers_1.checkRequired)("id", __classPrivateFieldGet(this, _DBObject_id, "f"));
             return yield this.fetcher.post(`/_api/rest/v1/db/object/delete`, {
                 options: Object.assign(Object.assign({}, DEFAULT_DELETE_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
@@ -183,8 +184,8 @@ class DBObject extends APIBase_1.APIBase {
      */
     update(values, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('update id', __classPrivateFieldGet(this, _DBObject_id, "f"));
-            (0, helpers_1.objectRequired)('update values', values);
+            (0, helpers_1.checkRequired)("update id", __classPrivateFieldGet(this, _DBObject_id, "f"));
+            (0, helpers_1.objectRequired)("update values", values);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/update`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_UPDATE_OPTIONS), options),
@@ -204,8 +205,8 @@ class DBObject extends APIBase_1.APIBase {
      */
     updateFields(fieldUpdates, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)('update id', __classPrivateFieldGet(this, _DBObject_id, "f"));
-            (0, helpers_1.objectRequired)('fieldUpdates', fieldUpdates);
+            (0, helpers_1.checkRequired)("update id", __classPrivateFieldGet(this, _DBObject_id, "f"));
+            (0, helpers_1.objectRequired)("fieldUpdates", fieldUpdates);
             let updates = null;
             if (Array.isArray(fieldUpdates))
                 updates = fieldUpdates;

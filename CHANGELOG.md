@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.2.1 (2022-04-11)
+
+-  Fixed bug in error response format
+
 ### 1.2.0 (2022-04-09)
 
 -  Added `changePhone` method to **auth** module which either initiaties the phone number change
