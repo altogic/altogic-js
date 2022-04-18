@@ -584,10 +584,17 @@ class AuthManager extends APIBase_1.APIBase {
             const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code}&phone=${encodeURIComponent(phone)}`);
             if (errors)
                 return { user: null, session: null, errors };
-            __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
-            __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
-            this.fetcher.setSession(data.session);
-            return { user: data.user, session: data.session, errors };
+            // If user sign up with phone
+            if (data.session) {
+                __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
+                __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_saveLocalData).call(this, data.user, data.session);
+                this.fetcher.setSession(data.session);
+                return { user: data.user, session: data.session, errors };
+            }
+            else {
+                // If user phone change
+                return { user: data.user, session: null, errors };
+            }
         });
     }
 }

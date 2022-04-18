@@ -743,9 +743,15 @@ export class AuthManager extends APIBase {
 
     if (errors) return { user: null, session: null, errors };
 
-    this.#deleteLocalData();
-    this.#saveLocalData(data.user, data.session);
-    this.fetcher.setSession(data.session);
-    return { user: data.user, session: data.session, errors };
+    // If user sign up with phone
+    if (data.session) {
+      this.#deleteLocalData();
+      this.#saveLocalData(data.user, data.session);
+      this.fetcher.setSession(data.session);
+      return { user: data.user, session: data.session, errors };
+    } else {
+      // If user phone change
+      return { user: data.user, session: null, errors };
+    }
   }
 }

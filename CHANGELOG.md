@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.2.2 (2022-04-18)
+
+-  Fixed the localstorage data deletion problem in `verifyPhone` method. With this fix, the verifyPhone method does not clear local session or user data in case the user's phone has been successfully changed.
+
 ### 1.2.1 (2022-04-11)
 
 -  Fixed bug in error response format
