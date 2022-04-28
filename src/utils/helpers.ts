@@ -145,6 +145,6 @@ export function objectRequired(
       `${fieldName} needs to be an object`
     );
 
-  if (Array.isArray(fieldValue) && checkArray)
+  if (!Array.isArray(fieldValue) && checkArray)
     throw new ClientError("invalid_value", `${fieldName} needs to be an array`);
 }
