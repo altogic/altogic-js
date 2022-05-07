@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { KeyValuePair, APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { KeyValuePair, APIError } from './types';
 /**
  * Provides the methods to execute your app backend services by making http request to your app endpoints.
  *
@@ -24,10 +24,9 @@ export declare class EndpointManager extends APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a "key":"value" pair object
      * @param {KeyValuePair} [headers] Additional request headers as a "key":"value" pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    get(path: string, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
+    get(path: string, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -40,10 +39,9 @@ export declare class EndpointManager extends APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    post(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
+    post(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -56,10 +54,9 @@ export declare class EndpointManager extends APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    put(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
+    put(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;
@@ -72,10 +69,9 @@ export declare class EndpointManager extends APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    delete(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: "json" | "text" | "blob" | "arraybuffer"): Promise<{
+    delete(path: string, body?: FormData | object, queryParams?: KeyValuePair, headers?: KeyValuePair, resolveType?: 'json' | 'text' | 'blob' | 'arraybuffer'): Promise<{
         data: any | null;
         errors: APIError | null;
     }>;

@@ -232,7 +232,7 @@ export interface MessageInfo {
      * The status of the message. When the message is submitted to the queue, it is in `pending` status. When the message is being processed, its status changes to `processing`. If message is successfully completed its status becomes `complete`otherwiese it becomes `errors`.
      * @type {string}
      */
-    status: "pending" | "processing" | "completed" | "errors";
+    status: 'pending' | 'processing' | 'completed' | 'errors';
     /**
      * Provides information about the errors occurred during processing of the message
      * @type {object}
@@ -279,7 +279,7 @@ export interface TaskInfo {
      * The status of the task. When the task is firts triggered, it is in `pending` status. When the task is being processed, its status changes to `processing`. If task is successfully completed its status becomes `complete`otherwiese it becomes `errors`.
      * @type {string}
      */
-    status: "pending" | "processing" | "completed" | "errors";
+    status: 'pending' | 'processing' | 'completed' | 'errors';
     /**
      * Provides information about the errors occurred during execution of the task
      * @type {object}
@@ -296,7 +296,7 @@ export interface GetOptions {
      * Specify whether to cache the retrieved object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
      * @type {string}
      */
-    cache: "nocache" | "noexpiry" | "30sec" | "1min" | "2mins" | "5mins" | "10mins" | "15mins" | "30mins" | "1hour" | "6hours" | "12hours" | "1day" | "1week" | "1month" | "6months" | "1year";
+    cache: 'nocache' | 'noexpiry' | '30sec' | '1min' | '2mins' | '5mins' | '10mins' | '15mins' | '30mins' | '1hour' | '6hours' | '12hours' | '1day' | '1week' | '1month' | '6months' | '1year';
 }
 /**
  * Defines the structure of a simple lookup
@@ -342,7 +342,7 @@ export interface CreateOptions {
      * Specify whether to cache the created object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
      * @type {string}
      */
-    cache: "nocache" | "noexpiry" | "30sec" | "1min" | "2mins" | "5mins" | "10mins" | "15mins" | "30mins" | "1hour" | "6hours" | "12hours" | "1day" | "1week" | "1month" | "6months" | "1year";
+    cache: 'nocache' | 'noexpiry' | '30sec' | '1min' | '2mins' | '5mins' | '10mins' | '15mins' | '30mins' | '1hour' | '6hours' | '12hours' | '1day' | '1week' | '1month' | '6months' | '1year';
 }
 /**
  * Defines the options for an object set operation
@@ -354,7 +354,7 @@ export interface SetOptions {
      * Specify whether to cache the set object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
      * @type {string}
      */
-    cache: "nocache" | "noexpiry" | "30sec" | "1min" | "2mins" | "5mins" | "10mins" | "15mins" | "30mins" | "1hour" | "6hours" | "12hours" | "1day" | "1week" | "1month" | "6months" | "1year";
+    cache: 'nocache' | 'noexpiry' | '30sec' | '1min' | '2mins' | '5mins' | '10mins' | '15mins' | '30mins' | '1hour' | '6hours' | '12hours' | '1day' | '1week' | '1month' | '6months' | '1year';
     /**
      * When you create a submodel object (a child object of a top-level object), you can specify whether to return the newly created child object or the updated top-level object.
      * @type {boolean}
@@ -371,7 +371,7 @@ export interface AppendOptions {
      * Specify whether to cache the appended object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
      * @type {string}
      */
-    cache: "nocache" | "noexpiry" | "30sec" | "1min" | "2mins" | "5mins" | "10mins" | "15mins" | "30mins" | "1hour" | "6hours" | "12hours" | "1day" | "1week" | "1month" | "6months" | "1year";
+    cache: 'nocache' | 'noexpiry' | '30sec' | '1min' | '2mins' | '5mins' | '10mins' | '15mins' | '30mins' | '1hour' | '6hours' | '12hours' | '1day' | '1week' | '1month' | '6months' | '1year';
     /**
      * When you create a submodel object (a child object of a top-level object), you can specify whether to return the newly created child object or the updated top-level object.
      * @type {boolean}
@@ -405,7 +405,7 @@ export interface UpdateOptions {
      * Specify whether to cache the updated object using its id as the cache key or not. If the object is cached and the timeout has expired, the cached object will automatically be removed from the cache.
      * @type {string}
      */
-    cache: "nocache" | "noexpiry" | "30sec" | "1min" | "2mins" | "5mins" | "10mins" | "15mins" | "30mins" | "1hour" | "6hours" | "12hours" | "1day" | "1week" | "1month" | "6months" | "1year";
+    cache: 'nocache' | 'noexpiry' | '30sec' | '1min' | '2mins' | '5mins' | '10mins' | '15mins' | '30mins' | '1hour' | '6hours' | '12hours' | '1day' | '1week' | '1month' | '6months' | '1year';
     /**
      * In case if you update a submodel object (a child object of a top-level object), you can specify whether to return the newly updated child object or the updated top-level object.
      * @type {boolean}
@@ -472,7 +472,7 @@ export interface SortEntry {
      * Sort direction
      * @type {string}
      */
-    direction: "asc" | "desc";
+    direction: 'asc' | 'desc';
 }
 /**
  * Defines the structure of a field update
@@ -510,7 +510,7 @@ export interface FieldUpdate {
      *       | 'pop'
      *       | 'shift')}
      */
-    updateType: "set" | "unset" | "increment" | "decrement" | "min" | "max" | "multiply" | "pull" | "push" | "pop" | "shift";
+    updateType: 'set' | 'unset' | 'increment' | 'decrement' | 'min' | 'max' | 'multiply' | 'pull' | 'push' | 'pop' | 'shift';
     /**
      * The value that will be used during the field update. Depending on the update type the value will have different meaning.
      * - **set:** The new value to set
@@ -585,7 +585,7 @@ export interface GroupComputation {
      * @type {('count' | 'countif' | 'sum' | 'avg' | 'min' | 'max')}
      * @memberof GroupComputation
      */
-    type: "count" | "countif" | "sum" | "avg" | "min" | "max";
+    type: 'count' | 'countif' | 'sum' | 'avg' | 'min' | 'max';
     /**
      * The computation expression string. Except **count**, expression string is required for all other computation types.
      * @type {string}
@@ -630,12 +630,12 @@ export interface BucketSortEntry {
      * The name of the bucket field that will be used in sorting the returned objects
      * @type {string}
      */
-    field: "name" | "isPublic" | "createdAt" | "updatedAt";
+    field: 'name' | 'isPublic' | 'createdAt' | 'updatedAt';
     /**
      * Sort direction
      * @type {string}
      */
-    direction: "asc" | "desc";
+    direction: 'asc' | 'desc';
 }
 /**
  * Defines the structure how to get the files of a bucket
@@ -674,12 +674,12 @@ export interface FileSortEntry {
      * The name of the file field that will be used in sorting the returned objects
      * @type {string}
      */
-    field: "bucketId" | "fileName" | "size" | "encoding" | "mimeType" | "isPublic" | "publicPath" | "uploadedAt" | "updatedAt";
+    field: 'bucketId' | 'fileName' | 'size' | 'encoding' | 'mimeType' | 'isPublic' | 'publicPath' | 'uploadedAt' | 'updatedAt';
     /**
      * Sort direction
      * @type {string}
      */
-    direction: "asc" | "desc";
+    direction: 'asc' | 'desc';
 }
 /**
  * Defines the options available that can be set during file upload
@@ -711,5 +711,37 @@ export interface FileUploadOptions {
      * @param percentComplete Percent uploaded (an integer between 0-100), basicly `uploaded/total` rounded to the nearest integer
      */
     onProgress(uploaded: number, total: number, percentComplete: number): any;
+}
+/**
+ * Defines the cookie options. Primarly used to specify the otpions when setting the sessionToken cookie which is used to pass session token from the client (e.g., browser) to the server (e.g., next.js, express) in an app where server side rendering is used.
+ * @export
+ * @interface CookieOptions
+ */
+export interface CookieOptions {
+    /**
+     * Specifies the path that must exist in the requested URL for the browser to send the Cookie header.
+     * @type {string}
+     */
+    path: string;
+    /**
+     * Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
+     * @type {number}
+     */
+    maxAge: number;
+    /**
+     * Controls whether or not a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks.
+     * @type {string}
+     */
+    sameSite: 'strict' | 'lax' | 'none';
+    /**
+     * If set to `true`, forbids JavaScript from accessing the cookie.
+     * @type {boolean}
+     */
+    httpOnly: boolean;
+    /**
+     * If set to `true`, indicates that the cookie is sent to the server only when a request is made with the https: scheme (except on localhost), and therefore, is more resistant to man-in-the-middle attacks.
+     * @type {boolean}
+     */
+    secure: boolean;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError } from './types';
 /**
  * The cache manager provides simple key-value storage at a high-speed data storage layer (Redis) speeding up data set and get operations.
  *
@@ -22,7 +22,6 @@ export declare class CacheManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} key The key to retrieve
-     * @throws Throws an exception if `key` is not specified
      */
     get(key: string): Promise<{
         data: object | object[] | null;
@@ -35,19 +34,17 @@ export declare class CacheManager extends APIBase {
      * @param {string} key The key to update
      * @param {any} value The value to set
      * @param {number} ttl Time to live in seconds
-     * @throws Throws an exception if `key` or `value` is not specified
      */
     set(key: string, value: any, ttl?: number): Promise<{
         errors: APIError | null;
     }>;
     /**
-     * Removes the specified key from the cache. Irrespective of whether the key is found or not, success response is returned.
+     * Removes the specified key(s) from the cache. Irrespective of whether the key is found or not, success response is returned.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {string} key The key to delete
-     * @throws Throws an exception if `key` is not specified
+     * @param {string | string[]} keys A single key or an array of keys (string) to delete
      */
-    delete(key: string): Promise<{
+    delete(keys: string | string[]): Promise<{
         errors: APIError | null;
     }>;
     /**
@@ -57,7 +54,6 @@ export declare class CacheManager extends APIBase {
      * @param {string} key The key to increment
      * @param {number} [increment=1] The amount to increment the value by
      * @param {number} ttl Time to live in seconds
-     * @throws Throws an exception if `key` is not specified
      * @returns Returns the value of key after the increment
      */
     increment(key: string, increment?: number, ttl?: number): Promise<{
@@ -71,7 +67,6 @@ export declare class CacheManager extends APIBase {
      * @param {string} key The key to decrement
      * @param {number} [decrement=1] The amount to decrement the value by
      * @param {number} ttl Time to live in seconds
-     * @throws Throws an exception if `key` is not specified
      * @returns Returns the value of key after the decrement
      */
     decrement(key: string, decrement?: number, ttl?: number): Promise<{
@@ -84,9 +79,39 @@ export declare class CacheManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} key The key to set its expiry duration
      * @param {number} ttl Time to live in seconds
-     * @throws Throws an exception if `key` or `ttl` is not specified
      */
     expire(key: string, ttl: number): Promise<{
+        errors: APIError | null;
+    }>;
+    /**
+     * Returns the overall information about your apps cache including total number of keys and total storage size (bytes), daily and monthly ingress and egress volumes (bytes).
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @returns Returns information about your app's cache storage
+     */
+    getStats(): Promise<{
+        data: object | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Gets the list of keys in your app cache storage. If `pattern` is specified, it runs the pattern match to narrow down returned results, otherwise, returns all keys contained in your app's cache storage. See below examples how to specify filtering pattern:
+     *
+     * - h?llo matches hello, hallo and hxllo
+     * - h*llo matches hllo and heeeello
+     * - h[ae]llo matches hello and hallo, but not hillo
+     * - h[^e]llo matches hallo, hbllo, ... but not hello
+     * - h[a-b]llo matches hallo and hbllo
+     *
+     * You can paginate through your cache keys using the `next` cursor. In your first call to `listKeys`, specify the `next` value as null. This will start pagination of your cache keys. In the return result of the method you can get the list of keys matching your pattern and also the `next` value that you can use in your next call to `listKeys` method to move to the next page. If the returned `next` value is null this means that you have paginated all your keys and there is no additional keys to paginate.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} pattern The pattern string that will be used to filter cache keys
+     * @param {string} next The next page position cursor to paginate to the next page. If set as `null` or `undefined`, starts the pagination from the beginning.
+     * @returns Returns the array of matching keys, their values and the next cursor if there are remaining items to paginate.
+     */
+    listKeys(pattern: string, next: string): Promise<{
+        data: object[] | null;
+        next: string | null;
         errors: APIError | null;
     }>;
 }

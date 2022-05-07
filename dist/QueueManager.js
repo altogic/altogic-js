@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.QueueManager = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
 /**
  * The queue manager allows different parts of your application to communicate and perform activities asynchronously.
  *
@@ -38,14 +37,11 @@ class QueueManager extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} queueNameOrId The name or id of the message queue.
      * @param {object} message The message payload (JSON object) that will be submitted to the message queue
-     * @throws Throws an exception if `queueNameOrId` or `message` not specified
      * @returns If successful, returns information about the submitted message. You can use `messageId` to check the processing status of your message by calling {@link getMessageStatus} method. In case of an errors, returns the errors that occurred.
      */
     submitMessage(queueNameOrId, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("queueNameOrId", queueNameOrId);
-            (0, helpers_1.objectRequired)("message", message);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/queue", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
                 queueNameOrId,
                 message,
             });
@@ -57,12 +53,10 @@ class QueueManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} messageId The id of the message
-     * @throws Throws an exception if `messageId` not specified
      * @returns If successful, returns status information about the submitted message
      */
     getMessageStatus(messageId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("messageId", messageId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/queue/${messageId}`);
             return { info: data, errors };
         });

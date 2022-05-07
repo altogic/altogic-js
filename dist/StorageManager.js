@@ -11,9 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.StorageManager = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
 const BucketManager_1 = require("./BucketManager");
-const ClientError_1 = require("./utils/ClientError");
 /**
  * Allows you manage your app's cloud storage buckets and files. With StorageManager you can create and list buckets and use the {@link BucketManager} to manage a specific bucket and and its contained files.
  *
@@ -43,11 +41,9 @@ class StorageManager extends APIBase_1.APIBase {
      * Altogic automatically provides a default **`root`** bucket where you can store your files. You can pretty much do everthing with the **`root`** bucket that you can do with a normal bucket except you cannot delete or rename it.
      *
      * @param {string} nameOrId The name or id of the bucket.
-     * @throws Throws an exception if `nameOrId` not specified
      * @returns Returns a new {@link BucketManager} object that will be used for managing the bucket
      */
     bucket(nameOrId) {
-        (0, helpers_1.checkRequired)("bucket name or id", nameOrId);
         return new BucketManager_1.BucketManager(nameOrId, this.fetcher);
     }
     /**
@@ -58,12 +54,10 @@ class StorageManager extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
      * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
-     * @throws Throws an exception if `name` not specified
      * @returns Returns info about newly created bucket
      */
     createBucket(name, isPublic = true) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("Bucket name", name);
             return yield this.fetcher.post(`/_api/rest/v1/storage/create-bucket`, {
                 name,
                 isPublic,
@@ -86,7 +80,6 @@ class StorageManager extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The query expression string that will be used to filter buckets
      * @param {BucketListOptions} options Options to configure how buckets will be listed, primarily used to set pagination and sorting settings
-     * @throws Throws an exception (in case `expression` or `options` is specified) if `expression` is not a string or `options` is not an object
      * @returns Returns the array of matching buckets. If `returnCountInfo=true` in {@link BucketListOptions}, it returns an object which includes the count information and the matching buckets array.
      */
     listBuckets(expression, options) {
@@ -94,19 +87,13 @@ class StorageManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === "string")
+                if (typeof expression === 'string')
                     expVal = expression;
-                else if (typeof expression === "object")
+                else if (typeof expression === 'object')
                     optionsVal = expression;
-                else
-                    throw new ClientError_1.ClientError("invalid_value", `Bucket listing expression needs to be a string`);
             }
-            if (options) {
-                if (typeof options === "object")
-                    optionsVal = options;
-                else
-                    throw new ClientError_1.ClientError("invalid_value", `Bucket listing options need to be an object`);
-            }
+            if (options && typeof options === 'object')
+                optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/list-buckets`, {
                 expression: expVal,
                 options: optionsVal,
@@ -119,7 +106,7 @@ class StorageManager extends APIBase_1.APIBase {
      * @type {BucketManager}
      */
     get root() {
-        return new BucketManager_1.BucketManager("root", this.fetcher);
+        return new BucketManager_1.BucketManager('root', this.fetcher);
     }
     /**
      * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
@@ -129,7 +116,7 @@ class StorageManager extends APIBase_1.APIBase {
      */
     getStats() {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield this.fetcher.post(`/_api/rest/v1/storage/stats`);
+            return yield this.fetcher.get(`/_api/rest/v1/storage/stats`);
         });
     }
     /**
@@ -153,19 +140,13 @@ class StorageManager extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The search expression string that will be used to filter file objects
      * @param {FileListOptions} options Pagination and sorting options
-     * @throws Throws an exception if `expression` is not specified or `options` (if specified) is not an object
      * @returns Returns the files mathcing the search query. If `returnCountInfo=true` in {@link FileListOptions}, returns an object which includes count information and array of matching files.
      */
     searchFiles(expression, options) {
         return __awaiter(this, void 0, void 0, function* () {
             let optionsVal = null;
-            (0, helpers_1.checkRequired)("search expression", expression);
-            if (options) {
-                if (typeof options === "object")
-                    optionsVal = options;
-                else
-                    throw new ClientError_1.ClientError("invalid_value", `File search options need to be an object`);
-            }
+            if (options && typeof options === 'object')
+                optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/search-files`, {
                 expression,
                 options: optionsVal,
@@ -177,11 +158,9 @@ class StorageManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} fileUrl The url of the file that will be deleted
-     * @throws Throws an exception `fileUrl` is not specified
      */
     deleteFile(fileUrl) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("fileUrl", fileUrl);
             return yield this.fetcher.post(`/_api/rest/v1/storage/delete-file`, {
                 fileUrl,
             });

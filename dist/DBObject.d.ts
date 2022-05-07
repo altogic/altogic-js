@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, GetOptions, CreateOptions, SetOptions, AppendOptions, DeleteOptions, UpdateOptions, SimpleLookup, ComplexLookup, FieldUpdate } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, GetOptions, CreateOptions, SetOptions, AppendOptions, DeleteOptions, UpdateOptions, SimpleLookup, ComplexLookup, FieldUpdate } from './types';
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
@@ -22,7 +22,7 @@ export declare class DBObject extends APIBase {
      */
     constructor(modelName: string, fetcher: Fetcher, id?: string);
     /**
-     * Gets the object referred to by this db object and identified by the `id` from the database. If the `id` of the db object is not specified, it throws an exception.
+     * Gets the object referred to by this db object and identified by the `id` from the database. If the `id` of the db object is not specified, it returns an error.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
@@ -33,12 +33,11 @@ export declare class DBObject extends APIBase {
         errors: APIError | null;
     }>;
     /**
-     * Gets the object referred to by this db object and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it throws an exception.
+     * Gets the object referred to by this db object and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it returns an error.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {[SimpleLookup | ComplexLookup]} lookups The list of lookups to make (left outer join) while getting the object from the database
      * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
-     * @throws Throws an exception if `id` is not specified
      * @returns Returns the object identified by the `id` or null if no such object exists in the database
      */
     get(lookups: [SimpleLookup | ComplexLookup], options?: GetOptions): Promise<{
@@ -53,7 +52,6 @@ export declare class DBObject extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {CreateOptions} options Create operation options. By default no caching of the newly created object in Redis store.
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns the newly create object in the database.
      */
     create(values: object, options?: CreateOptions): Promise<{
@@ -69,7 +67,6 @@ export declare class DBObject extends APIBase {
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {string} parentId the id of the parent object.
      * @param {SetOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database.
      */
     set(values: object, parentId: string, options?: SetOptions): Promise<{
@@ -85,7 +82,6 @@ export declare class DBObject extends APIBase {
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {string} parentId the id of the parent object.
      * @param {AppendOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database.
      */
     append(values: object, parentId: string, options?: AppendOptions): Promise<{
@@ -93,11 +89,10 @@ export declare class DBObject extends APIBase {
         errors: APIError | null;
     }>;
     /**
-     * Deletes the document referred to by this DBObject and identified by the `id`. For a top level model object this method deletes the object from the database and for sub-model objects either unsets its value or removes it from its parent's object list. If the `id` of the db object is not defined, it throws an exception.
+     * Deletes the document referred to by this DBObject and identified by the `id`. For a top level model object this method deletes the object from the database and for sub-model objects either unsets its value or removes it from its parent's object list. If the `id` of the db object is not defined, it returns an error.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {DeleteOptions} options Delete operation options. By default removes deleted object from Redis cache (if cached already) and no top level object return.
-     * @throws Throws an exception if `id` is not specified
      * @returns Returns null if the deleted object is a top-level object. If the deleted object is a sub-model object and if `returnTop` is set to true in {@link DeleteOptions}, it returns the updated top-level object.
      */
     delete(options?: DeleteOptions): Promise<{
@@ -110,7 +105,6 @@ export declare class DBObject extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to update in the database
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
-     * @throws Throws an exception if `id` of db object or `values` is not specified
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     update(values: object, options?: UpdateOptions): Promise<{
@@ -123,7 +117,6 @@ export declare class DBObject extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
-     * @throws Throws an exception if `id` of db object or `fieldUpdates` is not specified
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     updateFields(fieldUpdates: FieldUpdate | [FieldUpdate], options?: UpdateOptions): Promise<{

@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, TaskInfo } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, TaskInfo } from './types';
 /**
  * The task manager allows you to manually trigger service executions of your scheduled tasks which actually ran periodically at fixed times, dates, or intervals.
  *
@@ -20,7 +20,6 @@ export declare class TaskManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} queueNameOrId The name or id of the message queue.
-     * @throws Throws an exception if `taskNameOrId` is not specified
      * @returns If successful, returns information about the triggered task. You can use `taskId` to check the exectuion status of your task by calling {@link getTaskStatus} method. In case of errors, returns the errors that occurred.
      */
     runOnce(taskNameOrId: string): Promise<{
@@ -32,7 +31,6 @@ export declare class TaskManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} taskId The id of the task
-     * @throws Throws an exception if `taskId` is not specified
      * @returns If successful, returns status information about the triggered task
      */
     getTaskStatus(taskId: string): Promise<{

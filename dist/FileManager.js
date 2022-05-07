@@ -23,10 +23,8 @@ var _FileManager_bucketNameOrId, _FileManager_fileNameOrId;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileManager = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
-const ClientError_1 = require("./utils/ClientError");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: "text/plain;charset=UTF-8",
+    contentType: 'text/plain;charset=UTF-8',
 };
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
@@ -125,7 +123,7 @@ class FileManager extends APIBase_1.APIBase {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/download`, {
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
-            }, null, null, "blob");
+            }, null, null, 'blob');
         });
     }
     /**
@@ -133,12 +131,10 @@ class FileManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newName The new name of the file.
-     * @throws Throws an exception if `newName` is not specified
      * @returns Returns the updated file information
      */
     rename(newName) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("new file name", newName);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/rename`, {
                 newName,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -184,16 +180,14 @@ class FileManager extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {any} fileBody The body of the new file that will be used to replace the existing file
      * @param {FileOptions} options Content type and privacy setting of the new file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
-     * @throws Throws an exception if `fileBody` is not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
      * @returns Returns the metadata of the file after replacement
      */
     replace(fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("fileBody", fileBody);
-            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
-                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
-                (typeof File !== "undefined" && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
+                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
+                (typeof File !== 'undefined' && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/file/replace-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                         file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -210,14 +204,11 @@ class FileManager extends APIBase_1.APIBase {
             }
             else {
                 const optionsVal = Object.assign(Object.assign(Object.assign({}, DEFAULT_FILE_OPTIONS), options), { onProgress: undefined });
-                if (!optionsVal.contentType) {
-                    throw new ClientError_1.ClientError("missing_content_type", "File body is neither 'Blob' nor 'File' nor 'FormData'. The contentType of the file body needs to be specified.");
-                }
                 return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/replace-object`, fileBody, {
                     file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                     bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                     options: optionsVal,
-                }, { "Content-Type": optionsVal.contentType });
+                }, { 'Content-Type': optionsVal.contentType });
             }
         });
     }
@@ -226,12 +217,10 @@ class FileManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to move the file into.
-     * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the moved file information
      */
     moveTo(bucketNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("moved bucket name or id", bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/move`, {
                 bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -244,12 +233,10 @@ class FileManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to copy the file into.
-     * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the copied file information
      */
     copyTo(bucketNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("copied bucket name or id", bucketNameOrId);
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/copy`, {
                 bucketNameOrId,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),

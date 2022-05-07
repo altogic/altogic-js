@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EndpointManager = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
 /**
  * Provides the methods to execute your app backend services by making http request to your app endpoints.
  *
@@ -37,13 +36,11 @@ class EndpointManager extends APIBase_1.APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a "key":"value" pair object
      * @param {KeyValuePair} [headers] Additional request headers as a "key":"value" pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
     get(path, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("path", path);
-            return yield this.fetcher.get(path, queryParams, headers, resolveType || "json");
+            return yield this.fetcher.get(path, queryParams, headers, resolveType || 'json');
         });
     }
     /**
@@ -55,13 +52,11 @@ class EndpointManager extends APIBase_1.APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
     post(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("path", path);
-            return yield this.fetcher.post(path, body, queryParams, headers, resolveType || "json");
+            return yield this.fetcher.post(path, body, queryParams, headers, resolveType || 'json');
         });
     }
     /**
@@ -73,13 +68,11 @@ class EndpointManager extends APIBase_1.APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
     put(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("path", path);
-            return yield this.fetcher.put(path, body, queryParams, headers, resolveType || "json");
+            return yield this.fetcher.put(path, body, queryParams, headers, resolveType || 'json');
         });
     }
     /**
@@ -91,13 +84,11 @@ class EndpointManager extends APIBase_1.APIBase {
      * @param {KeyValuePair} [queryParams] Query string parameters as a key:value pair object
      * @param {KeyValuePair} [headers] Additional request headers as a key:value pair object
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
-     * @throws Throws an exception if `path` is not specified
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
     delete(path, body, queryParams, headers, resolveType) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("path", path);
-            return yield this.fetcher.delete(path, body, queryParams, headers, resolveType || "json");
+            return yield this.fetcher.delete(path, body, queryParams, headers, resolveType || 'json');
         });
     }
 }

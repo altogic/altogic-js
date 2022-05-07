@@ -1,6 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { QueryBuilder } from "./QueryBuilder";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { QueryBuilder } from './QueryBuilder';
+import { APIError } from './types';
 /**
  * The database manager allows you manage your applications database. With DatabaseManager you can create new objects in your data model, update or delete existing ones, run queries and paginate over large data sets.
  *
@@ -23,9 +24,18 @@ export declare class DatabaseManager extends APIBase {
      * In case you need to work on a sub-model object, such as your users might have a list of addresses and these addresses are stored under a users object, you can create a {@link QueryBuilder} for `addresses` sub-model using the *dot-notation* by calling `altogic.db.model('users.addresses')`
      *
      * @param {string} name The name of the model
-     * @throws Throws an exception if `name` is not specified
      * @returns Returns a new query builder object that will be issuing database commands (e.g., CRUD operations, queries) on the specified model
      */
     model(name: string): QueryBuilder;
+    /**
+     * Returns the overall information about your apps database and its models.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @returns Returns information about your app's database
+     */
+    getStats(): Promise<{
+        data: object | null;
+        errors: APIError | null;
+    }>;
 }
 //# sourceMappingURL=DatabaseManager.d.ts.map

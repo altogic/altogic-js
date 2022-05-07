@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { ClientOptions, User, Session, APIError } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { ClientOptions, User, Session, APIError } from './types';
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
  *
@@ -58,6 +58,21 @@ export declare class AuthManager extends APIBase {
      */
     setUser(user: User): void;
     /**
+     * Saves the session token to the *Set-Cookie* header. This method is primarily used to pass the session token between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
+     * @param  {string} sessionToken Session access token to pass from client to the server in the cookie header
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     * @returns {void}
+     */
+    setSessionCookie(sessionToken: string, req: any, res: any): void;
+    /**
+     * Removes the session token from the *Set-Cookie* header. This method is primarily used to remove the session token passed between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     * @returns {void}
+     */
+    removeSessionCookie(req: any, res: any): void;
+    /**
      * Creates a new user using the email and password authentication method in the database.
      *
      * If email confirmation is **enabled** in your app authentication settings then a confirm sign up email will be sent to the user with a link to click and this method will return the user data with a `null` session. Until the user clicks this link, the email address will not be verified and a session will not be created. If a user tries to signIn to an account where email has not been confirmed yet, an error message will be retured asking for email verification.
@@ -68,7 +83,6 @@ export declare class AuthManager extends APIBase {
      * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string} name Name of the user
-     * @throws Throws an exception if `email` or `password` is not specified
      */
     signUpWithEmail(email: string, password: string, name?: string): Promise<{
         user: User | null;
@@ -84,7 +98,6 @@ export declare class AuthManager extends APIBase {
      * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string} name Name of the user
-     * @throws Throws an exception if `phone` or `password` is not specified
      */
     signUpWithPhone(phone: string, password: string, name?: string): Promise<{
         user: User | null;
@@ -100,7 +113,6 @@ export declare class AuthManager extends APIBase {
      *
      * @param {string} email Email of the user
      * @param {string} password Password of the user
-     * @throws Throws an exception if `email` or `password` is not specified
      */
     signInWithEmail(email: string, password: string): Promise<{
         user: User | null;
@@ -114,7 +126,6 @@ export declare class AuthManager extends APIBase {
      *
      * @param {string} phone Phone of the user
      * @param {string} password Password of the user
-     * @throws Throws an exception if `phone` or `password` is not specified
      */
     signInWithPhone(phone: string, password: string): Promise<{
         user: User | null;
@@ -130,7 +141,6 @@ export declare class AuthManager extends APIBase {
      *
      * @param {string} phone Phone of the user
      * @param {string} code SMS code (OTP - one time password)
-     * @throws Throws an exception if `phone` or `code` is not specified
      */
     signInWithCode(phone: string, code: string): Promise<{
         user: User | null;
@@ -144,9 +154,8 @@ export declare class AuthManager extends APIBase {
      *
      * If this is the first time a user is using this provider then a new user record is creted in the database, otherwise the lastLoginAt field value of the existing user record is updated.
      * @param {string} provider
-     * @throws Throws an exception if `provider` is not specified
      */
-    signInWithProvider(provider: "google" | "facebook" | "twitter" | "discord" | "github"): void;
+    signInWithProvider(provider: 'google' | 'facebook' | 'twitter' | 'discord' | 'github'): void;
     /**
      * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
      *
@@ -196,7 +205,6 @@ export declare class AuthManager extends APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newPassword The new password of the user
      * @param {string} oldPassword The current password of the user
-     * @throws Throws an exception if `newPassword` or `oldPassword` is not specified
      */
     changePassword(newPassword: string, oldPassword: string): Promise<{
         errors: APIError | null;
@@ -206,7 +214,6 @@ export declare class AuthManager extends APIBase {
      *
      * If successful this method also saves the user and session data to local storage and sets the **Session** header in {@link Fetcher}
      * @param {string} accessToken The access token that will be used to get the authorization grants of a user
-     * @throws Throws an exception if `accessToken` is not specified
      */
     getAuthGrant(accessToken?: string): Promise<{
         user: User | null;
@@ -216,7 +223,6 @@ export declare class AuthManager extends APIBase {
     /**
      * Resends the email to verify the user's email address. If the user's email has already been validated or email confirmation is **disabled** in your app authentication settings, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     resendVerificationEmail(email: string): Promise<{
         errors: APIError | null;
@@ -224,7 +230,6 @@ export declare class AuthManager extends APIBase {
     /**
      * Resends the code to verify the user's phone number. If the user's phone has already been validated or phone confirmation is **disabled** in your app authentication settings, it returns an error.
      * @param {string} phone The phone number of the user to send the verification SMS code
-     * @throws Throws an exception if `phone` is not specified
      */
     resendVerificationCode(phone: string): Promise<{
         errors: APIError | null;
@@ -238,7 +243,6 @@ export declare class AuthManager extends APIBase {
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     sendMagicLinkEmail(email: string): Promise<{
         errors: APIError | null;
@@ -252,7 +256,6 @@ export declare class AuthManager extends APIBase {
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     sendResetPwdEmail(email: string): Promise<{
         errors: APIError | null;
@@ -266,7 +269,6 @@ export declare class AuthManager extends APIBase {
      *
      * If phone number confirmation is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
      * @param {string} phone The phone number of the user to send the reset password code
-     * @throws Throws an exception if `phone` is not specified
      */
     sendResetPwdCode(phone: string): Promise<{
         errors: APIError | null;
@@ -280,7 +282,6 @@ export declare class AuthManager extends APIBase {
      *
      * If sign in using authorization codes is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
      * @param {string} phone The phone number of the user to send the SMS code
-     * @throws Throws an exception if `phone` is not specified
      */
     sendSignInCode(phone: string): Promise<{
         errors: APIError | null;
@@ -289,7 +290,6 @@ export declare class AuthManager extends APIBase {
      * Resets the password of the user using the access token provided through the {@link sendResetPwdEmail} flow.
      * @param {string} accessToken The access token that is retrieved from the redirect URL query string parameter
      * @param {string} newPassword The new password of the user
-     * @throws Throws an exception if `accessToken` or `newPassword` is not specified
      */
     resetPwdWithToken(accessToken: string, newPassword: string): Promise<{
         errors: APIError | null;
@@ -299,7 +299,6 @@ export declare class AuthManager extends APIBase {
      * @param {string} phone The phone number of the user
      * @param {string} code The SMS code that is sent to the users phone number
      * @param {string} newPassword The new password of the user
-     * @throws Throws an exception if `phone`, `code` or `newPassword` is not specified
      */
     resetPwdWithCode(phone: string, code: string, newPassword: string): Promise<{
         errors: APIError | null;
@@ -314,7 +313,6 @@ export declare class AuthManager extends APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} currentPassword The password of the user
      * @param {string} newEmail The new email address of the user
-     * @throws Throws an exception if `currentPassword` or `newEmail` is not specified
      */
     changeEmail(currentPassword: string, newEmail: string): Promise<{
         user: User | null;
@@ -330,7 +328,6 @@ export declare class AuthManager extends APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} currentPassword The password of the user
      * @param {string} newPhone The new phone number of the user
-     * @throws Throws an exception if `currentPassword` or `newPhone` is not specified
      */
     changePhone(currentPassword: string, newPhone: string): Promise<{
         user: User | null;
@@ -342,7 +339,6 @@ export declare class AuthManager extends APIBase {
      * If the code is invalid or expired, it returns an error message.
      * @param {string} phone The mobile phone number of the user where the SMS code was sent
      * @param {string} code The code sent in SMS (e.g., 6-digit number)
-     * @throws Throws an exception if `phone` or `code` is not specified
      */
     verifyPhone(phone: string, code: string): Promise<{
         user: User | null;

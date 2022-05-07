@@ -81,7 +81,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getSession() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            const session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem("session");
+            const session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('session');
             return session ? JSON.parse(session) : null;
         }
         else
@@ -93,7 +93,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUser() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            const user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem("user");
+            const user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('user');
             return user ? JSON.parse(user) : null;
         }
         else
@@ -110,7 +110,7 @@ class AuthManager extends APIBase_1.APIBase {
     setSession(session) {
         this.fetcher.setSession(session);
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f") && session)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("session", JSON.stringify(session));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('session', JSON.stringify(session));
     }
     /**
      * Saves the user data to local storage. If you use the *signUp* or *signIn* methods of this client library, you do not need to call this method to set the user data, since the client library automatically manages user data.
@@ -120,7 +120,26 @@ class AuthManager extends APIBase_1.APIBase {
      */
     setUser(user) {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f") && user)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("user", JSON.stringify(user));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('user', JSON.stringify(user));
+    }
+    /**
+     * Saves the session token to the *Set-Cookie* header. This method is primarily used to pass the session token between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
+     * @param  {string} sessionToken Session access token to pass from client to the server in the cookie header
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     * @returns {void}
+     */
+    setSessionCookie(sessionToken, req, res) {
+        (0, helpers_1.setCookie)(req, res, 'session_token', sessionToken, 60 * 60 * 24 * 365, 'none', true, true);
+    }
+    /**
+     * Removes the session token from the *Set-Cookie* header. This method is primarily used to remove the session token passed between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     * @returns {void}
+     */
+    removeSessionCookie(req, res) {
+        (0, helpers_1.setCookie)(req, res, 'session_token', '', -1, 'none', true, true);
     }
     /**
      * Creates a new user using the email and password authentication method in the database.
@@ -133,13 +152,10 @@ class AuthManager extends APIBase_1.APIBase {
      * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string} name Name of the user
-     * @throws Throws an exception if `email` or `password` is not specified
      */
     signUpWithEmail(email, password, name) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("email", email);
-            (0, helpers_1.checkRequired)("password", password);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-email", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-email', {
                 email,
                 password,
                 name,
@@ -165,13 +181,10 @@ class AuthManager extends APIBase_1.APIBase {
      * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string} name Name of the user
-     * @throws Throws an exception if `phone` or `password` is not specified
      */
     signUpWithPhone(phone, password, name) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
-            (0, helpers_1.checkRequired)("password", password);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-phone", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-phone', {
                 phone,
                 password,
                 name,
@@ -197,13 +210,10 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * @param {string} email Email of the user
      * @param {string} password Password of the user
-     * @throws Throws an exception if `email` or `password` is not specified
      */
     signInWithEmail(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("email", email);
-            (0, helpers_1.checkRequired)("password", password);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signin-email", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-email', {
                 email,
                 password,
             });
@@ -222,13 +232,10 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * @param {string} phone Phone of the user
      * @param {string} password Password of the user
-     * @throws Throws an exception if `phone` or `password` is not specified
      */
     signInWithPhone(phone, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
-            (0, helpers_1.checkRequired)("password", password);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signin-phone", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-phone', {
                 phone,
                 password,
             });
@@ -249,13 +256,10 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * @param {string} phone Phone of the user
      * @param {string} code SMS code (OTP - one time password)
-     * @throws Throws an exception if `phone` or `code` is not specified
      */
     signInWithCode(phone, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
-            (0, helpers_1.checkRequired)("code", code);
-            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code !== null && code !== void 0 ? code : ''}&phone=${encodeURIComponent(phone)}`);
             if (errors)
                 return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -271,10 +275,8 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If this is the first time a user is using this provider then a new user record is creted in the database, otherwise the lastLoginAt field value of the existing user record is updated.
      * @param {string} provider
-     * @throws Throws an exception if `provider` is not specified
      */
     signInWithProvider(provider) {
-        (0, helpers_1.checkRequired)("provider", provider);
         if (globalThis.window)
             globalThis.window.location.href = `${this.fetcher.getBaseUrl()}/_auth/${provider}`;
     }
@@ -287,14 +289,13 @@ class AuthManager extends APIBase_1.APIBase {
     signOut(sessionToken) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout", {
+                const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout', {
                     token: sessionToken,
                 });
                 // Get current session
                 const session = this.getSession();
                 // Clear local user and session data if we are signing out from current session or signed out session token matches with current session token
-                if (!errors &&
-                    (!sessionToken || (session && sessionToken === session.token))) {
+                if (!errors && (!sessionToken || (session && sessionToken === session.token))) {
                     __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                     this.fetcher.clearSession();
                 }
@@ -312,7 +313,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout-all");
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all');
             // Clear local user and session data
             if (!errors) {
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -328,7 +329,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAllExceptCurrent() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout-all-except");
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
             return { errors };
         });
     }
@@ -339,7 +340,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getAllSessions() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.get("/_api/rest/v1/auth/sessions");
+            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/sessions');
             return { sessions: data, errors };
         });
     }
@@ -350,7 +351,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUserFromDB() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.get("/_api/rest/v1/auth/user");
+            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/user');
             return { user: data, errors };
         });
     }
@@ -360,13 +361,10 @@ class AuthManager extends APIBase_1.APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newPassword The new password of the user
      * @param {string} oldPassword The current password of the user
-     * @throws Throws an exception if `newPassword` or `oldPassword` is not specified
      */
     changePassword(newPassword, oldPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("newPassword", newPassword);
-            (0, helpers_1.checkRequired)("oldPassword", oldPassword);
-            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/change-pwd", {
+            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/change-pwd', {
                 newPassword,
                 oldPassword,
             });
@@ -378,13 +376,11 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If successful this method also saves the user and session data to local storage and sets the **Session** header in {@link Fetcher}
      * @param {string} accessToken The access token that will be used to get the authorization grants of a user
-     * @throws Throws an exception if `accessToken` is not specified
      */
     getAuthGrant(accessToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)("access_token");
-            (0, helpers_1.checkRequired)("accessToken", tokenStr);
-            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr}`);
+            const tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)('access_token');
+            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr !== null && tokenStr !== void 0 ? tokenStr : ''}`);
             if (errors)
                 return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -396,23 +392,19 @@ class AuthManager extends APIBase_1.APIBase {
     /**
      * Resends the email to verify the user's email address. If the user's email has already been validated or email confirmation is **disabled** in your app authentication settings, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     resendVerificationEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("email", email);
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email !== null && email !== void 0 ? email : ''}`);
             return { errors };
         });
     }
     /**
      * Resends the code to verify the user's phone number. If the user's phone has already been validated or phone confirmation is **disabled** in your app authentication settings, it returns an error.
      * @param {string} phone The phone number of the user to send the verification SMS code
-     * @throws Throws an exception if `phone` is not specified
      */
     resendVerificationCode(phone) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
             const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend-code?phone=${encodeURIComponent(phone)}`);
             return { errors };
         });
@@ -426,12 +418,10 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     sendMagicLinkEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("email", email);
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email !== null && email !== void 0 ? email : ''}`);
             return { errors };
         });
     }
@@ -444,12 +434,10 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If email confirmation is **disabled** in your app authentication settings or if the user's email has not been verified, it returns an error.
      * @param {string} email The email address of the user to send the verification email
-     * @throws Throws an exception if `email` is not specified
      */
     sendResetPwdEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("email", email);
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email !== null && email !== void 0 ? email : ''}`);
             return { errors };
         });
     }
@@ -462,11 +450,9 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If phone number confirmation is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
      * @param {string} phone The phone number of the user to send the reset password code
-     * @throws Throws an exception if `phone` is not specified
      */
     sendResetPwdCode(phone) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
             const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset-code?phone=${encodeURIComponent(phone)}`);
             return { errors };
         });
@@ -480,11 +466,9 @@ class AuthManager extends APIBase_1.APIBase {
      *
      * If sign in using authorization codes is **disabled** in your app authentication settings or if the user's phone has not been verified, it returns an error.
      * @param {string} phone The phone number of the user to send the SMS code
-     * @throws Throws an exception if `phone` is not specified
      */
     sendSignInCode(phone) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
             const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-code?phone=${encodeURIComponent(phone)}`);
             return { errors };
         });
@@ -493,13 +477,10 @@ class AuthManager extends APIBase_1.APIBase {
      * Resets the password of the user using the access token provided through the {@link sendResetPwdEmail} flow.
      * @param {string} accessToken The access token that is retrieved from the redirect URL query string parameter
      * @param {string} newPassword The new password of the user
-     * @throws Throws an exception if `accessToken` or `newPassword` is not specified
      */
     resetPwdWithToken(accessToken, newPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("accessToken", accessToken);
-            (0, helpers_1.checkRequired)("newPassword", newPassword);
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken}`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken !== null && accessToken !== void 0 ? accessToken : ''}`, {
                 newPassword,
             });
             return { errors };
@@ -510,14 +491,10 @@ class AuthManager extends APIBase_1.APIBase {
      * @param {string} phone The phone number of the user
      * @param {string} code The SMS code that is sent to the users phone number
      * @param {string} newPassword The new password of the user
-     * @throws Throws an exception if `phone`, `code` or `newPassword` is not specified
      */
     resetPwdWithCode(phone, code, newPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
-            (0, helpers_1.checkRequired)("code", code);
-            (0, helpers_1.checkRequired)("newPassword", newPassword);
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd-code?phone=${encodeURIComponent(phone)}&code=${code}`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd-code?phone=${encodeURIComponent(phone)}&code=${code !== null && code !== void 0 ? code : ''}`, {
                 newPassword,
             });
             return { errors };
@@ -533,12 +510,9 @@ class AuthManager extends APIBase_1.APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} currentPassword The password of the user
      * @param {string} newEmail The new email address of the user
-     * @throws Throws an exception if `currentPassword` or `newEmail` is not specified
      */
     changeEmail(currentPassword, newEmail) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("currentPassword", currentPassword);
-            (0, helpers_1.checkRequired)("newEmail", newEmail);
             const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/change-email`, {
                 currentPassword,
                 newEmail,
@@ -556,12 +530,9 @@ class AuthManager extends APIBase_1.APIBase {
      * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} currentPassword The password of the user
      * @param {string} newPhone The new phone number of the user
-     * @throws Throws an exception if `currentPassword` or `newPhone` is not specified
      */
     changePhone(currentPassword, newPhone) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("currentPassword", currentPassword);
-            (0, helpers_1.checkRequired)("newPhone", newPhone);
             const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/change-phone`, {
                 currentPassword,
                 newPhone,
@@ -575,13 +546,10 @@ class AuthManager extends APIBase_1.APIBase {
      * If the code is invalid or expired, it returns an error message.
      * @param {string} phone The mobile phone number of the user where the SMS code was sent
      * @param {string} code The code sent in SMS (e.g., 6-digit number)
-     * @throws Throws an exception if `phone` or `code` is not specified
      */
     verifyPhone(phone, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("phone", phone);
-            (0, helpers_1.checkRequired)("code", code);
-            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code !== null && code !== void 0 ? code : ''}&phone=${encodeURIComponent(phone)}`);
             if (errors)
                 return { user: null, session: null, errors };
             // If user sign up with phone
@@ -601,15 +569,15 @@ class AuthManager extends APIBase_1.APIBase {
 exports.AuthManager = AuthManager;
 _AuthManager_localStorage = new WeakMap(), _AuthManager_signInRedirect = new WeakMap(), _AuthManager_instances = new WeakSet(), _AuthManager_deleteLocalData = function _AuthManager_deleteLocalData() {
     if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("session");
-        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("user");
+        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem('session');
+        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem('user');
     }
 }, _AuthManager_saveLocalData = function _AuthManager_saveLocalData(user, session) {
     if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
         if (session)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("session", JSON.stringify(session));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('session', JSON.stringify(session));
         if (user)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("user", JSON.stringify(user));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('user', JSON.stringify(user));
     }
 };
 //# sourceMappingURL=AuthManager.js.map

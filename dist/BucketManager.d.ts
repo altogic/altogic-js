@@ -52,7 +52,6 @@ export declare class BucketManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newName The new name of the bucket. `root` is a reserved name and cannot be used.
-     * @throws Throws an exception if `newName` is not specified or `newName='root'`
      * @returns Returns the updated bucket information
      */
     rename(newName: string): Promise<{
@@ -60,10 +59,9 @@ export declare class BucketManager extends APIBase {
         errors: APIError | null;
     }>;
     /**
-     * Deletes the bucket and all objects (e.g., files) inside the bucket.
+     * Deletes the bucket and all objects (e.g., files) inside the bucket. Returns an error if `root` bucket is tried to be deleted.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @throws Throws an exception if bucket is `root`
      */
     delete(): Promise<{
         errors: APIError | null;
@@ -111,7 +109,6 @@ export declare class BucketManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The query expression string that will be used to filter file objects
      * @param {FileListOptions} options Pagination and sorting options
-     * @throws Throws an exception if `expression` is not a string or `options` is not an object
      * @returns Returns the array of files. If `returnCountInfo=true` in {@link FileListOptions}, returns an object which includes count information and array of files.
      */
     listFiles(expression?: string, options?: FileListOptions): Promise<{
@@ -127,7 +124,6 @@ export declare class BucketManager extends APIBase {
      * @param {string} fileName The name of the file e.g., *filename.jpg*
      * @param {any} fileBody The body of the file that will be stored in the bucket
      * @param {FileUploadOptions} options Content type of the file, privacy setting of the file and whether to create the bucket if not exists. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting. If `createBucket` is set to true (defaults to false), then creates a new bucket if the bucket does not exist.
-     * @throws Throws an exception if `fileName` or `fileBody` not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
      * @returns Returns the metadata of the uploaded file
      */
     upload(fileName: string, fileBody: any, options: FileUploadOptions): Promise<{
@@ -138,7 +134,6 @@ export declare class BucketManager extends APIBase {
      * Creates a new {@link FileManager} object for the specified file.
      *
      * @param {string} fileNameOrId The name or id of the file.
-     * @throws Throws an exception if `nameOrId` not specified
      * @returns Returns a new {@link FileManager} object that will be used for managing the file
      */
     file(fileNameOrId: string): FileManager;
@@ -147,7 +142,6 @@ export declare class BucketManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string[]} fileNamesOrIds Array of name or ids of the files to delete
-     * @throws Throws an exception if no file name or id is specified
      */
     deleteFiles(fileNamesOrIds: string[]): Promise<{
         errors: APIError | null;

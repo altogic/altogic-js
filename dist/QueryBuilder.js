@@ -24,8 +24,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.QueryBuilder = void 0;
 const APIBase_1 = require("./APIBase");
 const DBObject_1 = require("./DBObject");
-const helpers_1 = require("./utils/helpers");
-const ClientError_1 = require("./utils/ClientError");
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -286,11 +284,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * The first data query above searches for products that are of type plastic and has a stock quantity between 100-200 items. The second data query search for products either metal and with a weight to volume ration greater than 2 or plastics with a weight to volume ration less than or equal to 2.
      * @param {string} expression The query expression string
-     * @throws Throws an exception if `expression` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     filter(expression) {
-        (0, helpers_1.checkRequired)("expression", expression);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").expression = expression;
         return this;
     }
@@ -299,11 +295,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * If multiple lookup method calls are chained then each call is concatenated to a list, so that you can perform multiple lookups.
      * @param {SimpleLookup | ComplexLookup} lookup The lookup to make (left outer join) while getting the object from the database
-     * @throws Throws an exception if `lookup` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     lookup(lookup) {
-        (0, helpers_1.objectRequired)("lookup", lookup);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").lookups)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").lookups.push(lookup);
         else
@@ -315,11 +309,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * If multiple page method calls are chained then the last one overwrites the previous page values.
      * @param {number} pageNumber An integer that specifies the page number
-     * @throws Throws an exception if `pageNumber` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     page(pageNumber) {
-        (0, helpers_1.integerRequired)("pageNumber", pageNumber);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").page = pageNumber;
         return this;
     }
@@ -328,13 +320,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * If multiple limit method calls are chained then the last one overwrites the previous limit values.
      * @param {number} limitCount An integer that specifies the max number of objects to return
-     * @throws Throws an exception if `limitCount` is not specified or `limitCount=0`
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     limit(limitCount) {
-        (0, helpers_1.integerRequired)("limitCount", limitCount);
-        if (limitCount === 0)
-            throw new ClientError_1.ClientError("invalid_limit", `Limit value needs to be at least 1.`);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").limit = limitCount;
         return this;
     }
@@ -344,13 +332,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      * If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields.
      * @param {string} fieldName The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
      * @param {'asc' | 'desc'} sortDirection Sort direction whether ascending or descending
-     * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     sort(fieldName, sortDirection) {
-        (0, helpers_1.checkRequired)("sort fieldName", fieldName);
-        if (sortDirection !== "asc" && sortDirection !== "desc")
-            throw new ClientError_1.ClientError("invalid_sort_direction", `${sortDirection} is not a valid sort direction. Sort direction can be either 'asc' or 'desc'.`);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").sort)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").sort.push({ field: fieldName, direction: sortDirection });
         else
@@ -362,11 +346,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * If multiple omit method calls are chained then each call is concatenated to a list.
      * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
-     * @throws Throws an exception if no omitted fields is specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     omit(...fields) {
-        (0, helpers_1.arrayRequired)("omit fields", fields);
         if (__classPrivateFieldGet(this, _QueryBuilder_action, "f").omit)
             __classPrivateFieldGet(this, _QueryBuilder_action, "f").omit.push(...fields);
         else
@@ -378,14 +360,9 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * If multiple group method calls are chained then the last one overwrites the previous group values.
      * @param {[string]} fieldsOrExpression Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
-     * @throws Throws an exception if `expression` or `fields` is not specified correctly
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     group(fieldsOrExpression) {
-        (0, helpers_1.checkRequired)("group fields or expression", fieldsOrExpression);
-        if (typeof fieldsOrExpression !== "string" &&
-            !Array.isArray(fieldsOrExpression))
-            throw new ClientError_1.ClientError("invalid_group_definition", `The group method accepts either a grouping expression string or a string array of field names/paths.`);
         __classPrivateFieldGet(this, _QueryBuilder_action, "f").group = fieldsOrExpression;
         return this;
     }
@@ -406,12 +383,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns the newly create object or list of objects in the database.
      */
     create(values) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("create values", values);
             return yield this.fetcher.post(`/_api/rest/v1/db/create`, {
                 values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -438,13 +413,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
      * @param {string} parentId The id of the parent object
      * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the set sub-model object.
      */
     set(values, parentId, returnTop = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("set values", values);
-            (0, helpers_1.checkRequired)("set parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/set`, {
                 values,
                 parentId,
@@ -473,13 +445,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
      * @param {string} parentId The id of the parent object
      * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object(s) in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the appended sub-model object(s).
      */
     append(values, parentId, returnTop = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("append values", values);
-            (0, helpers_1.checkRequired)("append parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/append`, {
                 values,
                 parentId,
@@ -535,13 +504,11 @@ class QueryBuilder extends APIBase_1.APIBase {
      * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
-     * @throws Throws an exception if `computations` is not specified
+     * @param {GroupComputation | GroupComputation[]} computations An object or list of objects that contains the fields and their values to append to an object-list
      * @returns Returns the computation results
      */
     compute(computations) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("computations", computations, false);
             return yield this.fetcher.post(`/_api/rest/v1/db/compute`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 computations: Array.isArray(computations) ? computations : [computations],
@@ -590,12 +557,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {number} count An integer that specifies the number of items to randomly select
-     * @throws Throws an exception if `count` is not specified
      * @returns Returns the array of objects selected randomly.
      */
     getRandom(count) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.integerRequired)("count", count);
             return yield this.fetcher.post(`/_api/rest/v1/db/get-random`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 count,
@@ -618,14 +583,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to update in the database
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns information about the update operation
      */
     update(values) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("update values", values);
-            if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The update method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update`, {
                 values,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -648,19 +609,15 @@ class QueryBuilder extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
-     * @throws Throws an exception if `fieldUpdates` is not specified
      * @returns Returns information about the update operation
      */
     updateFields(fieldUpdates) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.objectRequired)("fieldUpdates", fieldUpdates);
             let updates = null;
             if (Array.isArray(fieldUpdates))
                 updates = fieldUpdates;
             else
                 updates = [fieldUpdates];
-            if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The updateFields method requires a filter query to select the objects to update in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
                 updates,
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
@@ -682,13 +639,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      * | sort |   |
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @throws Throws an exception if no `filter` method is called in the query builder chain
      * @returns Returns information about the delete operation
      */
     delete() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!__classPrivateFieldGet(this, _QueryBuilder_action, "f").expression)
-                throw new ClientError_1.ClientError("missing_filter_query", `The delete method requires a filter query to select the objects to delete in the database.`);
             return yield this.fetcher.post(`/_api/rest/v1/db/delete`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 model: __classPrivateFieldGet(this, _QueryBuilder_modelName, "f"),
@@ -713,12 +667,10 @@ class QueryBuilder extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} text The search string
      * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
-     * @throws Throws an exception if input search `text` is not specified
      * @returns Returns the array of objects matching the text search string and filter query (if specified). If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
      */
     searchText(text, returnCountInfo = false) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("text", text);
             return yield this.fetcher.post(`/_api/rest/v1/db/search-text`, {
                 query: __classPrivateFieldGet(this, _QueryBuilder_action, "f"),
                 returnCountInfo,

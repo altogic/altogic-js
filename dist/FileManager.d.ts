@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, FileUploadOptions } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, FileUploadOptions } from './types';
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
  *
@@ -71,7 +71,6 @@ export declare class FileManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} newName The new name of the file.
-     * @throws Throws an exception if `newName` is not specified
      * @returns Returns the updated file information
      */
     rename(newName: string): Promise<{
@@ -105,7 +104,6 @@ export declare class FileManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {any} fileBody The body of the new file that will be used to replace the existing file
      * @param {FileOptions} options Content type and privacy setting of the new file. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting.
-     * @throws Throws an exception if `fileBody` is not specified. Throws also an exception if `fileBody` is neither 'Blob' nor 'File' nor 'FormData' and if the `contentyType` option is not specified.
      * @returns Returns the metadata of the file after replacement
      */
     replace(fileBody: any, options: FileUploadOptions): Promise<{
@@ -117,7 +115,6 @@ export declare class FileManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to move the file into.
-     * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the moved file information
      */
     moveTo(bucketNameOrId: string): Promise<{
@@ -129,7 +126,6 @@ export declare class FileManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} bucketNameOrId The name or id of the bucket to copy the file into.
-     * @throws Throws an exception if `bucketNameOrId` is not specified
      * @returns Returns the copied file information
      */
     copyTo(bucketNameOrId: string): Promise<{

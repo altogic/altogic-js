@@ -11,7 +11,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TaskManager = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
 /**
  * The task manager allows you to manually trigger service executions of your scheduled tasks which actually ran periodically at fixed times, dates, or intervals.
  *
@@ -33,13 +32,11 @@ class TaskManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} queueNameOrId The name or id of the message queue.
-     * @throws Throws an exception if `taskNameOrId` is not specified
      * @returns If successful, returns information about the triggered task. You can use `taskId` to check the exectuion status of your task by calling {@link getTaskStatus} method. In case of errors, returns the errors that occurred.
      */
     runOnce(taskNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("taskNameOrId", taskNameOrId);
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/task", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
                 taskNameOrId,
             });
             return { info: data, errors };
@@ -50,12 +47,10 @@ class TaskManager extends APIBase_1.APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} taskId The id of the task
-     * @throws Throws an exception if `taskId` is not specified
      * @returns If successful, returns status information about the triggered task
      */
     getTaskStatus(taskId) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("taskId", taskId);
             const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/task/${taskId}`);
             return { info: data, errors };
         });

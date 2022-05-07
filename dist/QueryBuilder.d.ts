@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { DBObject } from "./DBObject";
-import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { DBObject } from './DBObject';
+import { APIError, SimpleLookup, ComplexLookup, UpdateInfo, DeleteInfo, FieldUpdate, GroupComputation } from './types';
 /**
  * The query builder is primarily used to build database queries or run CRUD operations on a model (i.e., table, collection) of your application.
  *
@@ -238,7 +238,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * The first data query above searches for products that are of type plastic and has a stock quantity between 100-200 items. The second data query search for products either metal and with a weight to volume ration greater than 2 or plastics with a weight to volume ration less than or equal to 2.
      * @param {string} expression The query expression string
-     * @throws Throws an exception if `expression` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     filter(expression: string): QueryBuilder;
@@ -247,7 +246,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * If multiple lookup method calls are chained then each call is concatenated to a list, so that you can perform multiple lookups.
      * @param {SimpleLookup | ComplexLookup} lookup The lookup to make (left outer join) while getting the object from the database
-     * @throws Throws an exception if `lookup` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     lookup(lookup: SimpleLookup | ComplexLookup): QueryBuilder;
@@ -256,7 +254,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * If multiple page method calls are chained then the last one overwrites the previous page values.
      * @param {number} pageNumber An integer that specifies the page number
-     * @throws Throws an exception if `pageNumber` is not specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     page(pageNumber: number): QueryBuilder;
@@ -265,7 +262,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * If multiple limit method calls are chained then the last one overwrites the previous limit values.
      * @param {number} limitCount An integer that specifies the max number of objects to return
-     * @throws Throws an exception if `limitCount` is not specified or `limitCount=0`
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     limit(limitCount: number): QueryBuilder;
@@ -275,16 +271,14 @@ export declare class QueryBuilder extends APIBase {
      * If multiple sort method calls are chained then each call is concatenated to a list, so that you can perform sorting by multiple fields.
      * @param {string} fieldName The name of the field that will be used in sorting the returned objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
      * @param {'asc' | 'desc'} sortDirection Sort direction whether ascending or descending
-     * @throws Throws an exception if `fieldName` is not specified or `sortDirection` (if specified) is not 'asc' or 'desc'
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
-    sort(fieldName: string, sortDirection: "asc" | "desc"): QueryBuilder;
+    sort(fieldName: string, sortDirection: 'asc' | 'desc'): QueryBuilder;
     /**
      * Applies a field mask to the result and returns all the fields except the omitted ones.
      *
      * If multiple omit method calls are chained then each call is concatenated to a list.
      * @param {...string[]} fields The name of the fields that will be omitted in retrieved objects. The field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
-     * @throws Throws an exception if no omitted fields is specified
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     omit(...fields: string[]): QueryBuilder;
@@ -293,7 +287,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * If multiple group method calls are chained then the last one overwrites the previous group values.
      * @param {[string]} fieldsOrExpression Either a single expression string or an array of field names that will be used for grouping. In case of field names list, the field name can be in dot-notation to specify sub-object fields (e.g., field.subField)
-     * @throws Throws an exception if `expression` or `fields` is not specified correctly
      * @returns {QueryBuilder} Returns the query builder itself so that you can chain other methods
      */
     group(fieldsOrExpression: [string] | string): QueryBuilder;
@@ -314,7 +307,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object| object[]} values An object or a list of objects that contains the fields and their values to create in the database
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns the newly create object or list of objects in the database.
      */
     create(values: object | object[]): Promise<{
@@ -340,7 +332,6 @@ export declare class QueryBuilder extends APIBase {
      * @param {object} values An object that contains the fields and their values of a sub-model object to set in the database
      * @param {string} parentId The id of the parent object
      * @param {boolean} returnTop Flag to specify whether to return the newly set child object or the updated top-level object
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the set sub-model object.
      */
     set(values: object, parentId: string, returnTop?: boolean): Promise<{
@@ -366,7 +357,6 @@ export declare class QueryBuilder extends APIBase {
      * @param {object| object[]} values An object or list of objects that contains the fields and their values to append to an object-list
      * @param {string} parentId The id of the parent object
      * @param {boolean} returnTop Flag to specify whether to return the newly appended child object(s) or the updated top-level object
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object(s) in the database. If `returnTop` is set to true, it returns the updated top-level object instead of the appended sub-model object(s).
      */
     append(values: object | object[], parentId: string, returnTop?: boolean): Promise<{
@@ -414,8 +404,7 @@ export declare class QueryBuilder extends APIBase {
      * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {computations} values An object or list of objects that contains the fields and their values to append to an object-list
-     * @throws Throws an exception if `computations` is not specified
+     * @param {GroupComputation | GroupComputation[]} computations An object or list of objects that contains the fields and their values to append to an object-list
      * @returns Returns the computation results
      */
     compute(computations: GroupComputation | GroupComputation[]): Promise<{
@@ -459,7 +448,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {number} count An integer that specifies the number of items to randomly select
-     * @throws Throws an exception if `count` is not specified
      * @returns Returns the array of objects selected randomly.
      */
     getRandom(count: number): Promise<{
@@ -481,7 +469,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to update in the database
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns information about the update operation
      */
     update(values: object): Promise<{
@@ -503,7 +490,6 @@ export declare class QueryBuilder extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
-     * @throws Throws an exception if `fieldUpdates` is not specified
      * @returns Returns information about the update operation
      */
     updateFields(fieldUpdates: FieldUpdate | [FieldUpdate]): Promise<{
@@ -524,7 +510,6 @@ export declare class QueryBuilder extends APIBase {
      * | sort |   |
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @throws Throws an exception if no `filter` method is called in the query builder chain
      * @returns Returns information about the delete operation
      */
     delete(): Promise<{
@@ -549,7 +534,6 @@ export declare class QueryBuilder extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} text The search string
      * @param {boolean} returnCountInfo Flag to specify whether to return the count and pagination information such as total number of objects matched, page number and page size
-     * @throws Throws an exception if input search `text` is not specified
      * @returns Returns the array of objects matching the text search string and filter query (if specified). If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
      */
     searchText(text: string, returnCountInfo?: boolean): Promise<{

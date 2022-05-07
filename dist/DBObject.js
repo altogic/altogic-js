@@ -23,13 +23,12 @@ var _DBObject_modelName, _DBObject_id;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBObject = void 0;
 const APIBase_1 = require("./APIBase");
-const helpers_1 = require("./utils/helpers");
-const DEFAULT_GET_OPTIONS = { cache: "nocache" };
-const DEFAULT_CREATE_OPTIONS = { cache: "nocache", returnTop: false };
-const DEFAULT_SET_OPTIONS = { cache: "nocache", returnTop: false };
-const DEFAULT_APPEND_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_GET_OPTIONS = { cache: 'nocache' };
+const DEFAULT_CREATE_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_SET_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_APPEND_OPTIONS = { cache: 'nocache', returnTop: false };
 const DEFAULT_DELETE_OPTIONS = { removeFromCache: true, returnTop: false };
-const DEFAULT_UPDATE_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
@@ -67,11 +66,9 @@ class DBObject extends APIBase_1.APIBase {
     }
     get(optionsOrLookups, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("id", __classPrivateFieldGet(this, _DBObject_id, "f"));
             let lookupsVal = optionsOrLookups;
             let optionsVal = options;
-            if (!Array.isArray(optionsOrLookups) &&
-                typeof optionsOrLookups === "object") {
+            if (!Array.isArray(optionsOrLookups) && typeof optionsOrLookups === 'object') {
                 optionsVal = optionsOrLookups;
                 lookupsVal = undefined;
             }
@@ -91,16 +88,13 @@ class DBObject extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {CreateOptions} options Create operation options. By default no caching of the newly created object in Redis store.
-     * @throws Throws an exception if `values` is not specified
      * @returns Returns the newly create object in the database.
      */
     create(values, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("create values", values, false);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/create`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_CREATE_OPTIONS), options),
-                id: __classPrivateFieldGet(this, _DBObject_id, "f"),
                 model: __classPrivateFieldGet(this, _DBObject_modelName, "f"),
             });
         });
@@ -114,13 +108,10 @@ class DBObject extends APIBase_1.APIBase {
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {string} parentId the id of the parent object.
      * @param {SetOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database.
      */
     set(values, parentId, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("set values", values, false);
-            (0, helpers_1.checkRequired)("set parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/set`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_SET_OPTIONS), options),
@@ -139,13 +130,10 @@ class DBObject extends APIBase_1.APIBase {
      * @param {object} values An object that contains the fields and their values to create in the database
      * @param {string} parentId the id of the parent object.
      * @param {AppendOptions} options Create operation options. By default no caching of the newly created object in Redis store and no top level object return
-     * @throws Throws an exception if `values` or `parentId` is not specified
      * @returns Returns the newly create object in the database.
      */
     append(values, parentId, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("append values", values, false);
-            (0, helpers_1.checkRequired)("append parentId", parentId);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/append`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_APPEND_OPTIONS), options),
@@ -156,16 +144,14 @@ class DBObject extends APIBase_1.APIBase {
         });
     }
     /**
-     * Deletes the document referred to by this DBObject and identified by the `id`. For a top level model object this method deletes the object from the database and for sub-model objects either unsets its value or removes it from its parent's object list. If the `id` of the db object is not defined, it throws an exception.
+     * Deletes the document referred to by this DBObject and identified by the `id`. For a top level model object this method deletes the object from the database and for sub-model objects either unsets its value or removes it from its parent's object list. If the `id` of the db object is not defined, it returns an error.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {DeleteOptions} options Delete operation options. By default removes deleted object from Redis cache (if cached already) and no top level object return.
-     * @throws Throws an exception if `id` is not specified
      * @returns Returns null if the deleted object is a top-level object. If the deleted object is a sub-model object and if `returnTop` is set to true in {@link DeleteOptions}, it returns the updated top-level object.
      */
     delete(options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("id", __classPrivateFieldGet(this, _DBObject_id, "f"));
             return yield this.fetcher.post(`/_api/rest/v1/db/object/delete`, {
                 options: Object.assign(Object.assign({}, DEFAULT_DELETE_OPTIONS), options),
                 id: __classPrivateFieldGet(this, _DBObject_id, "f"),
@@ -179,13 +165,10 @@ class DBObject extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {object} values An object that contains the fields and their values to update in the database
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
-     * @throws Throws an exception if `id` of db object or `values` is not specified
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     update(values, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("update id", __classPrivateFieldGet(this, _DBObject_id, "f"));
-            (0, helpers_1.objectRequired)("update values", values);
             return yield this.fetcher.post(`/_api/rest/v1/db/object/update`, {
                 values,
                 options: Object.assign(Object.assign({}, DEFAULT_UPDATE_OPTIONS), options),
@@ -200,13 +183,10 @@ class DBObject extends APIBase_1.APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
-     * @throws Throws an exception if `id` of db object or `fieldUpdates` is not specified
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
     updateFields(fieldUpdates, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            (0, helpers_1.checkRequired)("update id", __classPrivateFieldGet(this, _DBObject_id, "f"));
-            (0, helpers_1.objectRequired)("fieldUpdates", fieldUpdates);
             let updates = null;
             if (Array.isArray(fieldUpdates))
                 updates = fieldUpdates;

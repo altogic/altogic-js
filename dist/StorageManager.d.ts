@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { BucketManager } from "./BucketManager";
-import { APIError, BucketListOptions, FileListOptions } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { BucketManager } from './BucketManager';
+import { APIError, BucketListOptions, FileListOptions } from './types';
 /**
  * Allows you manage your app's cloud storage buckets and files. With StorageManager you can create and list buckets and use the {@link BucketManager} to manage a specific bucket and and its contained files.
  *
@@ -29,7 +29,6 @@ export declare class StorageManager extends APIBase {
      * Altogic automatically provides a default **`root`** bucket where you can store your files. You can pretty much do everthing with the **`root`** bucket that you can do with a normal bucket except you cannot delete or rename it.
      *
      * @param {string} nameOrId The name or id of the bucket.
-     * @throws Throws an exception if `nameOrId` not specified
      * @returns Returns a new {@link BucketManager} object that will be used for managing the bucket
      */
     bucket(nameOrId: string): BucketManager;
@@ -41,7 +40,6 @@ export declare class StorageManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
      * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
-     * @throws Throws an exception if `name` not specified
      * @returns Returns info about newly created bucket
      */
     createBucket(name: string, isPublic?: boolean): Promise<{
@@ -64,7 +62,6 @@ export declare class StorageManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The query expression string that will be used to filter buckets
      * @param {BucketListOptions} options Options to configure how buckets will be listed, primarily used to set pagination and sorting settings
-     * @throws Throws an exception (in case `expression` or `options` is specified) if `expression` is not a string or `options` is not an object
      * @returns Returns the array of matching buckets. If `returnCountInfo=true` in {@link BucketListOptions}, it returns an object which includes the count information and the matching buckets array.
      */
     listBuckets(expression?: string, options?: BucketListOptions): Promise<{
@@ -108,7 +105,6 @@ export declare class StorageManager extends APIBase {
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} expression The search expression string that will be used to filter file objects
      * @param {FileListOptions} options Pagination and sorting options
-     * @throws Throws an exception if `expression` is not specified or `options` (if specified) is not an object
      * @returns Returns the files mathcing the search query. If `returnCountInfo=true` in {@link FileListOptions}, returns an object which includes count information and array of matching files.
      */
     searchFiles(expression: string, options?: FileListOptions): Promise<{
@@ -120,7 +116,6 @@ export declare class StorageManager extends APIBase {
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} fileUrl The url of the file that will be deleted
-     * @throws Throws an exception `fileUrl` is not specified
      */
     deleteFile(fileUrl: string): Promise<{
         errors: APIError | null;

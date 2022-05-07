@@ -29,30 +29,15 @@ export declare function getParamValue(paramName: string): string | null;
  */
 export declare function checkRequired(fieldName: string, fieldValue: any, checkEmptyString?: boolean): void;
 /**
- * Checks whether the input field value is an array or not.
- * @export
- * @param {string} fieldName Field name to check for a value
- * @param {any} fieldValue Field value
- * @param {any} checkEmptyArray Flag to check empty arrays or not
- * @throws Throws an exception if `fieldValue` is not an array. If `checkEmptyArray=true`, throws an exception if array is empty.
+ * Sets the Set-Cookie HTTP response header to send a cookie from the server to the user agent, so that the user agent can send it back to the server later.
+ *
+ * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+ * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request * @param  {string} name Name of the cookie
+ * @param  {any} value Value of the cookie
+ * @param  {number} maxAge Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
+ * @param  {string} sameSite Controls whether or not a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. It takes three possible values: Strict, Lax, and None.
+ * @param  {boolean} httpOnly Forbids JavaScript from accessing the cookie
+ * @param  {boolean} secure Indicates that the cookie is sent to the server only when a request is made with the https: scheme (except on localhost), and therefore, is more resistant to man-in-the-middle attacks.
  */
-export declare function arrayRequired(fieldName: string, fieldValue: any, checkEmptyArray?: boolean): void;
-/**
- * Checks whether the input field value is an integer or not
- * @export
- * @param {string} fieldName Field name to check for a value
- * @param {any} fieldValue Field value
- * @param {any} checkPositive Flag to check whether the number is positive or not
- * @throws Throws an exception if `fieldValue` is not an integer. If `checkPositive=true`, throws an exception if `fieldValue<=0`.
- */
-export declare function integerRequired(fieldName: string, fieldValue: any, checkPositive?: boolean): void;
-/**
- * Checks whether the input field value is an object or not
- * @export
- * @param {string} fieldName Field name to check for a value
- * @param {any} fieldValue Field value
- * @param {any} checkArray Flag to check whether the object is an array or not
- * @throws Throws an exception if `fieldValue` is not an object. If `checkArray=true`, throws an exception if `fieldValue` is also not an Array.
- */
-export declare function objectRequired(fieldName: string, fieldValue: any, checkArray?: boolean): void;
+export declare function setCookie(req: any, res: any, name: string, value: any, maxAge: number, sameSite: 'strict' | 'lax' | 'none', httpOnly: boolean, secure: boolean): void;
 //# sourceMappingURL=helpers.d.ts.map
