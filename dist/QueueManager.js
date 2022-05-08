@@ -41,7 +41,7 @@ class QueueManager extends APIBase_1.APIBase {
      */
     submitMessage(queueNameOrId, message) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/queue", {
                 queueNameOrId,
                 message,
             });

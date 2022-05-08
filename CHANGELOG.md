@@ -2,9 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.3.0 (2022-05-08)
+
+-  Added `getStats` method to `CacheManager`
+-  Updated CacheManager `delete` method, delete method now also accepts array of keys
+-  Changed the error handling structure, now the client library does not throw any exceptions
+   locally when checking required fields of a method. Only exclusion to this is the `createClient`
+   method which can throw an exception in case of missing baseUrl or clientKey
+-  Added `getStats` method to `DatabaseManager`
+-  Added two new methods to AuthManager `setSessionCookie` and `removeSessionCookie` to set the
+   session token cookie that is passed between the client and server. Particularly useful in server
+   side rendered apps (e.g., Next.js)
+
 ### 1.2.2 (2022-04-18)
 
--  Fixed the localstorage data deletion problem in `verifyPhone` method. With this fix, the verifyPhone method does not clear local session or user data in case the user's phone has been successfully changed.
+-  Fixed the localstorage data deletion problem in `verifyPhone` method. With this fix, the
+   verifyPhone method does not clear local session or user data in case the user's phone has been
+   successfully changed.
 
 ### 1.2.1 (2022-04-11)
 

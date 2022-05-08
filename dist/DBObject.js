@@ -23,12 +23,12 @@ var _DBObject_modelName, _DBObject_id;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DBObject = void 0;
 const APIBase_1 = require("./APIBase");
-const DEFAULT_GET_OPTIONS = { cache: 'nocache' };
-const DEFAULT_CREATE_OPTIONS = { cache: 'nocache', returnTop: false };
-const DEFAULT_SET_OPTIONS = { cache: 'nocache', returnTop: false };
-const DEFAULT_APPEND_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_GET_OPTIONS = { cache: "nocache" };
+const DEFAULT_CREATE_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_SET_OPTIONS = { cache: "nocache", returnTop: false };
+const DEFAULT_APPEND_OPTIONS = { cache: "nocache", returnTop: false };
 const DEFAULT_DELETE_OPTIONS = { removeFromCache: true, returnTop: false };
-const DEFAULT_UPDATE_OPTIONS = { cache: 'nocache', returnTop: false };
+const DEFAULT_UPDATE_OPTIONS = { cache: "nocache", returnTop: false };
 /**
  * References an object stored in a specific model of your application. It provides the methods to get, update, delete an existing object identified by its id or create, set or append a new object.
  *
@@ -68,7 +68,8 @@ class DBObject extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             let lookupsVal = optionsOrLookups;
             let optionsVal = options;
-            if (!Array.isArray(optionsOrLookups) && typeof optionsOrLookups === 'object') {
+            if (!Array.isArray(optionsOrLookups) &&
+                typeof optionsOrLookups === "object") {
                 optionsVal = optionsOrLookups;
                 lookupsVal = undefined;
             }

@@ -50,7 +50,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     set(key, value, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache', {
+            const { errors } = yield this.fetcher.post("/_api/rest/v1/cache", {
                 key,
                 value,
                 ttl: ttl ? ttl : undefined,
@@ -71,7 +71,9 @@ class CacheManager extends APIBase_1.APIBase {
                 keysVal = keys;
             else
                 keysVal = [keys];
-            const { errors } = yield this.fetcher.delete(`/_api/rest/v1/cache`, { keys: keysVal });
+            const { errors } = yield this.fetcher.delete(`/_api/rest/v1/cache`, {
+                keys: keysVal,
+            });
             return { errors };
         });
     }
@@ -86,7 +88,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     increment(key, increment = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/increment', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/cache/increment", {
                 key,
                 increment,
                 ttl: ttl ? ttl : undefined,
@@ -105,7 +107,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     decrement(key, decrement = 1, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/cache/decrement', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/cache/decrement", {
                 key,
                 decrement,
                 ttl: ttl ? ttl : undefined,
@@ -122,7 +124,7 @@ class CacheManager extends APIBase_1.APIBase {
      */
     expire(key, ttl) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post('/_api/rest/v1/cache/expire', {
+            const { errors } = yield this.fetcher.post("/_api/rest/v1/cache/expire", {
                 key,
                 ttl,
             });

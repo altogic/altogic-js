@@ -81,7 +81,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getSession() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            const session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('session');
+            const session = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem("session");
             return session ? JSON.parse(session) : null;
         }
         else
@@ -93,7 +93,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUser() {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-            const user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem('user');
+            const user = __classPrivateFieldGet(this, _AuthManager_localStorage, "f").getItem("user");
             return user ? JSON.parse(user) : null;
         }
         else
@@ -110,7 +110,7 @@ class AuthManager extends APIBase_1.APIBase {
     setSession(session) {
         this.fetcher.setSession(session);
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f") && session)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('session', JSON.stringify(session));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("session", JSON.stringify(session));
     }
     /**
      * Saves the user data to local storage. If you use the *signUp* or *signIn* methods of this client library, you do not need to call this method to set the user data, since the client library automatically manages user data.
@@ -120,7 +120,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     setUser(user) {
         if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f") && user)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('user', JSON.stringify(user));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("user", JSON.stringify(user));
     }
     /**
      * Saves the session token to the *Set-Cookie* header. This method is primarily used to pass the session token between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
@@ -130,7 +130,7 @@ class AuthManager extends APIBase_1.APIBase {
      * @returns {void}
      */
     setSessionCookie(sessionToken, req, res) {
-        (0, helpers_1.setCookie)(req, res, 'session_token', sessionToken, 60 * 60 * 24 * 365, 'none', true, true);
+        (0, helpers_1.setCookie)(req, res, "session_token", sessionToken, 60 * 60 * 24 * 365, "none", true, true);
     }
     /**
      * Removes the session token from the *Set-Cookie* header. This method is primarily used to remove the session token passed between the client (e.g., browser) and the server (e.g., next.js, express) in an app where server side rendering is used.
@@ -139,7 +139,7 @@ class AuthManager extends APIBase_1.APIBase {
      * @returns {void}
      */
     removeSessionCookie(req, res) {
-        (0, helpers_1.setCookie)(req, res, 'session_token', '', -1, 'none', true, true);
+        (0, helpers_1.setCookie)(req, res, "session_token", "", -1, "none", true, true);
     }
     /**
      * Creates a new user using the email and password authentication method in the database.
@@ -155,7 +155,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signUpWithEmail(email, password, name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-email', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-email", {
                 email,
                 password,
                 name,
@@ -184,7 +184,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signUpWithPhone(phone, password, name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signup-phone', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-phone", {
                 phone,
                 password,
                 name,
@@ -213,7 +213,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signInWithEmail(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-email', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signin-email", {
                 email,
                 password,
             });
@@ -235,7 +235,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signInWithPhone(phone, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/auth/signin-phone', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signin-phone", {
                 phone,
                 password,
             });
@@ -259,7 +259,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signInWithCode(phone, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code !== null && code !== void 0 ? code : ''}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/signin-code?code=${code !== null && code !== void 0 ? code : ""}&phone=${encodeURIComponent(phone)}`);
             if (errors)
                 return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -289,13 +289,14 @@ class AuthManager extends APIBase_1.APIBase {
     signOut(sessionToken) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout', {
+                const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout", {
                     token: sessionToken,
                 });
                 // Get current session
                 const session = this.getSession();
                 // Clear local user and session data if we are signing out from current session or signed out session token matches with current session token
-                if (!errors && (!sessionToken || (session && sessionToken === session.token))) {
+                if (!errors &&
+                    (!sessionToken || (session && sessionToken === session.token))) {
                     __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
                     this.fetcher.clearSession();
                 }
@@ -313,7 +314,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all');
+            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout-all");
             // Clear local user and session data
             if (!errors) {
                 __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -329,7 +330,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     signOutAllExceptCurrent() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/signout-all-except');
+            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/signout-all-except");
             return { errors };
         });
     }
@@ -340,7 +341,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getAllSessions() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/sessions');
+            const { data, errors } = yield this.fetcher.get("/_api/rest/v1/auth/sessions");
             return { sessions: data, errors };
         });
     }
@@ -351,7 +352,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getUserFromDB() {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.get('/_api/rest/v1/auth/user');
+            const { data, errors } = yield this.fetcher.get("/_api/rest/v1/auth/user");
             return { user: data, errors };
         });
     }
@@ -364,7 +365,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     changePassword(newPassword, oldPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post('/_api/rest/v1/auth/change-pwd', {
+            const { errors } = yield this.fetcher.post("/_api/rest/v1/auth/change-pwd", {
                 newPassword,
                 oldPassword,
             });
@@ -379,8 +380,8 @@ class AuthManager extends APIBase_1.APIBase {
      */
     getAuthGrant(accessToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            const tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)('access_token');
-            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr !== null && tokenStr !== void 0 ? tokenStr : ''}`);
+            const tokenStr = accessToken ? accessToken : (0, helpers_1.getParamValue)("access_token");
+            const { data, errors } = yield this.fetcher.get(`/_api/rest/v1/auth/grant?key=${tokenStr !== null && tokenStr !== void 0 ? tokenStr : ""}`);
             if (errors)
                 return { user: null, session: null, errors };
             __classPrivateFieldGet(this, _AuthManager_instances, "m", _AuthManager_deleteLocalData).call(this);
@@ -395,7 +396,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     resendVerificationEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email !== null && email !== void 0 ? email : ''}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/resend?email=${email !== null && email !== void 0 ? email : ""}`);
             return { errors };
         });
     }
@@ -421,7 +422,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     sendMagicLinkEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email !== null && email !== void 0 ? email : ''}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-magic?email=${email !== null && email !== void 0 ? email : ""}`);
             return { errors };
         });
     }
@@ -437,7 +438,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     sendResetPwdEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email !== null && email !== void 0 ? email : ''}`);
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/send-reset?email=${email !== null && email !== void 0 ? email : ""}`);
             return { errors };
         });
     }
@@ -480,7 +481,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     resetPwdWithToken(accessToken, newPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken !== null && accessToken !== void 0 ? accessToken : ''}`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd?key=${accessToken !== null && accessToken !== void 0 ? accessToken : ""}`, {
                 newPassword,
             });
             return { errors };
@@ -494,7 +495,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     resetPwdWithCode(phone, code, newPassword) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd-code?phone=${encodeURIComponent(phone)}&code=${code !== null && code !== void 0 ? code : ''}`, {
+            const { errors } = yield this.fetcher.post(`/_api/rest/v1/auth/reset-pwd-code?phone=${encodeURIComponent(phone)}&code=${code !== null && code !== void 0 ? code : ""}`, {
                 newPassword,
             });
             return { errors };
@@ -549,7 +550,7 @@ class AuthManager extends APIBase_1.APIBase {
      */
     verifyPhone(phone, code) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code !== null && code !== void 0 ? code : ''}&phone=${encodeURIComponent(phone)}`);
+            const { data, errors } = yield this.fetcher.post(`/_api/rest/v1/auth/verify-phone?code=${code !== null && code !== void 0 ? code : ""}&phone=${encodeURIComponent(phone)}`);
             if (errors)
                 return { user: null, session: null, errors };
             // If user sign up with phone
@@ -569,15 +570,15 @@ class AuthManager extends APIBase_1.APIBase {
 exports.AuthManager = AuthManager;
 _AuthManager_localStorage = new WeakMap(), _AuthManager_signInRedirect = new WeakMap(), _AuthManager_instances = new WeakSet(), _AuthManager_deleteLocalData = function _AuthManager_deleteLocalData() {
     if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
-        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem('session');
-        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem('user');
+        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("session");
+        __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("user");
     }
 }, _AuthManager_saveLocalData = function _AuthManager_saveLocalData(user, session) {
     if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
         if (session)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('session', JSON.stringify(session));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("session", JSON.stringify(session));
         if (user)
-            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem('user', JSON.stringify(user));
+            __classPrivateFieldGet(this, _AuthManager_localStorage, "f").setItem("user", JSON.stringify(user));
     }
 };
 //# sourceMappingURL=AuthManager.js.map

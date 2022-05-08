@@ -1,7 +1,7 @@
-import { APIBase } from './APIBase';
-import { Fetcher } from './utils/Fetcher';
-import { BucketManager } from './BucketManager';
-import { APIError, BucketListOptions, FileListOptions } from './types';
+import { APIBase } from "./APIBase";
+import { Fetcher } from "./utils/Fetcher";
+import { BucketManager } from "./BucketManager";
+import { APIError, BucketListOptions, FileListOptions } from "./types";
 /**
  * Allows you manage your app's cloud storage buckets and files. With StorageManager you can create and list buckets and use the {@link BucketManager} to manage a specific bucket and and its contained files.
  *

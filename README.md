@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For detailed API documentation go to
-[Client API reference](https://clientapi.altogic.com/v1.2.2/modules.html)
+[Client API reference](https://clientapi.altogic.com/v1.3.0/modules.html)
 
 ## Installation
 
@@ -63,7 +63,7 @@ create a new environment or access your app `envUrl` from the **Environments** v
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[Client API reference](https://clientapi.altogic.com/v1.2.2/modules.html).
+[Client API reference](https://clientapi.altogic.com/v1.3.0/modules.html).
 
 ### Authentication
 

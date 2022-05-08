@@ -9,7 +9,7 @@ const ClientError_1 = require("./ClientError");
  * @returns Trailed url string
  */
 function removeTrailingSlash(url) {
-    return url.replace(/\/$/, '');
+    return url.replace(/\/$/, "");
 }
 exports.removeTrailingSlash = removeTrailingSlash;
 /**
@@ -31,14 +31,14 @@ exports.normalizeUrl = normalizeUrl;
 function getParamValue(paramName) {
     if (globalThis.window && paramName) {
         const url = globalThis.window.location.href;
-        paramName = paramName.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&#]' + paramName + '(=([^&#]*)|&|#|$)');
+        paramName = paramName.replace(/[\[\]]/g, "\\$&");
+        const regex = new RegExp("[?&#]" + paramName + "(=([^&#]*)|&|#|$)");
         const results = regex.exec(url);
         if (!results)
             return null;
         if (!results[2])
             return null;
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
     return null;
 }
@@ -53,10 +53,11 @@ exports.getParamValue = getParamValue;
  */
 function checkRequired(fieldName, fieldValue, checkEmptyString = true) {
     if (fieldValue === null || fieldValue === undefined)
-        throw new ClientError_1.ClientError('missing_required_value', `${fieldName} is a required parameter, cannot be left empty`);
+        throw new ClientError_1.ClientError("missing_required_value", `${fieldName} is a required parameter, cannot be left empty`);
     if (checkEmptyString &&
-        (fieldValue === '' || (typeof fieldValue === 'string' && fieldValue.trim() === '')))
-        throw new ClientError_1.ClientError('missing_required_value', `${fieldName} is a required parameter, cannot be left empty`);
+        (fieldValue === "" ||
+            (typeof fieldValue === "string" && fieldValue.trim() === "")))
+        throw new ClientError_1.ClientError("missing_required_value", `${fieldName} is a required parameter, cannot be left empty`);
 }
 exports.checkRequired = checkRequired;
 /**
@@ -72,17 +73,17 @@ exports.checkRequired = checkRequired;
  */
 function setCookie(req, res, name, value, maxAge, sameSite, httpOnly, secure) {
     const cookieStr = serialize(name, stringify(value), {
-        path: '/',
+        path: "/",
         maxAge,
         sameSite,
         httpOnly,
         secure,
     });
     // Check if it is client side or not, if the window object is not defined then we are not at the client side but server side
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
         if (req && res) {
-            const currentCookies = res.getHeader('Set-Cookie');
-            res.setHeader('Set-Cookie', !currentCookies ? [cookieStr] : currentCookies.concat(cookieStr));
+            const currentCookies = res.getHeader("Set-Cookie");
+            res.setHeader("Set-Cookie", !currentCookies ? [cookieStr] : currentCookies.concat(cookieStr));
         }
     }
     else if (document) {
@@ -95,7 +96,7 @@ exports.setCookie = setCookie;
  *
  * @param  {string} value The value to convert into string
  */
-function stringify(value = '') {
+function stringify(value = "") {
     try {
         const result = JSON.stringify(value);
         return /^[\{\[]/.test(result) ? result : value;
@@ -113,24 +114,24 @@ function stringify(value = '') {
  * @return {string} The serialized cookie header
  */
 function serialize(name, val, options) {
-    let str = name + '=' + encode(val);
-    str += '; Max-Age=' + Math.floor(options.maxAge);
-    str += '; Path=' + options.path;
+    let str = name + "=" + encode(val);
+    str += "; Max-Age=" + Math.floor(options.maxAge);
+    str += "; Path=" + options.path;
     if (options.httpOnly) {
-        str += '; HttpOnly';
+        str += "; HttpOnly";
     }
     if (options.secure) {
-        str += '; Secure';
+        str += "; Secure";
     }
     switch (options.sameSite) {
-        case 'lax':
-            str += '; SameSite=Lax';
+        case "lax":
+            str += "; SameSite=Lax";
             break;
-        case 'strict':
-            str += '; SameSite=Strict';
+        case "strict":
+            str += "; SameSite=Strict";
             break;
-        case 'none':
-            str += '; SameSite=None';
+        case "none":
+            str += "; SameSite=None";
             break;
         default:
             break;

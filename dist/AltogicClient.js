@@ -95,12 +95,14 @@ class AltogicClient {
          * @type {StorageManager}
          */
         _AltogicClient_storageManager.set(this, void 0);
-        if (!envUrl || !(envUrl.trim().startsWith('https://') || envUrl.trim().startsWith('http://')))
-            throw new ClientError_1.ClientError('missing_required_value', 'envUrl is a required parameter and needs to start with https://');
+        if (!envUrl ||
+            !(envUrl.trim().startsWith("https://") ||
+                envUrl.trim().startsWith("http://")))
+            throw new ClientError_1.ClientError("missing_required_value", "envUrl is a required parameter and needs to start with https://");
         // Client key is also required
-        (0, helpers_1.checkRequired)('clientKey', clientKey);
-        if (typeof clientKey !== 'string')
-            throw new ClientError_1.ClientError('invalid_client_key', 'clientKey needs to be a valid key string');
+        (0, helpers_1.checkRequired)("clientKey", clientKey);
+        if (typeof clientKey !== "string")
+            throw new ClientError_1.ClientError("invalid_client_key", "clientKey needs to be a valid key string");
         // Initialize internal objects
         __classPrivateFieldSet(this, _AltogicClient_authManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_epManager, null, "f");
@@ -113,8 +115,8 @@ class AltogicClient {
         this.settings = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
         // Set the default headers
         const headers = {
-            'X-Client': 'altogic-js',
-            'X-Client-Key': clientKey,
+            "X-Client": "altogic-js",
+            "X-Client-Key": clientKey,
         };
         // If apiKey is provided, add it to the default headers
         if (this.settings.apiKey)

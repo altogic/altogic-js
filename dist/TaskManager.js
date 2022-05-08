@@ -36,7 +36,7 @@ class TaskManager extends APIBase_1.APIBase {
      */
     runOnce(taskNameOrId) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/task', {
+            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/task", {
                 taskNameOrId,
             });
             return { info: data, errors };

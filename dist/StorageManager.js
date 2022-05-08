@@ -87,12 +87,12 @@ class StorageManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === 'string')
+                if (typeof expression === "string")
                     expVal = expression;
-                else if (typeof expression === 'object')
+                else if (typeof expression === "object")
                     optionsVal = expression;
             }
-            if (options && typeof options === 'object')
+            if (options && typeof options === "object")
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/list-buckets`, {
                 expression: expVal,
@@ -106,7 +106,7 @@ class StorageManager extends APIBase_1.APIBase {
      * @type {BucketManager}
      */
     get root() {
-        return new BucketManager_1.BucketManager('root', this.fetcher);
+        return new BucketManager_1.BucketManager("root", this.fetcher);
     }
     /**
      * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
@@ -145,7 +145,7 @@ class StorageManager extends APIBase_1.APIBase {
     searchFiles(expression, options) {
         return __awaiter(this, void 0, void 0, function* () {
             let optionsVal = null;
-            if (options && typeof options === 'object')
+            if (options && typeof options === "object")
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/search-files`, {
                 expression,

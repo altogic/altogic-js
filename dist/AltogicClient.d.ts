@@ -1,11 +1,11 @@
-import { ClientOptions } from './types';
-import { AuthManager } from './AuthManager';
-import { EndpointManager } from './EndpointManager';
-import { CacheManager } from './CacheManager';
-import { QueueManager } from './QueueManager';
-import { TaskManager } from './TaskManager';
-import { DatabaseManager } from './DatabaseManager';
-import { StorageManager } from './StorageManager';
+import { ClientOptions } from "./types";
+import { AuthManager } from "./AuthManager";
+import { EndpointManager } from "./EndpointManager";
+import { CacheManager } from "./CacheManager";
+import { QueueManager } from "./QueueManager";
+import { TaskManager } from "./TaskManager";
+import { DatabaseManager } from "./DatabaseManager";
+import { StorageManager } from "./StorageManager";
 /**
  * Javascript client for interacting with your backend applications developed in Altogic.
  *

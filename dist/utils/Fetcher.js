@@ -20,8 +20,8 @@ var _Fetcher_instances, _Fetcher_handleRequest;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Fetcher = void 0;
 const cross_fetch_1 = __importDefault(require("cross-fetch"));
-const INVALID_SESSION_TOKEN = 'invalid_session_token';
-const MISSING_SESSION_TOKEN = 'missing_session_token';
+const INVALID_SESSION_TOKEN = "invalid_session_token";
+const MISSING_SESSION_TOKEN = "missing_session_token";
 /**
  * HTTP client for the browser, Node or React Native. Created by {@link AltogicClient} during initialization. The client library uses [cross-fetch](https://www.npmjs.com/package/cross-fetch) under the hood to make requests to you app's execution environment.
  *
@@ -52,9 +52,9 @@ class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    get(path, query = {}, headers = {}, resolveType = 'json') {
+    get(path, query = {}, headers = {}, resolveType = "json") {
         return __awaiter(this, void 0, void 0, function* () {
-            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, 'GET', path, query, headers, null, resolveType);
+            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, "GET", path, query, headers, null, resolveType);
         });
     }
     /**
@@ -66,9 +66,9 @@ class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    post(path, body = null, query = {}, headers = {}, resolveType = 'json') {
+    post(path, body = null, query = {}, headers = {}, resolveType = "json") {
         return __awaiter(this, void 0, void 0, function* () {
-            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, 'POST', path, query, headers, body, resolveType);
+            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, "POST", path, query, headers, body, resolveType);
         });
     }
     /**
@@ -80,9 +80,9 @@ class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    put(path, body = null, query = {}, headers = {}, resolveType = 'json') {
+    put(path, body = null, query = {}, headers = {}, resolveType = "json") {
         return __awaiter(this, void 0, void 0, function* () {
-            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, 'PUT', path, query, headers, body, resolveType);
+            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, "PUT", path, query, headers, body, resolveType);
         });
     }
     /**
@@ -94,9 +94,9 @@ class Fetcher {
      * @param {'json' | 'text' | 'blob' | 'arraybuffer'} resolveType Type of data to return as a response of the request. By default response data is parsed to JSON. Possible values are json, text, blob and arraybuffer.
      * @returns Returns a promise. The returned response includes two components *data* and *errors*. If errors occured during the execution of the request then errors object is returned and tha data is marked as `null`. If no errors occured then depending on the type of the request the data object holds a *single JSON object*, an *array of json objects*, *plain text*, *Blob* or *ArrayBuffer* and the errors object is marked as `null`. If the response returns no data back then both erros and data marked as `null`.
      */
-    delete(path, body = null, query = {}, headers = {}, resolveType = 'json') {
+    delete(path, body = null, query = {}, headers = {}, resolveType = "json") {
         return __awaiter(this, void 0, void 0, function* () {
-            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, 'DELETE', path, query, headers, body, resolveType);
+            return __classPrivateFieldGet(this, _Fetcher_instances, "m", _Fetcher_handleRequest).call(this, "DELETE", path, query, headers, body, resolveType);
         });
     }
     /**
@@ -145,41 +145,41 @@ class Fetcher {
      */
     upload(path, body, query = {}, headers = {}, progressCallback = null) {
         return new Promise((resolve, reject) => {
-            let pathStr = path !== null && path !== void 0 ? path : '';
+            let pathStr = path !== null && path !== void 0 ? path : "";
             pathStr = pathStr.trim();
             // Check the path format
-            if (!pathStr.startsWith('/'))
-                pathStr = '/' + pathStr;
+            if (!pathStr.startsWith("/"))
+                pathStr = "/" + pathStr;
             // Get the body of the request in the right format
             let requestBody;
             // Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
             // we will not have the FormData object by default
-            if (typeof FormData !== 'undefined' && body instanceof FormData) {
+            if (typeof FormData !== "undefined" && body instanceof FormData) {
                 requestBody = body;
             }
             else {
                 requestBody = new FormData();
-                requestBody.append('file', body);
+                requestBody.append("file", body);
             }
             // Create the request object
             const xhr = new XMLHttpRequest();
             // Build query parameters string
             const queryString = Object.keys(query || {}).reduce((previousValue, key) => {
-                let value = query ? query[key] : '';
-                value = value !== null && value !== void 0 ? value : '';
-                if (typeof value === 'object') {
+                let value = query ? query[key] : "";
+                value = value !== null && value !== void 0 ? value : "";
+                if (typeof value === "object") {
                     try {
                         value = JSON.stringify(value);
                     }
                     catch (err) {
-                        value = '';
+                        value = "";
                     }
                 }
                 if (previousValue)
                     return `${previousValue}&${key}=${encodeURIComponent(value)}`;
                 else
                     return `?${key}=${encodeURIComponent(value)}`;
-            }, '');
+            }, "");
             xhr.onload = () => {
                 if (xhr.status === 200)
                     resolve({ data: JSON.parse(xhr.response), errors: null });
@@ -188,7 +188,8 @@ class Fetcher {
                     const errResp = JSON.parse(xhr.response);
                     if ((errResp === null || errResp === void 0 ? void 0 : errResp.errors) &&
                         Array.isArray(errResp.errors) &&
-                        errResp.errors.find((entry) => entry.code === INVALID_SESSION_TOKEN || entry.code === MISSING_SESSION_TOKEN)) {
+                        errResp.errors.find((entry) => entry.code === INVALID_SESSION_TOKEN ||
+                            entry.code === MISSING_SESSION_TOKEN)) {
                         this.apiClient.auth.invalidateSession();
                     }
                     resolve({
@@ -212,17 +213,19 @@ class Fetcher {
             };
             // Listen for upload progress events
             xhr.upload.onprogress = (event) => {
-                if (progressCallback && typeof progressCallback === 'function' && event.total)
+                if (progressCallback &&
+                    typeof progressCallback === "function" &&
+                    event.total)
                     progressCallback(event.loaded, event.total, parseInt(((event.loaded / event.total) * 100).toFixed(), 10));
             };
             // Open and send the request
-            xhr.open('POST', this.restUrl + pathStr + queryString);
+            xhr.open("POST", this.restUrl + pathStr + queryString);
             // Set the headers of the request. Browser will set the content type to the correct value,
             // we should not have a content type entry in headers for request with FormData body.
             const headersObj = Object.assign(Object.assign({}, this.headers), (headers || {}));
             const keys = Object.keys(headersObj);
             for (const key of keys) {
-                if (key.trim().toLowerCase() !== 'content-type') {
+                if (key.trim().toLowerCase() !== "content-type") {
                     xhr.setRequestHeader(key, headersObj[key]);
                 }
             }
@@ -233,29 +236,29 @@ class Fetcher {
     }
 }
 exports.Fetcher = Fetcher;
-_Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_handleRequest(method, path, query, headers, body, resolveType = 'json') {
+_Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_handleRequest(method, path, query, headers, body, resolveType = "json") {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve, reject) => {
-            let pathStr = path !== null && path !== void 0 ? path : '';
+            let pathStr = path !== null && path !== void 0 ? path : "";
             pathStr = pathStr.trim();
             // Check the path format
-            if (!pathStr.startsWith('/'))
-                pathStr = '/' + pathStr;
+            if (!pathStr.startsWith("/"))
+                pathStr = "/" + pathStr;
             // Get the body of the request in the right format
             let requestBody;
             if (body) {
                 let isFormDataBody = false;
                 // Check if the input body is a FormData object or not. If the client api is used in a Node.js environment
                 // we will not have the FormData object by default
-                if (typeof FormData !== 'undefined' && body instanceof FormData) {
+                if (typeof FormData !== "undefined" && body instanceof FormData) {
                     requestBody = body;
                     isFormDataBody = true;
                 }
-                else if (((typeof Blob !== 'undefined' && body instanceof Blob) ||
-                    (typeof File !== 'undefined' && body instanceof File)) &&
-                    typeof FormData !== 'undefined') {
+                else if (((typeof Blob !== "undefined" && body instanceof Blob) ||
+                    (typeof File !== "undefined" && body instanceof File)) &&
+                    typeof FormData !== "undefined") {
                     requestBody = new FormData();
-                    requestBody.append('file', body);
+                    requestBody.append("file", body);
                     isFormDataBody = true;
                 }
                 else {
@@ -264,7 +267,7 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                         requestBody = JSON.stringify(body);
                         if (!headers)
                             headers = {};
-                        headers['Content-Type'] = 'application/json';
+                        headers["Content-Type"] = "application/json";
                     }
                     catch (err) {
                         // Seems not a json document, directly set the contents to the body, maybe it is binary body data (e.g., file upload)
@@ -276,7 +279,7 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                 if (headers && isFormDataBody) {
                     const keys = Object.keys(headers);
                     for (const key of keys) {
-                        if (key.trim().toLowerCase() === 'content-type') {
+                        if (key.trim().toLowerCase() === "content-type") {
                             delete headers[key];
                         }
                     }
@@ -284,38 +287,38 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
             }
             // Build query parameters string
             const queryString = Object.keys(query || {}).reduce((previousValue, key) => {
-                let value = query ? query[key] : '';
-                value = value !== null && value !== void 0 ? value : '';
-                if (typeof value === 'object') {
+                let value = query ? query[key] : "";
+                value = value !== null && value !== void 0 ? value : "";
+                if (typeof value === "object") {
                     try {
                         value = JSON.stringify(value);
                     }
                     catch (err) {
-                        value = '';
+                        value = "";
                     }
                 }
                 if (previousValue)
                     return `${previousValue}&${key}=${encodeURIComponent(value)}`;
                 else
                     return `?${key}=${encodeURIComponent(value)}`;
-            }, '');
+            }, "");
             (0, cross_fetch_1.default)(this.restUrl + pathStr + queryString, {
                 method,
                 headers: Object.assign(Object.assign({}, this.headers), (headers || {})),
                 body: requestBody,
-                credentials: 'include',
+                credentials: "include",
             }).then((response) => __awaiter(this, void 0, void 0, function* () {
                 // Success reponse
                 if (response.ok) {
                     try {
-                        if (resolveType === 'json') {
+                        if (resolveType === "json") {
                             resolve({ data: yield response.json(), errors: null });
                         }
-                        else if (resolveType === 'text')
+                        else if (resolveType === "text")
                             resolve({ data: yield response.text(), errors: null });
-                        else if (resolveType === 'blob')
+                        else if (resolveType === "blob")
                             resolve({ data: yield response.blob(), errors: null });
-                        else if (resolveType === 'arraybuffer')
+                        else if (resolveType === "arraybuffer")
                             resolve({ data: yield response.arrayBuffer(), errors: null });
                         else
                             resolve({ data: yield response.json(), errors: null });

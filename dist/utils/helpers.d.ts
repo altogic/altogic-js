@@ -39,5 +39,5 @@ export declare function checkRequired(fieldName: string, fieldValue: any, checkE
  * @param  {boolean} httpOnly Forbids JavaScript from accessing the cookie
  * @param  {boolean} secure Indicates that the cookie is sent to the server only when a request is made with the https: scheme (except on localhost), and therefore, is more resistant to man-in-the-middle attacks.
  */
-export declare function setCookie(req: any, res: any, name: string, value: any, maxAge: number, sameSite: 'strict' | 'lax' | 'none', httpOnly: boolean, secure: boolean): void;
+export declare function setCookie(req: any, res: any, name: string, value: any, maxAge: number, sameSite: "strict" | "lax" | "none", httpOnly: boolean, secure: boolean): void;
 //# sourceMappingURL=helpers.d.ts.map
