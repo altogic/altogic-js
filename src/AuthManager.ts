@@ -1,7 +1,7 @@
 import { APIBase } from "./APIBase";
 import { Fetcher } from "./utils/Fetcher";
 import { ClientOptions, ClientStorage, User, Session, APIError } from "./types";
-import { getParamValue, setCookie } from "./utils/helpers";
+import { getParamValue, setCookie, getCookie } from "./utils/helpers";
 
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
@@ -160,6 +160,49 @@ export class AuthManager extends APIBase {
    */
   removeSessionCookie(req: any, res: any): void {
     setCookie(req, res, "session_token", "", -1, "none", true, true);
+  }
+
+  /**
+   * Retrieves the user data from the database associated with the session token stored in the request cookie. If the session token is not valid then invalidates the session and removes the session cookie.
+   *
+   * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+   * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+   * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+   */
+  async getUserFromDBbyCookie(
+    req: any,
+    res: any
+  ): Promise<{
+    user: User | null;
+    errors: APIError | null;
+  }> {
+    const sessionToken = getCookie(req, res, "session_token");
+    if (!sessionToken) {
+      return {
+        user: null,
+        errors: {
+          status: 400,
+          statusText: "Bad Request",
+          items: [
+            {
+              origin: "session_token_error",
+              code: "session_token_not_found",
+              message:
+                "Cannot identify the session token 'session_token' from the request headers",
+            },
+          ],
+        },
+      };
+    }
+
+    // Set the session token of the fetcher
+    const tmpSession: any = { token: sessionToken };
+    this.setSession(tmpSession);
+    // Get user data from the server
+    const { user, errors } = await this.getUserFromDB();
+    if (errors) this.removeSessionCookie(req, res);
+
+    return { user, errors };
   }
 
   /**

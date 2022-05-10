@@ -1,5 +1,5 @@
 import { ClientError } from "./ClientError";
-import { CookieOptions } from "../types";
+import { CookieOptions, KeyValuePair } from "../types";
 
 /**
  * Removes trailing slash character from input url string.
@@ -76,7 +76,8 @@ export function checkRequired(
  * Sets the Set-Cookie HTTP response header to send a cookie from the server to the user agent, so that the user agent can send it back to the server later.
  *
  * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
- * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request * @param  {string} name Name of the cookie
+ * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+ * @param  {string} name Name of the cookie
  * @param  {any} value Value of the cookie
  * @param  {number} maxAge Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
  * @param  {string} sameSite Controls whether or not a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. It takes three possible values: Strict, Lax, and None.
@@ -101,7 +102,7 @@ export function setCookie(
     secure,
   });
 
-  // Check if it is client side or not, if the window object is not defined then we are not at the client side but server side
+  // Check if it is client side or not, if the window object is not defined then we are not at the server side
   if (typeof window === "undefined") {
     if (req && res) {
       const currentCookies = res.getHeader("Set-Cookie");
@@ -114,6 +115,45 @@ export function setCookie(
   } else if (document) {
     document.cookie = cookieStr;
   }
+}
+
+/**
+ * Gets the value of the cookie identified by its name.
+ *
+ * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+ * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+ * @param  {any} name The name of the cookie to fetch
+ * @returns {object} The value of the cookie object if found otherwise null
+ */
+export function getCookie(req: any, res: any, name: string): any {
+  let cookies: KeyValuePair = {};
+  // Check if it is client side or not, if the window object is not defined then we are at the server side
+  if (typeof window === "undefined") {
+    if (req && res) {
+      // if cookie-parser is used in project get cookies from ctx.req.cookies
+      // if cookie-parser isn't used in project get cookies from ctx.req.headers.cookie
+      if (req.cookies) cookies = req.cookies;
+      if (req.headers?.cookie) cookies = parse(req.headers.cookie);
+    }
+  } else if (document) {
+    const documentCookies = document.cookie ? document.cookie.split("; ") : [];
+    for (const entry of documentCookies) {
+      const cookieParts = entry.split("=");
+      const cvalue = cookieParts.slice(1).join("=");
+      const cname = cookieParts[0];
+
+      cookies[cname] = cvalue;
+    }
+  }
+
+  const cookieValue = decode(cookies[name]);
+
+  if (cookieValue === "true") return true;
+  if (cookieValue === "false") return false;
+  if (cookieValue === "undefined") return undefined;
+  if (cookieValue === "null") return null;
+
+  return cookieValue;
 }
 
 /**
@@ -171,6 +211,58 @@ function serialize(name: string, val: string, options: CookieOptions): string {
 }
 
 /**
+ *  Parse the given cookie header string into an object. The object has the various cookies as keys(names) => values.
+ *
+ * @param {string} str The cookie string to parse
+ * @return {object} The parsed cookie object
+ * @public
+ */
+
+function parse(str: string): any {
+  if (typeof str !== "string" || !str) return null;
+
+  const obj: any = {};
+  let index = 0;
+  while (index < str.length) {
+    const eqIdx = str.indexOf("=", index);
+    // no more cookie pairs
+    if (eqIdx === -1) break;
+
+    let endIdx = str.indexOf(";", index);
+
+    if (endIdx === -1) {
+      endIdx = str.length;
+    } else if (endIdx < eqIdx) {
+      // backtrack on prior semicolon
+      index = str.lastIndexOf(";", eqIdx - 1) + 1;
+      continue;
+    }
+
+    const key = str.slice(index, eqIdx).trim();
+
+    // only assign once
+    if (undefined === obj[key]) {
+      let val = str.slice(eqIdx + 1, endIdx).trim();
+
+      // quoted values
+      if (val.charCodeAt(0) === 0x22) {
+        val = val.slice(1, -1);
+      }
+
+      try {
+        obj[key] = decode(val);
+      } catch (e) {
+        obj[key] = val;
+      }
+    }
+
+    index = endIdx + 1;
+  }
+
+  return obj;
+}
+
+/**
  * URL-encodes the input value.
  *
  * @param {string} val Value to encode
@@ -179,4 +271,16 @@ function serialize(name: string, val: string, options: CookieOptions): string {
 
 function encode(val: string): string {
   return encodeURIComponent(val);
+}
+
+/**
+ * Decodes the input value.
+ *
+ * @param {string} val Value to encode
+ * @returns {string} Encoded value
+ */
+
+function decode(val: string): string {
+  if (!val) return val;
+  return val.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
 }

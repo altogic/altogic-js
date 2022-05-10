@@ -32,7 +32,8 @@ export declare function checkRequired(fieldName: string, fieldValue: any, checkE
  * Sets the Set-Cookie HTTP response header to send a cookie from the server to the user agent, so that the user agent can send it back to the server later.
  *
  * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
- * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request * @param  {string} name Name of the cookie
+ * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+ * @param  {string} name Name of the cookie
  * @param  {any} value Value of the cookie
  * @param  {number} maxAge Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
  * @param  {string} sameSite Controls whether or not a cookie is sent with cross-origin requests, providing some protection against cross-site request forgery attacks. It takes three possible values: Strict, Lax, and None.
@@ -40,4 +41,13 @@ export declare function checkRequired(fieldName: string, fieldValue: any, checkE
  * @param  {boolean} secure Indicates that the cookie is sent to the server only when a request is made with the https: scheme (except on localhost), and therefore, is more resistant to man-in-the-middle attacks.
  */
 export declare function setCookie(req: any, res: any, name: string, value: any, maxAge: number, sameSite: "strict" | "lax" | "none", httpOnly: boolean, secure: boolean): void;
+/**
+ * Gets the value of the cookie identified by its name.
+ *
+ * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+ * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+ * @param  {any} name The name of the cookie to fetch
+ * @returns {object} The value of the cookie object if found otherwise null
+ */
+export declare function getCookie(req: any, res: any, name: string): any;
 //# sourceMappingURL=helpers.d.ts.map

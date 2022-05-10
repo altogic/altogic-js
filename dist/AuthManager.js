@@ -142,6 +142,42 @@ class AuthManager extends APIBase_1.APIBase {
         (0, helpers_1.setCookie)(req, res, "session_token", "", -1, "none", true, true);
     }
     /**
+     * Retrieves the user data from the database associated with the session token stored in the request cookie. If the session token is not valid then invalidates the session and removes the session cookie.
+     *
+     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     */
+    getUserFromDBbyCookie(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const sessionToken = (0, helpers_1.getCookie)(req, res, "session_token");
+            if (!sessionToken) {
+                return {
+                    user: null,
+                    errors: {
+                        status: 400,
+                        statusText: "Bad Request",
+                        items: [
+                            {
+                                origin: "session_token_error",
+                                code: "session_token_not_found",
+                                message: "Cannot identify the session token 'session_token' from the request headers",
+                            },
+                        ],
+                    },
+                };
+            }
+            // Set the session token of the fetcher
+            const tmpSession = { token: sessionToken };
+            this.setSession(tmpSession);
+            // Get user data from the server
+            const { user, errors } = yield this.getUserFromDB();
+            if (errors)
+                this.removeSessionCookie(req, res);
+            return { user, errors };
+        });
+    }
+    /**
      * Creates a new user using the email and password authentication method in the database.
      *
      * If email confirmation is **enabled** in your app authentication settings then a confirm sign up email will be sent to the user with a link to click and this method will return the user data with a `null` session. Until the user clicks this link, the email address will not be verified and a session will not be created. If a user tries to signIn to an account where email has not been confirmed yet, an error message will be retured asking for email verification.

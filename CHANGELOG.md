@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.3.1 (2022-05-10)
+
+-  Added `getUserFromDBbyCookie` method to `AuthManager` to get user data from the database using the session token stored in request cookies
+
 ### 1.3.0 (2022-05-08)
 
 -  Added `getStats` method to `CacheManager`

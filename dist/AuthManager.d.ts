@@ -73,6 +73,17 @@ export declare class AuthManager extends APIBase {
      */
     removeSessionCookie(req: any, res: any): void;
     /**
+     * Retrieves the user data from the database associated with the session token stored in the request cookie. If the session token is not valid then invalidates the session and removes the session cookie.
+     *
+     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param  {any} req Represents the HTTP request and has properties for the request query string, parameters, body, HTTP headers, and so on
+     * @param  {any} res Represents the HTTP response that an Express or Next.js app sends when it gets an HTTP request
+     */
+    getUserFromDBbyCookie(req: any, res: any): Promise<{
+        user: User | null;
+        errors: APIError | null;
+    }>;
+    /**
      * Creates a new user using the email and password authentication method in the database.
      *
      * If email confirmation is **enabled** in your app authentication settings then a confirm sign up email will be sent to the user with a link to click and this method will return the user data with a `null` session. Until the user clicks this link, the email address will not be verified and a session will not be created. If a user tries to signIn to an account where email has not been confirmed yet, an error message will be retured asking for email verification.
