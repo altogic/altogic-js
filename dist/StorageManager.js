@@ -47,20 +47,22 @@ class StorageManager extends APIBase_1.APIBase {
         return new BucketManager_1.BucketManager(nameOrId, this.fetcher);
     }
     /**
-     * Creates a new bucket. If there already exists a bucket with the specified name, it returns an error.
+     * Creates a new bucket. If there already exists a bucket with the specified name, it returns an error. You can specify additional information to store with each bucket using the **tags** which are array of string values. By default if this method is called within the context of a user session, it also assigns the `userId` of the session to the bucket metadata.
      *
      * Files can be specified as **public** or **private**, which defines how the public URL of the file will behave. If a file is marked as private then external apps/parties will not be able to access it through its public URL. With `isPublic` parameter of a bucket, you can specify default privacy setting of the files contained in this bucket, meaning that when you add a file to a bucket and if the file did not specify public/private setting, then the the bucket's privacy setting will be applied. You can always override the default privacy setting of a bucket at the individual file level.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
      * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
+     * @param {string[]} tags Array of string values that will be added to the bucket metadata.
      * @returns Returns info about newly created bucket
      */
-    createBucket(name, isPublic = true) {
+    createBucket(name, isPublic = true, tags = []) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/create-bucket`, {
                 name,
                 isPublic,
+                tags,
             });
         });
     }
@@ -72,6 +74,8 @@ class StorageManager extends APIBase_1.APIBase {
      * | _id | `text` *(`identifier`)* | Unique identifier of the file |
      * | name | `text` | Name of the bucket |
      * | isPublic | `boolean` | Default privacy setting that will be applied to files of the bucket |
+     * | userId | `text` *(`identifier`)* | The unique identifier of the user who created the bucket. The `userId` information is populated only when the bucket is created within the context of a user session. |
+     * | tags | `string array` | List of tags added to the bucket metadata  |
      * | createdAt | `datetime` *(`text`)* | The creation date and time of the bucket |
      * | updatedAt | `datetime` *(`text`)* | The last modification date and time of bucket metadata |
      *
@@ -87,12 +91,12 @@ class StorageManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === "string")
+                if (typeof expression === 'string')
                     expVal = expression;
-                else if (typeof expression === "object")
+                else if (typeof expression === 'object')
                     optionsVal = expression;
             }
-            if (options && typeof options === "object")
+            if (options && typeof options === 'object')
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/list-buckets`, {
                 expression: expVal,
@@ -106,7 +110,7 @@ class StorageManager extends APIBase_1.APIBase {
      * @type {BucketManager}
      */
     get root() {
-        return new BucketManager_1.BucketManager("root", this.fetcher);
+        return new BucketManager_1.BucketManager('root', this.fetcher);
     }
     /**
      * Returns the overall information about your apps cloud storage including total number of buckets and files stored, total storage size in bytes and average, min and max file size in bytes.
@@ -132,6 +136,8 @@ class StorageManager extends APIBase_1.APIBase {
      * | encoding | `text` | The encoding type of the file such as `7bit`, `utf8` |
      * | mimeType | `text` | The mime-type of the file such as `image/gif`, `text/html` |
      * | publicPath | `text` | The public path (URL) of the file |
+     * | userId | `text` *(`identifier`)* | The unique identifier of the user who created/uploaded the file. The `userId` information is populated only when the file is created/uploaded within the context of a user session. |
+     * | tags | `string array` | List of tags added to the file metadata  |
      * | uploadedAt | `datetime` *(`text`)* | The upload date and time of the file |
      * | updatedAt | `datetime` *(`text`)* | The last modification date and time of file metadata |
      *
@@ -145,7 +151,7 @@ class StorageManager extends APIBase_1.APIBase {
     searchFiles(expression, options) {
         return __awaiter(this, void 0, void 0, function* () {
             let optionsVal = null;
-            if (options && typeof options === "object")
+            if (options && typeof options === 'object')
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/search-files`, {
                 expression,

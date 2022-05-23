@@ -1,6 +1,6 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { APIError, FileUploadOptions } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { APIError, FileUploadOptions } from './types';
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
  *
@@ -129,6 +129,41 @@ export declare class FileManager extends APIBase {
      * @returns Returns the copied file information
      */
     copyTo(bucketNameOrId: string): Promise<{
+        data: object | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Adds the specified tags to file's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to add to file's metadata
+     * @returns Returns the updated file information
+     */
+    addTags(tags: string | string[]): Promise<{
+        data: object | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Removes the specified tags from file's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to remove from file's metadata
+     * @returns Returns the updated file information
+     */
+    removeTags(tags: string | string[]): Promise<{
+        data: object | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Updates the overall file metadata (name, isPublic and tags) in a single method call.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} newName The new name of the file.
+     * @param {boolean} isPublic The privacy setting of the file.
+     * @param {string[]} tags Array of string values that will be added to the file metadata.
+     * @returns Returns the updated file information
+     */
+    updateInfo(newName: string, isPublic: boolean, tags: string | string[]): Promise<{
         data: object | null;
         errors: APIError | null;
     }>;

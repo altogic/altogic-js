@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileManager = void 0;
 const APIBase_1 = require("./APIBase");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: "text/plain;charset=UTF-8",
+    contentType: 'text/plain;charset=UTF-8',
 };
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
@@ -123,7 +123,7 @@ class FileManager extends APIBase_1.APIBase {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/download`, {
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
-            }, null, null, "blob");
+            }, null, null, 'blob');
         });
     }
     /**
@@ -184,10 +184,10 @@ class FileManager extends APIBase_1.APIBase {
      */
     replace(fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
-                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
-                (typeof File !== "undefined" && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
+                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
+                (typeof File !== 'undefined' && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/file/replace-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                         file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -208,7 +208,7 @@ class FileManager extends APIBase_1.APIBase {
                     file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                     bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                     options: optionsVal,
-                }, { "Content-Type": optionsVal.contentType });
+                }, { 'Content-Type': optionsVal.contentType });
             }
         });
     }
@@ -239,6 +239,58 @@ class FileManager extends APIBase_1.APIBase {
         return __awaiter(this, void 0, void 0, function* () {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/copy`, {
                 bucketNameOrId,
+                file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
+                bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
+            });
+        });
+    }
+    /**
+     * Adds the specified tags to file's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to add to file's metadata
+     * @returns Returns the updated file information
+     */
+    addTags(tags) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/add-tags`, {
+                tags,
+                file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
+                bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
+            });
+        });
+    }
+    /**
+     * Removes the specified tags from file's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to remove from file's metadata
+     * @returns Returns the updated file information
+     */
+    removeTags(tags) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/remove-tags`, {
+                tags,
+                file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
+                bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
+            });
+        });
+    }
+    /**
+     * Updates the overall file metadata (name, isPublic and tags) in a single method call.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} newName The new name of the file.
+     * @param {boolean} isPublic The privacy setting of the file.
+     * @param {string[]} tags Array of string values that will be added to the file metadata.
+     * @returns Returns the updated file information
+     */
+    updateInfo(newName, isPublic, tags) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/update`, {
+                newName,
+                isPublic,
+                tags,
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
             });

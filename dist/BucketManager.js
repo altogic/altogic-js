@@ -25,7 +25,7 @@ exports.BucketManager = void 0;
 const APIBase_1 = require("./APIBase");
 const FileManager_1 = require("./FileManager");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: "text/plain;charset=UTF-8",
+    contentType: 'text/plain;charset=UTF-8',
     createBucket: false,
 };
 /**
@@ -60,7 +60,7 @@ class BucketManager extends APIBase_1.APIBase {
      */
     exists() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === "root")
+            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === 'root')
                 return { data: true, errors: null };
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/exists`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
@@ -166,6 +166,8 @@ class BucketManager extends APIBase_1.APIBase {
      * | encoding | `text` | The encoding type of the file such as `7bit`, `utf8` |
      * | mimeType | `text` | The mime-type of the file such as `image/gif`, `text/html` |
      * | publicPath | `text` | The public path (URL) of the file |
+     * | userId | `text` *(`identifier`)* | The unique identifier of the user who created/uploaded the file. The `userId` information is populated only when the file is created/uploaded within the context of a user session. |
+     * | tags | `string array` | List of tags added to the file metadata  |
      * | uploadedAt | `datetime` *(`text`)* | The upload date and time of the file |
      * | updatedAt | `datetime` *(`text`)* | The last modification date and time of file metadata |
      *
@@ -181,12 +183,12 @@ class BucketManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === "string")
+                if (typeof expression === 'string')
                     expVal = expression;
-                else if (typeof expression === "object")
+                else if (typeof expression === 'object')
                     optionsVal = expression;
             }
-            if (options && typeof options === "object")
+            if (options && typeof options === 'object')
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/list-files`, {
                 expression: expVal,
@@ -208,10 +210,10 @@ class BucketManager extends APIBase_1.APIBase {
      */
     upload(fileName, fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
-                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
-                (typeof File !== "undefined" && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
+                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
+                (typeof File !== 'undefined' && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                         fileName,
@@ -232,7 +234,7 @@ class BucketManager extends APIBase_1.APIBase {
                     bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                     fileName,
                     options: optionsVal,
-                }, { "Content-Type": optionsVal.contentType });
+                }, { 'Content-Type': optionsVal.contentType });
             }
         });
     }
@@ -258,6 +260,57 @@ class BucketManager extends APIBase_1.APIBase {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
             });
             return { errors };
+        });
+    }
+    /**
+     * Adds the specified tags to bucket's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to add to bucket's metadata
+     * @returns Returns the updated bucket information
+     */
+    addTags(tags) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/add-tags`, {
+                tags,
+                bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
+            });
+        });
+    }
+    /**
+     * Removes the specified tags from bucket's metadata.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string | string[]} tags A single tag or an array of tags to remove from bucket's metadata
+     * @returns Returns the updated bucket information
+     */
+    removeTags(tags) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/remove-tags`, {
+                tags,
+                bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
+            });
+        });
+    }
+    /**
+     * Updates the overall bucket metadata (name, isPublic and tags) in a single method call.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} newName The new name of the bucket. `root` is a reserved name and cannot be used.
+     * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
+     * @param {string[]} tags Array of string values that will be added to the bucket metadata.
+     * @param {boolean} includeFiles Specifies whether to make each file in the bucket to have the same privacy setting of the bucket.
+     * @returns Returns the updated bucket information
+     */
+    updateInfo(newName, isPublic, tags, includeFiles = false) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/update`, {
+                newName,
+                isPublic,
+                tags,
+                includeFiles,
+                bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
+            });
         });
     }
 }

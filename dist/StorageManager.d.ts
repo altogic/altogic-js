@@ -1,7 +1,7 @@
-import { APIBase } from "./APIBase";
-import { Fetcher } from "./utils/Fetcher";
-import { BucketManager } from "./BucketManager";
-import { APIError, BucketListOptions, FileListOptions } from "./types";
+import { APIBase } from './APIBase';
+import { Fetcher } from './utils/Fetcher';
+import { BucketManager } from './BucketManager';
+import { APIError, BucketListOptions, FileListOptions } from './types';
 /**
  * Allows you manage your app's cloud storage buckets and files. With StorageManager you can create and list buckets and use the {@link BucketManager} to manage a specific bucket and and its contained files.
  *
@@ -33,16 +33,17 @@ export declare class StorageManager extends APIBase {
      */
     bucket(nameOrId: string): BucketManager;
     /**
-     * Creates a new bucket. If there already exists a bucket with the specified name, it returns an error.
+     * Creates a new bucket. If there already exists a bucket with the specified name, it returns an error. You can specify additional information to store with each bucket using the **tags** which are array of string values. By default if this method is called within the context of a user session, it also assigns the `userId` of the session to the bucket metadata.
      *
      * Files can be specified as **public** or **private**, which defines how the public URL of the file will behave. If a file is marked as private then external apps/parties will not be able to access it through its public URL. With `isPublic` parameter of a bucket, you can specify default privacy setting of the files contained in this bucket, meaning that when you add a file to a bucket and if the file did not specify public/private setting, then the the bucket's privacy setting will be applied. You can always override the default privacy setting of a bucket at the individual file level.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} name The name of the bucket to create (case sensitive). `root` is a reserved name and cannot be used.
      * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
+     * @param {string[]} tags Array of string values that will be added to the bucket metadata.
      * @returns Returns info about newly created bucket
      */
-    createBucket(name: string, isPublic?: boolean): Promise<{
+    createBucket(name: string, isPublic?: boolean, tags?: string[]): Promise<{
         data: object | null;
         errors: APIError | null;
     }>;
@@ -54,6 +55,8 @@ export declare class StorageManager extends APIBase {
      * | _id | `text` *(`identifier`)* | Unique identifier of the file |
      * | name | `text` | Name of the bucket |
      * | isPublic | `boolean` | Default privacy setting that will be applied to files of the bucket |
+     * | userId | `text` *(`identifier`)* | The unique identifier of the user who created the bucket. The `userId` information is populated only when the bucket is created within the context of a user session. |
+     * | tags | `string array` | List of tags added to the bucket metadata  |
      * | createdAt | `datetime` *(`text`)* | The creation date and time of the bucket |
      * | updatedAt | `datetime` *(`text`)* | The last modification date and time of bucket metadata |
      *
@@ -97,6 +100,8 @@ export declare class StorageManager extends APIBase {
      * | encoding | `text` | The encoding type of the file such as `7bit`, `utf8` |
      * | mimeType | `text` | The mime-type of the file such as `image/gif`, `text/html` |
      * | publicPath | `text` | The public path (URL) of the file |
+     * | userId | `text` *(`identifier`)* | The unique identifier of the user who created/uploaded the file. The `userId` information is populated only when the file is created/uploaded within the context of a user session. |
+     * | tags | `string array` | List of tags added to the file metadata  |
      * | uploadedAt | `datetime` *(`text`)* | The upload date and time of the file |
      * | updatedAt | `datetime` *(`text`)* | The last modification date and time of file metadata |
      *
