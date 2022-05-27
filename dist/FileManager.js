@@ -24,7 +24,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FileManager = void 0;
 const APIBase_1 = require("./APIBase");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: 'text/plain;charset=UTF-8',
+    contentType: "text/plain;charset=UTF-8",
 };
 /**
  * FileManager is primarily used to manage a file. Using the {@link BucketManager.file} method, you can create a FileManager instance for a specific file identified by its unique name or id.
@@ -123,7 +123,7 @@ class FileManager extends APIBase_1.APIBase {
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/file/download`, {
                 file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                 bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
-            }, null, null, 'blob');
+            }, null, null, "blob");
         });
     }
     /**
@@ -184,10 +184,10 @@ class FileManager extends APIBase_1.APIBase {
      */
     replace(fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
-                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
-                (typeof File !== 'undefined' && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
+                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
+                (typeof File !== "undefined" && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/file/replace-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                         file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
@@ -208,7 +208,7 @@ class FileManager extends APIBase_1.APIBase {
                     file: __classPrivateFieldGet(this, _FileManager_fileNameOrId, "f"),
                     bucket: __classPrivateFieldGet(this, _FileManager_bucketNameOrId, "f"),
                     options: optionsVal,
-                }, { 'Content-Type': optionsVal.contentType });
+                }, { "Content-Type": optionsVal.contentType });
             }
         });
     }

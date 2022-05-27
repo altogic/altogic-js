@@ -25,7 +25,7 @@ exports.BucketManager = void 0;
 const APIBase_1 = require("./APIBase");
 const FileManager_1 = require("./FileManager");
 const DEFAULT_FILE_OPTIONS = {
-    contentType: 'text/plain;charset=UTF-8',
+    contentType: "text/plain;charset=UTF-8",
     createBucket: false,
 };
 /**
@@ -60,7 +60,7 @@ class BucketManager extends APIBase_1.APIBase {
      */
     exists() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === 'root')
+            if (__classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f") === "root")
                 return { data: true, errors: null };
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/exists`, {
                 bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
@@ -183,12 +183,12 @@ class BucketManager extends APIBase_1.APIBase {
             let expVal = null;
             let optionsVal = null;
             if (expression) {
-                if (typeof expression === 'string')
+                if (typeof expression === "string")
                     expVal = expression;
-                else if (typeof expression === 'object')
+                else if (typeof expression === "object")
                     optionsVal = expression;
             }
-            if (options && typeof options === 'object')
+            if (options && typeof options === "object")
                 optionsVal = options;
             return yield this.fetcher.post(`/_api/rest/v1/storage/bucket/list-files`, {
                 expression: expVal,
@@ -210,10 +210,10 @@ class BucketManager extends APIBase_1.APIBase {
      */
     upload(fileName, fileBody, options) {
         return __awaiter(this, void 0, void 0, function* () {
-            if ((typeof FormData !== 'undefined' && fileBody instanceof FormData) ||
-                (typeof Blob !== 'undefined' && fileBody instanceof Blob) ||
-                (typeof File !== 'undefined' && fileBody instanceof File)) {
-                if (typeof XMLHttpRequest !== 'undefined' && (options === null || options === void 0 ? void 0 : options.onProgress)) {
+            if ((typeof FormData !== "undefined" && fileBody instanceof FormData) ||
+                (typeof Blob !== "undefined" && fileBody instanceof Blob) ||
+                (typeof File !== "undefined" && fileBody instanceof File)) {
+                if (typeof XMLHttpRequest !== "undefined" && (options === null || options === void 0 ? void 0 : options.onProgress)) {
                     return yield this.fetcher.upload(`/_api/rest/v1/storage/bucket/upload-formdata`, fileBody, {
                         bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                         fileName,
@@ -234,7 +234,7 @@ class BucketManager extends APIBase_1.APIBase {
                     bucket: __classPrivateFieldGet(this, _BucketManager_bucketNameOrId, "f"),
                     fileName,
                     options: optionsVal,
-                }, { 'Content-Type': optionsVal.contentType });
+                }, { "Content-Type": optionsVal.contentType });
             }
         });
     }

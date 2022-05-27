@@ -187,7 +187,9 @@ export class Fetcher {
               data: null,
               errors: {
                 status: response.status,
-                statusText: response.statusText,
+                statusText: response.statusText
+                  ? response.statusText
+                  : "Bad Request",
                 items: errResp?.errors
                   ? Array.isArray(errResp.errors)
                     ? errResp.errors

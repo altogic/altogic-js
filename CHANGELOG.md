@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+### 1.4.0 (2022-05-27)
+
+-  The bucket and file metadata now includes `tags` and `userId` fields. Tags are array of strings that you can use to assign custom information to your buckets and uploaded files. userId is used to store the identifier of the user that who has created the bucket or uploaded the file. If a new bucket or file is created in your app's cloud storage and if the related client library method is exectued within the context of a user session, then the userId field is automaticallly populated with the userId of the active sessions and added to respective bucket or file object
+-  Updated `StorageManager.searchFiles`, `StorageManager.listBuckets` and `BucketManager.listFiles` methods. These methods can now accept `userId` and `tags` fields in filter expressions.
+-  Added `updateInfo` method to `FileManager` which is used to update all file metadata `name`, `isPublic` and `tags` in a single call
+-  Added `addTags` and `removeTags` methods to `FileManager` which are used to manage custom tags assigned to file objects
+-  Added `tags` parameter to `FileUploadOptions` which helps to pass additional tag information when uploading a new file or replacing an existing one
+-  Added `updateInfo` method to `BucketManager` which is used to update all bucket metadata `name`, `isPublic` and `tags` in a single call
+-  Added `addTags` and `removeTags` methods to `BucketManager` which are used to manage custom tags assigned to buckets
+-  Updated `StorageManager.createBucket` method. You can now pass bucket tags when creating a new bucket.
+
 ### 1.3.1 (2022-05-10)
 
 -  Added `getUserFromDBbyCookie` method to `AuthManager` to get user data from the database using the session token stored in request cookies

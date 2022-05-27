@@ -340,7 +340,9 @@ _Fetcher_instances = new WeakSet(), _Fetcher_handleRequest = function _Fetcher_h
                         data: null,
                         errors: {
                             status: response.status,
-                            statusText: response.statusText,
+                            statusText: response.statusText
+                                ? response.statusText
+                                : "Bad Request",
                             items: (errResp === null || errResp === void 0 ? void 0 : errResp.errors)
                                 ? Array.isArray(errResp.errors)
                                     ? errResp.errors
