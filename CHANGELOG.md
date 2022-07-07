@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.0.0 (2022-07-07)
+
+-  Added the new `RealtimeManager` module to support websockets based realtime apps
+-  Updated the  `ClientOptions` to include realtime parameters
+
 ### 1.4.0 (2022-05-27)
 
 -  The bucket and file metadata now includes `tags` and `userId` fields. Tags are array of strings that you can use to assign custom information to your buckets and uploaded files. userId is used to store the identifier of the user that who has created the bucket or uploaded the file. If a new bucket or file is created in your app's cloud storage and if the related client library method is exectued within the context of a user session, then the userId field is automaticallly populated with the userId of the active sessions and added to respective bucket or file object

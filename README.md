@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For detailed API documentation go to
-[Client API reference](https://clientapi.altogic.com/v1.4.0/modules.html)
+[Client API reference](https://clientapi.altogic.com/v2.0.0/modules.html)
 
 ## Installation
 
@@ -224,6 +224,35 @@ await altogic.db
    .limit(100)
    .page(1)
    .get();
+```
+
+### Realtime
+
+The realtime module of Altogic client library allows realtime publish and subscribe (pub/sub) messaging through websockets. Realtime makes it possible to open a two-way interactive communication session between the user's device (e.g., browser, smartphone) and a server. With realtime, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
+
+```js
+//Join to a channel
+altogic.realtime.join('chat_room');
+
+//Leave from a channel
+altogic.realtime.leave('chat_room');
+
+//Listen to a message chat message
+altogic.realtime.on('chat_message', (payload) => console.log(payload.channel, payload.message));
+
+//Send a message to all subscribers of a chat_room channel
+altogic.realtime.send('chat_room', 'chat_message', 'hello there');
+
+//Update user data and broadcast to all subscribed channel members
+altogic.realtime.update({username: 'yoda', profileImgURL: 'https://www.mycloudstorage.com/yoda.png'})
+
+//Listen to new channel member notifications
+altogic.realtime.onJoin((payload) => console.log(payload.channel, payload.message));
+//Listen channel member leave notifications
+altogic.realtime.onLeave((payload) => console.log(payload.channel, payload.message));
+//Listen to user data updates
+altogic.realtime.onUpdate((payload) => console.log(payload.channel, payload.message));
+
 ```
 
 ### RESTful Endpoints (i.e., cloud functions)

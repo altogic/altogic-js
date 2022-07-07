@@ -126,6 +126,20 @@ class Fetcher {
         return this.restUrl;
     }
     /**
+     * Returns the client key
+     * @returns string
+     */
+    getClientKey() {
+        return this.headers["X-Client-Key"];
+    }
+    /**
+     * Returns the session token
+     * @returns string
+     */
+    getSessionToken() {
+        return this.headers["Session"];
+    }
+    /**
      *
      * @param path
      * @param body

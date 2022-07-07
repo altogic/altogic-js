@@ -163,8 +163,8 @@ export class CacheManager extends APIBase {
    * @returns Returns the array of matching keys, their values and the next cursor if there are remaining items to paginate.
    */
   async listKeys(
-    pattern: string,
-    next: string
+    pattern?: string,
+    next?: string
   ): Promise<{
     data: object[] | null;
     next: string | null;

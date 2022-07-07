@@ -11,7 +11,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
 var _a;
-var _AltogicClient_fetcher, _AltogicClient_authManager, _AltogicClient_epManager, _AltogicClient_cacheManager, _AltogicClient_queueManager, _AltogicClient_taskManager, _AltogicClient_databaseManager, _AltogicClient_storageManager;
+var _AltogicClient_fetcher, _AltogicClient_authManager, _AltogicClient_epManager, _AltogicClient_cacheManager, _AltogicClient_queueManager, _AltogicClient_taskManager, _AltogicClient_databaseManager, _AltogicClient_storageManager, _AltogicClient_realtimeManager;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AltogicClient = void 0;
 const ClientError_1 = require("./utils/ClientError");
@@ -24,10 +24,18 @@ const QueueManager_1 = require("./QueueManager");
 const TaskManager_1 = require("./TaskManager");
 const DatabaseManager_1 = require("./DatabaseManager");
 const StorageManager_1 = require("./StorageManager");
+const RealtimeManager_1 = require("./RealtimeManager");
 const DEFAULT_OPTIONS = {
     apiKey: undefined,
     signInRedirect: undefined,
     localStorage: (_a = globalThis.window) === null || _a === void 0 ? void 0 : _a.localStorage,
+    realtime: {
+        autoJoinChannels: true,
+        echoMessages: true,
+        reconnectionDelay: 1000,
+        timeout: 20000,
+        bufferMessages: true,
+    },
 };
 /**
  * Javascript client for interacting with your backend applications developed in Altogic.
@@ -39,6 +47,7 @@ const DEFAULT_OPTIONS = {
  * * {@link queue}: {@link QueueManager} - Enables you to run long-running jobs asynchronously by submitting messages to queues
  * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer (Redis)
  * * {@link task}: {@link TaskManager} - Manually trigger execution of scheduled tasks (e.g., cron jobs)
+ * * {@link realtime}: {@link RealtimeManager} - Publish and subscribe (pub/sub) realtime messaging through websockets
  *
  * Each AltogicClient can interact with one of your app environments (e.g., development, test, production). You cannot create a single client to interact with multiple development, test or production environments at the same time. If you would like to issue commands to other environments, you need to create additional AltogicClient objects using the target environment's `envUrl`.
  *
@@ -95,6 +104,11 @@ class AltogicClient {
          * @type {StorageManager}
          */
         _AltogicClient_storageManager.set(this, void 0);
+        /**
+         * RealtimeManager object is used to send and receive realtime message through websockets
+         * @type {RealtimeManager}
+         */
+        _AltogicClient_realtimeManager.set(this, void 0);
         if (!envUrl ||
             !(envUrl.trim().startsWith("https://") ||
                 envUrl.trim().startsWith("http://")))
@@ -111,8 +125,10 @@ class AltogicClient {
         __classPrivateFieldSet(this, _AltogicClient_taskManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_databaseManager, null, "f");
         __classPrivateFieldSet(this, _AltogicClient_storageManager, null, "f");
+        __classPrivateFieldSet(this, _AltogicClient_realtimeManager, null, "f");
         // Create combination of default and custom options
         this.settings = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
+        this.settings.realtime = Object.assign(Object.assign({}, DEFAULT_OPTIONS.realtime), options === null || options === void 0 ? void 0 : options.realtime);
         // Set the default headers
         const headers = {
             "X-Client": "altogic-js",
@@ -218,7 +234,22 @@ class AltogicClient {
             return __classPrivateFieldGet(this, _AltogicClient_storageManager, "f");
         }
     }
+    /**
+     * Returns the realtime manager, which is used to publish and subscribe (pub/sub) messaging through websockets.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to establish a realtime connection.*
+     * @readonly
+     * @type {RealtimeManager}
+     */
+    get realtime() {
+        if (__classPrivateFieldGet(this, _AltogicClient_realtimeManager, "f"))
+            return __classPrivateFieldGet(this, _AltogicClient_realtimeManager, "f");
+        else {
+            __classPrivateFieldSet(this, _AltogicClient_realtimeManager, new RealtimeManager_1.RealtimeManager(__classPrivateFieldGet(this, _AltogicClient_fetcher, "f"), this.settings), "f");
+            return __classPrivateFieldGet(this, _AltogicClient_realtimeManager, "f");
+        }
+    }
 }
 exports.AltogicClient = AltogicClient;
-_AltogicClient_fetcher = new WeakMap(), _AltogicClient_authManager = new WeakMap(), _AltogicClient_epManager = new WeakMap(), _AltogicClient_cacheManager = new WeakMap(), _AltogicClient_queueManager = new WeakMap(), _AltogicClient_taskManager = new WeakMap(), _AltogicClient_databaseManager = new WeakMap(), _AltogicClient_storageManager = new WeakMap();
+_AltogicClient_fetcher = new WeakMap(), _AltogicClient_authManager = new WeakMap(), _AltogicClient_epManager = new WeakMap(), _AltogicClient_cacheManager = new WeakMap(), _AltogicClient_queueManager = new WeakMap(), _AltogicClient_taskManager = new WeakMap(), _AltogicClient_databaseManager = new WeakMap(), _AltogicClient_storageManager = new WeakMap(), _AltogicClient_realtimeManager = new WeakMap();
 //# sourceMappingURL=AltogicClient.js.map

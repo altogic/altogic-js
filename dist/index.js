@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FileManager = exports.BucketManager = exports.StorageManager = exports.DBObject = exports.QueryBuilder = exports.Fetcher = exports.DatabaseManager = exports.TaskManager = exports.QueueManager = exports.CacheManager = exports.EndpointManager = exports.AuthManager = exports.AltogicClient = exports.APIBase = exports.createClient = void 0;
+exports.RealtimeManager = exports.FileManager = exports.BucketManager = exports.StorageManager = exports.DBObject = exports.QueryBuilder = exports.Fetcher = exports.DatabaseManager = exports.TaskManager = exports.QueueManager = exports.CacheManager = exports.EndpointManager = exports.AuthManager = exports.AltogicClient = exports.APIBase = exports.createClient = void 0;
 const AltogicClient_1 = require("./AltogicClient");
 Object.defineProperty(exports, "AltogicClient", { enumerable: true, get: function () { return AltogicClient_1.AltogicClient; } });
 const APIBase_1 = require("./APIBase");
@@ -27,6 +27,8 @@ const BucketManager_1 = require("./BucketManager");
 Object.defineProperty(exports, "BucketManager", { enumerable: true, get: function () { return BucketManager_1.BucketManager; } });
 const FileManager_1 = require("./FileManager");
 Object.defineProperty(exports, "FileManager", { enumerable: true, get: function () { return FileManager_1.FileManager; } });
+const RealtimeManager_1 = require("./RealtimeManager");
+Object.defineProperty(exports, "RealtimeManager", { enumerable: true, get: function () { return RealtimeManager_1.RealtimeManager; } });
 const Fetcher_1 = require("./utils/Fetcher");
 Object.defineProperty(exports, "Fetcher", { enumerable: true, get: function () { return Fetcher_1.Fetcher; } });
 const polyfills_1 = require("./utils/polyfills");

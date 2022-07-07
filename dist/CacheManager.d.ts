@@ -109,7 +109,7 @@ export declare class CacheManager extends APIBase {
      * @param {string} next The next page position cursor to paginate to the next page. If set as `null` or `undefined`, starts the pagination from the beginning.
      * @returns Returns the array of matching keys, their values and the next cursor if there are remaining items to paginate.
      */
-    listKeys(pattern: string, next: string): Promise<{
+    listKeys(pattern?: string, next?: string): Promise<{
         data: object[] | null;
         next: string | null;
         errors: APIError | null;

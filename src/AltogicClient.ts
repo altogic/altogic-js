@@ -9,11 +9,19 @@ import { QueueManager } from "./QueueManager";
 import { TaskManager } from "./TaskManager";
 import { DatabaseManager } from "./DatabaseManager";
 import { StorageManager } from "./StorageManager";
+import { RealtimeManager } from "./RealtimeManager";
 
 const DEFAULT_OPTIONS = {
   apiKey: undefined,
   signInRedirect: undefined,
   localStorage: globalThis.window?.localStorage,
+  realtime: {
+    autoJoinChannels: true,
+    echoMessages: true,
+    reconnectionDelay: 1000,
+    timeout: 20000,
+    bufferMessages: true,
+  },
 };
 
 /**
@@ -26,6 +34,7 @@ const DEFAULT_OPTIONS = {
  * * {@link queue}: {@link QueueManager} - Enables you to run long-running jobs asynchronously by submitting messages to queues
  * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer (Redis)
  * * {@link task}: {@link TaskManager} - Manually trigger execution of scheduled tasks (e.g., cron jobs)
+ * * {@link realtime}: {@link RealtimeManager} - Publish and subscribe (pub/sub) realtime messaging through websockets
  *
  * Each AltogicClient can interact with one of your app environments (e.g., development, test, production). You cannot create a single client to interact with multiple development, test or production environments at the same time. If you would like to issue commands to other environments, you need to create additional AltogicClient objects using the target environment's `envUrl`.
  *
@@ -90,6 +99,12 @@ export class AltogicClient {
   #storageManager: StorageManager | null;
 
   /**
+   * RealtimeManager object is used to send and receive realtime message through websockets
+   * @type {RealtimeManager}
+   */
+  #realtimeManager: RealtimeManager | null;
+
+  /**
    * Create a new client for web applications.
    * @param {string} envUrl The unique app environment base URL which is generated when you create an environment (e.g., development, test, production) for your backend app. You can access `envUrl` of your app environment from the Environments panel in Altogic designer. Note that, an AltogicClient object can only access a single app environment, you cannot use a development environment `envUrl` to access a test or production environment. To access other environments you need to create additional Altogic client objects with their respective `envUrl` values.
    * @param  {string} clientKey The client library key of the app. You can create client keys from the **App Settings/Client Library** panel in Altogic designer. Besides authenticating your client, client keys are also used to define the authorization rights of each client, e.g., what operations they are allowed to perform on your backend app and define the authorized domains where the client key can be used (e.g., if you list your app domains in your client key configuration, that client key can only be used to make calls to your backend from a front-end app that runs on those specific domains)
@@ -125,9 +140,14 @@ export class AltogicClient {
     this.#taskManager = null;
     this.#databaseManager = null;
     this.#storageManager = null;
+    this.#realtimeManager = null;
 
     // Create combination of default and custom options
     this.settings = { ...DEFAULT_OPTIONS, ...options };
+    this.settings.realtime = {
+      ...DEFAULT_OPTIONS.realtime,
+      ...options?.realtime,
+    };
 
     // Set the default headers
     const headers: KeyValuePair = {
@@ -233,6 +253,21 @@ export class AltogicClient {
     else {
       this.#storageManager = new StorageManager(this.#fetcher);
       return this.#storageManager;
+    }
+  }
+
+  /**
+   * Returns the realtime manager, which is used to publish and subscribe (pub/sub) messaging through websockets.
+   *
+   * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to establish a realtime connection.*
+   * @readonly
+   * @type {RealtimeManager}
+   */
+  get realtime(): RealtimeManager {
+    if (this.#realtimeManager) return this.#realtimeManager;
+    else {
+      this.#realtimeManager = new RealtimeManager(this.#fetcher, this.settings);
+      return this.#realtimeManager;
     }
   }
 }

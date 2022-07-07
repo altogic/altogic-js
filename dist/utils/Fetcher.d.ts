@@ -110,6 +110,16 @@ export declare class Fetcher {
      */
     getBaseUrl(): string;
     /**
+     * Returns the client key
+     * @returns string
+     */
+    getClientKey(): string;
+    /**
+     * Returns the session token
+     * @returns string
+     */
+    getSessionToken(): string;
+    /**
      *
      * @param path
      * @param body

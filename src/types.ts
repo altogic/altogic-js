@@ -138,8 +138,51 @@ export interface ClientOptions {
    * @type {string}
    */
   signInRedirect?: string;
+
+  /**
+   * The configuration parameters for websocket connections
+   * @type {RealtimeOptions}
+   */
+  realtime?: RealtimeOptions;
 }
 
+/**
+ * The options that can be passed to the client instance realtime module
+ *
+ * @export
+ * @interface RealtimeOptions
+ */
+export interface RealtimeOptions {
+  /**
+   * The flag to enable or prevent automatic join to channels already subscribed in case of websocket reconnection. When websocket is disconnected, it automatically leaves subscribed channels. This parameter helps re-joining to already joined channels when the connection is restored.
+   * @type {boolean}
+   */
+  autoJoinChannels?: boolean;
+
+  /**
+   * The flag to enable or prevent realtime messages originating from this connection being echoed back on the same connection.
+   * @type {boolean}
+   */
+  echoMessages?: boolean;
+
+  /**
+   * The initial delay before realtime reconnection in milliseconds.
+   * @type {number}
+   */
+  reconnectionDelay?: number;
+
+  /**
+   * The timeout in milliseconds for each realtime connection attempt.
+   * @type {number}
+   */
+  timeout?: number;
+
+  /**
+   * By default, any event emitted while the realtime socket is not connected will be buffered until reconnection. You can turn on/off the message buffering using this parameter.
+   * @type {number}
+   */
+  bufferMessages?: boolean;
+}
 /**
  * Client lcoal storage handler definition. By default Atlogic client library uses Window.localStorage of the browser.
  *
@@ -904,3 +947,59 @@ export interface CookieOptions {
    */
   secure: boolean;
 }
+
+/**
+ * Defines the structure of the realtime event data (message) delivered to the clients.
+ * @export
+ * @interface EventData
+ */
+export interface EventData {
+  /**
+   * The name of the channel this message is sent to. If channel is null, this means that that message is broadcasted to all connected clients of your app.
+   * @type {string}
+   */
+  channel: string | null;
+  /**
+   * Contents of the message. All serializable datastructures are supported for the message, including Buffer.
+   * @type {any}
+   */
+  message: any;
+}
+/**
+ * Defines the structure of listener (callback) functions for realtime events (messages). Basically a listener function accepts only a single parameter of event data.
+ * @export
+ * @type ListenerFunction
+ */
+export type ListenerFunction = (payload: EventData) => void;
+
+/**
+ * Defines the structure of the channel member data.
+ * @export
+ * @interface MemberData
+ */
+export interface MemberData {
+  /**
+   * The unique socket id of the channel member
+   * @type {string}
+   */
+  id: string;
+  /**
+   * Data payload for the channel member. The supported payload types are strings, JSON objects and arrays, buffers containing arbitrary binary data, and null. This data is typically set calling the {@link RealtimeManager.update} method.
+   * @type {any}
+   */
+  data: any;
+}
+
+/**
+ * Defines the structure of listener (callback) functions for user generated events (messages).
+ *
+ * **eventName** - The user event that has been triggered. Possible value are `user:signin`, `user:signout`, `user:update`, `user:delete`, `user:pwdchange`, `user:emailchange`, `user:phonechange`.
+ *
+ * **session** - The user session object that has triggered the event. If the event is triggered by the user without a session then this value will be `null`.
+ * @export
+ * @type ListenerFunction
+ */
+export type UserEventListenerFunction = (
+  eventName: string,
+  session: Session | null
+) => void;

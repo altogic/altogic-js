@@ -1,7 +1,6 @@
 import fetch from "cross-fetch";
 import { AltogicClient } from "../AltogicClient";
 import { KeyValuePair, Session, APIError } from "../types";
-import { ClientError } from "./ClientError";
 
 const INVALID_SESSION_TOKEN = "invalid_session_token";
 const MISSING_SESSION_TOKEN = "missing_session_token";
@@ -318,6 +317,22 @@ export class Fetcher {
    */
   getBaseUrl(): string {
     return this.restUrl;
+  }
+
+  /**
+   * Returns the client key
+   * @returns string
+   */
+  getClientKey(): string {
+    return this.headers["X-Client-Key"];
+  }
+
+  /**
+   * Returns the session token
+   * @returns string
+   */
+  getSessionToken(): string {
+    return this.headers["Session"];
   }
 
   /**

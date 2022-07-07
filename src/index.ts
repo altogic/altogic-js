@@ -11,6 +11,7 @@ import { DBObject } from "./DBObject";
 import { StorageManager } from "./StorageManager";
 import { BucketManager } from "./BucketManager";
 import { FileManager } from "./FileManager";
+import { RealtimeManager } from "./RealtimeManager";
 import { Fetcher } from "./utils/Fetcher";
 import {
   KeyValuePair,
@@ -42,6 +43,11 @@ import {
   FileSortEntry,
   FileUploadOptions,
   CookieOptions,
+  ListenerFunction,
+  EventData,
+  RealtimeOptions,
+  MemberData,
+  UserEventListenerFunction,
 } from "./types";
 import { polyfillGlobalThis } from "./utils/polyfills";
 
@@ -108,5 +114,11 @@ export {
   FileSortEntry,
   FileUploadOptions,
   FileManager,
+  RealtimeManager,
   CookieOptions,
+  ListenerFunction,
+  EventData,
+  RealtimeOptions,
+  MemberData,
+  UserEventListenerFunction,
 };

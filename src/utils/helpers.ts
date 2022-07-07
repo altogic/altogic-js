@@ -178,7 +178,6 @@ function stringify(value: string = "") {
  * @param {CookieOptions} options Additional cookie potions
  * @return {string} The serialized cookie header
  */
-
 function serialize(name: string, val: string, options: CookieOptions): string {
   let str = name + "=" + encode(val);
 
@@ -217,7 +216,6 @@ function serialize(name: string, val: string, options: CookieOptions): string {
  * @return {object} The parsed cookie object
  * @public
  */
-
 function parse(str: string): any {
   if (typeof str !== "string" || !str) return null;
 
@@ -268,7 +266,6 @@ function parse(str: string): any {
  * @param {string} val Value to encode
  * @returns {string} Encoded value
  */
-
 function encode(val: string): string {
   return encodeURIComponent(val);
 }
@@ -279,8 +276,87 @@ function encode(val: string): string {
  * @param {string} val Value to encode
  * @returns {string} Encoded value
  */
-
 function decode(val: string): string {
   if (!val) return val;
   return val.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
+}
+
+/**
+ * Parses the env url and returns its components
+ *
+ * @param {string} envUrl Environment url to parse
+ * @returns {object} Parsed environment url components
+ */
+export function parseRealtimeEnvUrl(envUrl: string): any {
+  // Get rid of http:// or https://
+  let temp;
+  let protocol;
+  if (envUrl.startsWith("https://")) {
+    temp = envUrl.replace("https://", "");
+    protocol = "https://";
+  } else {
+    temp = envUrl.replace("http://", "");
+    protocol = "http://";
+  }
+  // We have two types of environment urls
+  // 1. subdomain.cluster.altogic.com or
+  // 2. cluster.altogic.com/e:identifier
+
+  // Lets get the items
+  const items = temp.split(".");
+
+  if (items.length === 4) {
+    const info = { subdomain: "", realtimeUrl: "", envId: "" };
+    info.subdomain = items[0];
+
+    // Get the last item of the array
+    const posIndex = items[3].indexOf("/");
+    // If we have a '/' character we need to sanitize the last element
+    if (posIndex !== -1) {
+      items[3] = items[3].substring(0, posIndex);
+    }
+
+    // Override the subdomin entry
+    items[0] = "realtime";
+    info.realtimeUrl = protocol + items.join(".");
+
+    return info;
+  }
+
+  if (items.length === 3) {
+    // Get the last item of the array
+    const posIndex = items[2].indexOf("/");
+    // If we have a '/' character we need to sanitize the last element
+    if (posIndex !== -1) {
+      const info = { subdomain: "", realtimeUrl: "", envId: "" };
+
+      const baseUrl = items[2].substring(posIndex);
+      items[2] = items[2].substring(0, posIndex);
+      if (items[0] === "engine") items[0] = "realtime";
+      else items.unshift("realtime");
+
+      info.realtimeUrl = protocol + items.join(".");
+
+      if ((baseUrl && baseUrl.startsWith("/e:")) || baseUrl.startsWith("/E:")) {
+        const segments = baseUrl.split("/");
+        // At index 0 we have ''
+        const envIdStr = segments[1];
+        const segments2 = envIdStr.split(":");
+        info.envId = segments2[1].trim();
+      }
+
+      return info;
+    } else {
+      // This means we have something like "cluster.altogic.com"
+      items.unshift("realtime");
+      return {
+        subdomain: "",
+        realtimeUrl: protocol + items.join("."),
+        envId: "",
+      };
+    }
+  }
+
+  // Not a valid env url
+  return { subdomain: "", realtimeUrl: "", envId: "" };
 }

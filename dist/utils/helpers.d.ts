@@ -50,4 +50,11 @@ export declare function setCookie(req: any, res: any, name: string, value: any, 
  * @returns {object} The value of the cookie object if found otherwise null
  */
 export declare function getCookie(req: any, res: any, name: string): any;
+/**
+ * Parses the env url and returns its components
+ *
+ * @param {string} envUrl Environment url to parse
+ * @returns {object} Parsed environment url components
+ */
+export declare function parseRealtimeEnvUrl(envUrl: string): any;
 //# sourceMappingURL=helpers.d.ts.map

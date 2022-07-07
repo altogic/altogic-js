@@ -11,8 +11,9 @@ import { DBObject } from "./DBObject";
 import { StorageManager } from "./StorageManager";
 import { BucketManager } from "./BucketManager";
 import { FileManager } from "./FileManager";
+import { RealtimeManager } from "./RealtimeManager";
 import { Fetcher } from "./utils/Fetcher";
-import { KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, ErrorEntry, MessageInfo, TaskInfo, GetOptions, SimpleLookup, ComplexLookup, CreateOptions, DeleteOptions, UpdateOptions, SetOptions, AppendOptions, DBAction, SortEntry, FieldUpdate, UpdateInfo, DeleteInfo, GroupComputation, BucketListOptions, BucketSortEntry, FileListOptions, FileSortEntry, FileUploadOptions, CookieOptions } from "./types";
+import { KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, ErrorEntry, MessageInfo, TaskInfo, GetOptions, SimpleLookup, ComplexLookup, CreateOptions, DeleteOptions, UpdateOptions, SetOptions, AppendOptions, DBAction, SortEntry, FieldUpdate, UpdateInfo, DeleteInfo, GroupComputation, BucketListOptions, BucketSortEntry, FileListOptions, FileSortEntry, FileUploadOptions, CookieOptions, ListenerFunction, EventData, RealtimeOptions, MemberData, UserEventListenerFunction } from "./types";
 /**
  * Creates a new client to interact with your backend application developed in Altogic. You need to specify the `envUrl` and `clientKey` to create a new client object. You can create a new environment or access your app `envUrl` from the **Environments** view and create a new `clientKey` from **App Settings/Client library** view in Altogic designer.
  * @param  {string} envUrl The base URL of the Altogic application environment where a snapshot of the application is deployed
@@ -22,5 +23,5 @@ import { KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, Er
  * @returns {AltogicClient} The newly created client instance
  */
 declare const createClient: (envUrl: string, clientKey: string, options?: ClientOptions | undefined) => AltogicClient;
-export { createClient, APIBase, AltogicClient, AuthManager, EndpointManager, CacheManager, QueueManager, TaskManager, DatabaseManager, Fetcher, KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, ErrorEntry, MessageInfo, TaskInfo, QueryBuilder, DBObject, GetOptions, SimpleLookup, ComplexLookup, CreateOptions, DeleteOptions, UpdateOptions, SetOptions, AppendOptions, DBAction, SortEntry, FieldUpdate, UpdateInfo, DeleteInfo, GroupComputation, StorageManager, BucketManager, BucketListOptions, BucketSortEntry, FileListOptions, FileSortEntry, FileUploadOptions, FileManager, CookieOptions, };
+export { createClient, APIBase, AltogicClient, AuthManager, EndpointManager, CacheManager, QueueManager, TaskManager, DatabaseManager, Fetcher, KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, ErrorEntry, MessageInfo, TaskInfo, QueryBuilder, DBObject, GetOptions, SimpleLookup, ComplexLookup, CreateOptions, DeleteOptions, UpdateOptions, SetOptions, AppendOptions, DBAction, SortEntry, FieldUpdate, UpdateInfo, DeleteInfo, GroupComputation, StorageManager, BucketManager, BucketListOptions, BucketSortEntry, FileListOptions, FileSortEntry, FileUploadOptions, FileManager, RealtimeManager, CookieOptions, ListenerFunction, EventData, RealtimeOptions, MemberData, UserEventListenerFunction, };
 //# sourceMappingURL=index.d.ts.map

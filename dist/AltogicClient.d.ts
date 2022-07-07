@@ -6,6 +6,7 @@ import { QueueManager } from "./QueueManager";
 import { TaskManager } from "./TaskManager";
 import { DatabaseManager } from "./DatabaseManager";
 import { StorageManager } from "./StorageManager";
+import { RealtimeManager } from "./RealtimeManager";
 /**
  * Javascript client for interacting with your backend applications developed in Altogic.
  *
@@ -16,6 +17,7 @@ import { StorageManager } from "./StorageManager";
  * * {@link queue}: {@link QueueManager} - Enables you to run long-running jobs asynchronously by submitting messages to queues
  * * {@link cache}: {@link CacheManager} - Store and manage your data objects in high-speed data storage layer (Redis)
  * * {@link task}: {@link TaskManager} - Manually trigger execution of scheduled tasks (e.g., cron jobs)
+ * * {@link realtime}: {@link RealtimeManager} - Publish and subscribe (pub/sub) realtime messaging through websockets
  *
  * Each AltogicClient can interact with one of your app environments (e.g., development, test, production). You cannot create a single client to interact with multiple development, test or production environments at the same time. If you would like to issue commands to other environments, you need to create additional AltogicClient objects using the target environment's `envUrl`.
  *
@@ -80,5 +82,13 @@ export declare class AltogicClient {
      * @type {StorageManager}
      */
     get storage(): StorageManager;
+    /**
+     * Returns the realtime manager, which is used to publish and subscribe (pub/sub) messaging through websockets.
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to establish a realtime connection.*
+     * @readonly
+     * @type {RealtimeManager}
+     */
+    get realtime(): RealtimeManager;
 }
 //# sourceMappingURL=AltogicClient.d.ts.map

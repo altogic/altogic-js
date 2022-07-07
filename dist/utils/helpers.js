@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getCookie = exports.setCookie = exports.checkRequired = exports.getParamValue = exports.normalizeUrl = exports.removeTrailingSlash = void 0;
+exports.parseRealtimeEnvUrl = exports.getCookie = exports.setCookie = exports.checkRequired = exports.getParamValue = exports.normalizeUrl = exports.removeTrailingSlash = void 0;
 const ClientError_1 = require("./ClientError");
 /**
  * Removes trailing slash character from input url string.
@@ -247,4 +247,77 @@ function decode(val) {
         return val;
     return val.replace(/(%[0-9A-Z]{2})+/g, decodeURIComponent);
 }
+/**
+ * Parses the env url and returns its components
+ *
+ * @param {string} envUrl Environment url to parse
+ * @returns {object} Parsed environment url components
+ */
+function parseRealtimeEnvUrl(envUrl) {
+    // Get rid of http:// or https://
+    let temp;
+    let protocol;
+    if (envUrl.startsWith("https://")) {
+        temp = envUrl.replace("https://", "");
+        protocol = "https://";
+    }
+    else {
+        temp = envUrl.replace("http://", "");
+        protocol = "http://";
+    }
+    // We have two types of environment urls
+    // 1. subdomain.cluster.altogic.com or
+    // 2. cluster.altogic.com/e:identifier
+    // Lets get the items
+    const items = temp.split(".");
+    if (items.length === 4) {
+        const info = { subdomain: "", realtimeUrl: "", envId: "" };
+        info.subdomain = items[0];
+        // Get the last item of the array
+        const posIndex = items[3].indexOf("/");
+        // If we have a '/' character we need to sanitize the last element
+        if (posIndex !== -1) {
+            items[3] = items[3].substring(0, posIndex);
+        }
+        // Override the subdomin entry
+        items[0] = "realtime";
+        info.realtimeUrl = protocol + items.join(".");
+        return info;
+    }
+    if (items.length === 3) {
+        // Get the last item of the array
+        const posIndex = items[2].indexOf("/");
+        // If we have a '/' character we need to sanitize the last element
+        if (posIndex !== -1) {
+            const info = { subdomain: "", realtimeUrl: "", envId: "" };
+            const baseUrl = items[2].substring(posIndex);
+            items[2] = items[2].substring(0, posIndex);
+            if (items[0] === "engine")
+                items[0] = "realtime";
+            else
+                items.unshift("realtime");
+            info.realtimeUrl = protocol + items.join(".");
+            if ((baseUrl && baseUrl.startsWith("/e:")) || baseUrl.startsWith("/E:")) {
+                const segments = baseUrl.split("/");
+                // At index 0 we have ''
+                const envIdStr = segments[1];
+                const segments2 = envIdStr.split(":");
+                info.envId = segments2[1].trim();
+            }
+            return info;
+        }
+        else {
+            // This means we have something like "cluster.altogic.com"
+            items.unshift("realtime");
+            return {
+                subdomain: "",
+                realtimeUrl: protocol + items.join("."),
+                envId: "",
+            };
+        }
+    }
+    // Not a valid env url
+    return { subdomain: "", realtimeUrl: "", envId: "" };
+}
+exports.parseRealtimeEnvUrl = parseRealtimeEnvUrl;
 //# sourceMappingURL=helpers.js.map
