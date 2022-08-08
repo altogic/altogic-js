@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For detailed API documentation go to
-[Client API reference](https://clientapi.altogic.com/v2.0.0/modules.html)
+[Client API reference](https://clientapi.altogic.com/v2.0.1/modules.html)
 
 ## Installation
 
@@ -63,7 +63,7 @@ create a new environment or access your app `envUrl` from the **Environments** v
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[Client API reference](https://clientapi.altogic.com/v2.0.0/modules.html).
+[Client API reference](https://clientapi.altogic.com/v2.0.1/modules.html).
 
 ### Authentication
 
@@ -412,14 +412,15 @@ You can use the following resources to learn more and get help
 
 -  🚀 [Quick start](https://docs.altogic.com/quick-start)
 -  📜 [Altogic Docs](https://docs.altogic.com)
--  💬 Discord community
+-  💬 [Discord community](https://discord.gg/ERK2ssumh8)
+-  📜 [Discussion forums](https://community.altogic.com)
 
 ## Bugs Report
 
-Think you’ve found a bug? Please, send us an email support@altogic.com
+Think you’ve found a bug? Please, open an issue on [GitHub repository](https://github.com/altogic/altogic-js/issues).
 
 ## Support / Feedback
 
 For issues with, questions about, feedback for the client library, or want to see a new feature
-please, send us an email support@altogic.com or reach out to our community forums
+please, send us an email support@altogic.com or reach out to our discussion forums
 https://community.altogic.com

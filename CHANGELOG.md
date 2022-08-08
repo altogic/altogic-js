@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.0.1 (2022-08-08)
+
+-  Minor documentation updates
+-  Check for listeners in realtime module. If listener is null or undefined, the realtime module does not register the listener anymore
+
 ### 2.0.0 (2022-08-08)
 
 -  Added the new `RealtimeManager` module to support websockets based realtime apps

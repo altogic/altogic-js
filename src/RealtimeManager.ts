@@ -127,7 +127,7 @@ export class RealtimeManager extends APIBase {
    */
   onConnect(listener: () => void): void {
     // Register the event listener
-    this.#socket.on("connect", listener);
+    if (listener) this.#socket.on("connect", listener);
   }
 
   /**
@@ -137,7 +137,7 @@ export class RealtimeManager extends APIBase {
    */
   onReconnectAttempt(listener: (attemptNumber: number) => void): void {
     // Register the event listener
-    this.#socket.io.on("reconnect_attempt", listener);
+    if (listener) this.#socket.io.on("reconnect_attempt", listener);
   }
 
   /**
@@ -147,7 +147,7 @@ export class RealtimeManager extends APIBase {
    */
   onDisconnect(listener: (reason: string) => void): void {
     // Register the event listener
-    this.#socket.on("disconnect", listener);
+    if (listener) this.#socket.on("disconnect", listener);
   }
 
   /**
@@ -157,7 +157,7 @@ export class RealtimeManager extends APIBase {
    */
   onError(listener: (error: any) => void): void {
     // Register the event listener
-    this.#socket.on("connect_error", listener);
+    if (listener) this.#socket.on("connect_error", listener);
   }
 
   /**
@@ -199,7 +199,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   on(eventName: string, listener: ListenerFunction): void {
-    this.#socket.on(eventName, listener);
+    if (listener) this.#socket.on(eventName, listener);
   }
 
   /**
@@ -208,7 +208,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   onAny(listener: ListenerFunction): void {
-    this.#socket.onAny(listener);
+    if (listener) this.#socket.onAny(listener);
   }
 
   /**
@@ -218,7 +218,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   once(eventName: string, listener: ListenerFunction): void {
-    this.#socket.once(eventName, listener);
+    if (listener) this.#socket.once(eventName, listener);
   }
 
   /**
@@ -354,7 +354,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   onJoin(listener: ListenerFunction): void {
-    this.#socket.on("channel:join", listener);
+    if (listener) this.#socket.on("channel:join", listener);
   }
 
   /**
@@ -363,7 +363,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   onLeave(listener: ListenerFunction): void {
-    this.#socket.on("channel:leave", listener);
+    if (listener) this.#socket.on("channel:leave", listener);
   }
 
   /**
@@ -372,7 +372,7 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   onUpdate(listener: ListenerFunction): void {
-    this.#socket.on("channel:update", listener);
+    if (listener) this.#socket.on("channel:update", listener);
   }
 
   /**
@@ -413,12 +413,14 @@ export class RealtimeManager extends APIBase {
    * @returns {void}
    */
   onUserEvent(listener: UserEventListenerFunction): void {
-    this.#socket.on("user:signin", listener);
-    this.#socket.on("user:signout", listener);
-    this.#socket.on("user:update", listener);
-    this.#socket.on("user:delete", listener);
-    this.#socket.on("user:pwdchange", listener);
-    this.#socket.on("user:emailchange", listener);
-    this.#socket.on("user:phonechange", listener);
+    if (listener) {
+      this.#socket.on("user:signin", listener);
+      this.#socket.on("user:signout", listener);
+      this.#socket.on("user:update", listener);
+      this.#socket.on("user:delete", listener);
+      this.#socket.on("user:pwdchange", listener);
+      this.#socket.on("user:emailchange", listener);
+      this.#socket.on("user:phonechange", listener);
+    }
   }
 }
