@@ -173,7 +173,7 @@ export class AltogicClient {
   get auth(): AuthManager {
     if (this.#authManager) return this.#authManager;
     else {
-      this.#authManager = new AuthManager(this.#fetcher, this.settings);
+      this.#authManager = new AuthManager(this, this.#fetcher, this.settings);
       return this.#authManager;
     }
   }

@@ -2,10 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
-### 2.0.0 (2022-07-07)
+### 2.0.0 (2022-08-08)
 
 -  Added the new `RealtimeManager` module to support websockets based realtime apps
 -  Updated the  `ClientOptions` to include realtime parameters
+-  Updated `AuthManager.signUpWithEmail` and `AuthManager.signUpWithPhone` methods. Besides the name of the user, these methods now allow input of additional user field values during the sign up process.
 
 ### 1.4.0 (2022-05-27)
 

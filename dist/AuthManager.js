@@ -19,7 +19,7 @@ var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (
     if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
     return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 };
-var _AuthManager_instances, _AuthManager_localStorage, _AuthManager_signInRedirect, _AuthManager_deleteLocalData, _AuthManager_saveLocalData;
+var _AuthManager_instances, _AuthManager_localStorage, _AuthManager_signInRedirect, _AuthManager_client, _AuthManager_deleteLocalData, _AuthManager_saveLocalData;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthManager = void 0;
 const APIBase_1 = require("./APIBase");
@@ -44,7 +44,7 @@ class AuthManager extends APIBase_1.APIBase {
      * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
      * @param {ClientOptions} options Altogic client options
      */
-    constructor(fetcher, { localStorage, signInRedirect }) {
+    constructor(client, fetcher, { localStorage, signInRedirect }) {
         super(fetcher);
         _AuthManager_instances.add(this);
         /**
@@ -57,6 +57,12 @@ class AuthManager extends APIBase_1.APIBase {
          * @type {string}
          */
         _AuthManager_signInRedirect.set(this, void 0);
+        /**
+         * Reference to the Altogic client library realtime manager
+         * @type {string}
+         */
+        _AuthManager_client.set(this, void 0);
+        __classPrivateFieldSet(this, _AuthManager_client, client, "f");
         __classPrivateFieldSet(this, _AuthManager_localStorage, localStorage, "f");
         __classPrivateFieldSet(this, _AuthManager_signInRedirect, signInRedirect, "f");
     }
@@ -187,14 +193,14 @@ class AuthManager extends APIBase_1.APIBase {
      * If email confirmation is **disabled**, a newly created session object with the user data will be returned.
      * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
-     * @param {string} name Name of the user
+     * @param {string | User} nameOrUserData Name of the user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except email and password)  to be created in the database.
      */
-    signUpWithEmail(email, password, name) {
+    signUpWithEmail(email, password, nameOrUserData) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-email", {
                 email,
                 password,
-                name,
+                nameOrUserData,
             });
             if (errors)
                 return { user: null, session: null, errors };
@@ -216,14 +222,14 @@ class AuthManager extends APIBase_1.APIBase {
      * If phone number confirmation is **disabled**, a newly created session object and the user data will be returned.
      * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
-     * @param {string} name Name of the user
+     * @param {string | User} nameOrUserData Name of user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except phone and password) to be created in the database.
      */
-    signUpWithPhone(phone, password, name) {
+    signUpWithPhone(phone, password, nameOrUserData) {
         return __awaiter(this, void 0, void 0, function* () {
             const { data, errors } = yield this.fetcher.post("/_api/rest/v1/auth/signup-phone", {
                 phone,
                 password,
-                name,
+                nameOrUserData,
             });
             if (errors)
                 return { user: null, session: null, errors };
@@ -602,9 +608,31 @@ class AuthManager extends APIBase_1.APIBase {
             }
         });
     }
+    /**
+     * Registers a method to listen to main user events. The following events will be listened:
+     *
+     * | Event | Description |
+     * | :--- | :--- |
+     * | user:signin |  Triggered whenever a new user session is created. |
+     * | user:signout | Triggered when a user session is deleted. If {@link signOutAll} or {@link signOutAllExceptCurrent} method is called then for each deleted sesssion a separate `user:signout` event is triggered. |
+     * | user:update | Triggered whenever user data changes including password, email and phone number updates. |
+     * | user:delete | Triggered when the user data is deleted from the database. |
+     * | user:pwdchange |  Triggered when the user password changes, either through direct password update or password reset. |
+     * | user:emailchange |  Triggered whenever the email of the user changes. |
+     * | user:phonechange |  Triggered whenever the phone number of the user changes. |
+     *
+     * > *Please note that `user:update` and `user:delete` events are fired only when a specific user with a known _id is updated or deleted in the database. For bulk user update or delete operations these events are not fired.*
+     *
+     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {ListenerFunction} listener The listener function. This function gets two input parameters the name of the event that is being triggered and the user session object that has triggered the event. If the event is triggered by the user without a session, then the session value will be `null`.
+     * @returns {void}
+     */
+    onUserEvent(listener) {
+        __classPrivateFieldGet(this, _AuthManager_client, "f").realtime.onUserEvent(listener);
+    }
 }
 exports.AuthManager = AuthManager;
-_AuthManager_localStorage = new WeakMap(), _AuthManager_signInRedirect = new WeakMap(), _AuthManager_instances = new WeakSet(), _AuthManager_deleteLocalData = function _AuthManager_deleteLocalData() {
+_AuthManager_localStorage = new WeakMap(), _AuthManager_signInRedirect = new WeakMap(), _AuthManager_client = new WeakMap(), _AuthManager_instances = new WeakSet(), _AuthManager_deleteLocalData = function _AuthManager_deleteLocalData() {
     if (__classPrivateFieldGet(this, _AuthManager_localStorage, "f")) {
         __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("session");
         __classPrivateFieldGet(this, _AuthManager_localStorage, "f").removeItem("user");

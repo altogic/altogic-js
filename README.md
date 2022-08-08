@@ -63,7 +63,7 @@ create a new environment or access your app `envUrl` from the **Environments** v
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[Client API reference](https://clientapi.altogic.com/v1.4.0/modules.html).
+[Client API reference](https://clientapi.altogic.com/v2.0.0/modules.html).
 
 ### Authentication
 

@@ -152,7 +152,7 @@ class AltogicClient {
         if (__classPrivateFieldGet(this, _AltogicClient_authManager, "f"))
             return __classPrivateFieldGet(this, _AltogicClient_authManager, "f");
         else {
-            __classPrivateFieldSet(this, _AltogicClient_authManager, new AuthManager_1.AuthManager(__classPrivateFieldGet(this, _AltogicClient_fetcher, "f"), this.settings), "f");
+            __classPrivateFieldSet(this, _AltogicClient_authManager, new AuthManager_1.AuthManager(this, __classPrivateFieldGet(this, _AltogicClient_fetcher, "f"), this.settings), "f");
             return __classPrivateFieldGet(this, _AltogicClient_authManager, "f");
         }
     }

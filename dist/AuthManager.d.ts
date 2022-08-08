@@ -1,6 +1,7 @@
 import { APIBase } from "./APIBase";
+import { AltogicClient } from "./AltogicClient";
 import { Fetcher } from "./utils/Fetcher";
-import { ClientOptions, User, Session, APIError } from "./types";
+import { ClientOptions, User, Session, APIError, UserEventListenerFunction } from "./types";
 /**
  * Handles the authentication process of your application users. Provides methods to manage users, sessions and authentication.
  *
@@ -22,7 +23,7 @@ export declare class AuthManager extends APIBase {
      * @param {Fetcher} fetcher The http client to make RESTful API calls to the application's execution engine
      * @param {ClientOptions} options Altogic client options
      */
-    constructor(fetcher: Fetcher, { localStorage, signInRedirect }: ClientOptions);
+    constructor(client: AltogicClient, fetcher: Fetcher, { localStorage, signInRedirect }: ClientOptions);
     /**
      * By default Altogic saves the session and user data in local storage whenever a new session is created (e.g., through sign up or sign in methods). This method clears the locally saved session and user data. In contrast to {@link invalidateSession}, this method does not clear **Session** token request header in {@link Fetcher} and does not redirect to a sign in page.
      */
@@ -93,9 +94,9 @@ export declare class AuthManager extends APIBase {
      * If email confirmation is **disabled**, a newly created session object with the user data will be returned.
      * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
-     * @param {string} name Name of the user
+     * @param {string | User} nameOrUserData Name of the user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except email and password)  to be created in the database.
      */
-    signUpWithEmail(email: string, password: string, name?: string): Promise<{
+    signUpWithEmail(email: string, password: string, nameOrUserData?: string | User): Promise<{
         user: User | null;
         session: Session | null;
         errors: APIError | null;
@@ -108,9 +109,9 @@ export declare class AuthManager extends APIBase {
      * If phone number confirmation is **disabled**, a newly created session object and the user data will be returned.
      * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
-     * @param {string} name Name of the user
+     * @param {string | User} nameOrUserData Name of user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except phone and password) to be created in the database.
      */
-    signUpWithPhone(phone: string, password: string, name?: string): Promise<{
+    signUpWithPhone(phone: string, password: string, nameOrUserData?: string | User): Promise<{
         user: User | null;
         session: Session | null;
         errors: APIError | null;
@@ -356,5 +357,25 @@ export declare class AuthManager extends APIBase {
         session: Session | null;
         errors: APIError | null;
     }>;
+    /**
+     * Registers a method to listen to main user events. The following events will be listened:
+     *
+     * | Event | Description |
+     * | :--- | :--- |
+     * | user:signin |  Triggered whenever a new user session is created. |
+     * | user:signout | Triggered when a user session is deleted. If {@link signOutAll} or {@link signOutAllExceptCurrent} method is called then for each deleted sesssion a separate `user:signout` event is triggered. |
+     * | user:update | Triggered whenever user data changes including password, email and phone number updates. |
+     * | user:delete | Triggered when the user data is deleted from the database. |
+     * | user:pwdchange |  Triggered when the user password changes, either through direct password update or password reset. |
+     * | user:emailchange |  Triggered whenever the email of the user changes. |
+     * | user:phonechange |  Triggered whenever the phone number of the user changes. |
+     *
+     * > *Please note that `user:update` and `user:delete` events are fired only when a specific user with a known _id is updated or deleted in the database. For bulk user update or delete operations these events are not fired.*
+     *
+     * > *An active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {ListenerFunction} listener The listener function. This function gets two input parameters the name of the event that is being triggered and the user session object that has triggered the event. If the event is triggered by the user without a session, then the session value will be `null`.
+     * @returns {void}
+     */
+    onUserEvent(listener: UserEventListenerFunction): void;
 }
 //# sourceMappingURL=AuthManager.d.ts.map

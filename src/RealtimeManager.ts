@@ -101,7 +101,7 @@ export class RealtimeManager extends APIBase {
     });
 
     // Register the event listeners
-    this.#socket.on("connect", () => {
+    this.#socket.io.on("reconnect", () => {
       // If autojoin channels enabled then join already subscribed channels
       if (this.#autoJoinChannels) this.#joinChannels();
     });
@@ -114,7 +114,7 @@ export class RealtimeManager extends APIBase {
    */
   #joinChannels(): void {
     // In case of reconnection we should also update the user data to its latest value
-    if (this.#userData) this.update(this.#userData, this.#echoMessages);
+    if (this.#userData) this.updateProfile(this.#userData, this.#echoMessages);
     this.#channels.forEach((echo, channel) => {
       this.join(channel, echo);
     });
@@ -161,7 +161,7 @@ export class RealtimeManager extends APIBase {
   }
 
   /**
-   * Manually open the realtime connection, connects the socket
+   * Manually open the realtime connection, connects the socket.
    *
    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
    * @returns {void}
@@ -341,7 +341,7 @@ export class RealtimeManager extends APIBase {
    * @param {boolean} echo Override the echo flag specified when creating the websocket to enable or prevent `channel:update` event originating from this connection being echoed back on the same connection.
    * @returns {void}
    */
-  update(data: any, echo?: boolean): void {
+  updateProfile(data: any, echo?: boolean): void {
     this.#socket.emit("update", { data, echo });
 
     // Keep reference to latest user data
@@ -408,7 +408,7 @@ export class RealtimeManager extends APIBase {
    * | user:emailchange |  Triggered whenever the email of the user changes. |
    * | user:phonechange |  Triggered whenever the phone number of the user changes. |
    *
-   *
+   * > *Please note that `user:update` and `user:delete` events are fired only when a specific user with a known _id is updated or deleted in the database. For bulk user update or delete operations these events are not fired.*
    * @param {ListenerFunction} listener The listener function. This function gets two input parameters the name of the event that is being triggered and the user session object that has triggered the event. If the event is triggered by the user without a session, then the session value will be `null`.
    * @returns {void}
    */

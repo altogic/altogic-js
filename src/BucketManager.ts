@@ -327,12 +327,12 @@ export class BucketManager extends APIBase {
   }
 
   /**
-   * Updates the overall bucket metadata (name, isPublic and tags) in a single method call.
+   * Updates the overall bucket data (name, isPublic and tags) in a single method call.
    *
    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
    * @param {string} newName The new name of the bucket. `root` is a reserved name and cannot be used.
    * @param {boolean} isPublic The default privacy setting that will be applied to the files uploaded to this bucket.
-   * @param {string[]} tags Array of string values that will be added to the bucket metadata.
+   * @param {string[]} tags Array of string values that will be set as the bucket metadata.
    * @param {boolean} includeFiles Specifies whether to make each file in the bucket to have the same privacy setting of the bucket.
    * @returns Returns the updated bucket information
    */
