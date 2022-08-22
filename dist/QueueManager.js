@@ -32,18 +32,22 @@ class QueueManager extends APIBase_1.APIBase {
     /**
      * Submits a message to the specified message queue for asychronous processing. After the message is submitted, the routed service defined in your message queue configuration is invoked. This routed service processes the input message and performs necessary tasks defined in its service flow.
      *
+     * You can also specify a delay (in seconds) between message submission to the queue and routed service invocation. As an example, you would like to send a welcome email to your new users when they sign up. Instead of sending this email immediately after sign up, you can send it after 24 hours later (e.g., 60 x 60 x 24 = 86400 seconds)
+     *
      * The structure of the message (e.g., key-value pairs) is defined by the *Start Node* of your queue service.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
      * @param {string} queueNameOrId The name or id of the message queue.
      * @param {object} message The message payload (JSON object) that will be submitted to the message queue
+     * @param {number} delay The number of seconds to delay the messages in queue before dispacthing them to their consuming service
      * @returns If successful, returns information about the submitted message. You can use `messageId` to check the processing status of your message by calling {@link getMessageStatus} method. In case of an errors, returns the errors that occurred.
      */
-    submitMessage(queueNameOrId, message) {
+    submitMessage(queueNameOrId, message, delay) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { data, errors } = yield this.fetcher.post("/_api/rest/v1/queue", {
+            const { data, errors } = yield this.fetcher.post('/_api/rest/v1/queue', {
                 queueNameOrId,
                 message,
+                delay,
             });
             return { info: data, errors };
         });

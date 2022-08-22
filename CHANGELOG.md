@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.1.0 (2022-08-22)
+
+-  Added delay parameter to `QueueManager.submitMessage` which delays the messages in queue by specified duration (in seconds) before dispacting them to their consuming service
+
 ### 2.0.1 (2022-08-08)
 
 -  Minor documentation updates
