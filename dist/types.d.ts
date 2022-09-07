@@ -630,6 +630,13 @@ export interface GroupComputation {
      * @memberof GroupComputation
      */
     expression: string;
+    /**
+     *  Defines the sort direction of computed field. If sort direction is specified as either `asc` or `desc`, computed groups will be sorted accordingly.
+     *
+     * @type {('none' | 'asc' | 'desc')}
+     * @memberof GroupComputation
+     */
+    sort: "none" | "asc" | "desc";
 }
 /**
  * Defines the structure how to get app buckets

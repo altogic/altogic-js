@@ -2,14 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.2.0 (2022-09-07)
+
+-  Added full-text (fuzzy) search method to `QueryBuilder`. 
+-  The `QueryBuilder.compute` method now supports pagination. You can add `page` and `limit` modifiers to your `compute` methods. Additionally, you can also specify the sort direction (either `asc` or `desc`) in `GroupComputation`.
+
 ### 2.1.0 (2022-08-22)
 
--  Added delay parameter to `QueueManager.submitMessage` which delays the messages in queue by specified duration (in seconds) before dispacting them to their consuming service
+-  Added delay parameter to `QueueManager.submitMessage` which delays the messages in queue by specified duration (in seconds) before dispatching them to their consuming service
 
 ### 2.0.1 (2022-08-08)
 
 -  Minor documentation updates
--  Check for listeners in realtime module. If listener is null or undefined, the realtime module does not register the listener anymore
+-  Check for listeners in realtime module. If the listener is null or undefined, the realtime module does not register the listener anymore
 
 ### 2.0.0 (2022-08-08)
 

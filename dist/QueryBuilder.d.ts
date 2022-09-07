@@ -221,6 +221,8 @@ export declare class QueryBuilder extends APIBase {
      *
      * The first example above is the "STARTSWITH" function. This function checks whether a string starts with the characters of a search string, returning true or false as appropriate. It accepts two text parameters, _main text_ and _search text_. The second example is the "PRODUCT" function. This function multiplies all the numbers given as arguments and returns the resulting number.  There is no fixed number of input parameter for this function. At a minimum it takes two parameters and maximum it can have 100.
      *
+     * For detailed information on functions supported in filter queries, please have a look to the [Functions Reference](https://www.altogic.com/docs/category/functions).
+     *
      * ### Data query expressions
      *
      * Altogic does not use a separate data query syntax \(e.g., SQL\) for selecting/filtering data from the database. **You use the same expression syntax described above and functions to query your data.**
@@ -391,15 +393,15 @@ export declare class QueryBuilder extends APIBase {
      * | :--- | :--- |
      * | filter | &#10004; |
      * | group | &#10004; |
-     * | limit |  |
+     * | limit | &#10004;  |
      * | lookup |  |
      * | omit |  |
-     * | page |  |
+     * | page | &#10004; |
      * | sort |  |
      *
      * For example, you might have an orders model where you keep track of your sales of particular products. Using this method you can calculate the total order revenues, average order size, total number of orders and revenues on a weekly or monthly basis etc. The {@link group} method helps you to group your orders. If you would like to group your orders by the week or the month of the year, you can specify a grouping expression which calculates the week or the month of your order creation date. You can also specify the name of the field in the {@link group} method, such as the productId, which will group your orders by product.
      *
-     * The computations parameter defines the calculations that you will be running on the filtered and/or grouped objects. You can either specify a single computation or an array of computations. Altogic will perform the specified calculations for each group and return their results. You can specify multiple calculations at the same time, such as, you can calculate the total number of orders, total sales amount, and average order size on a weekly basis, etc.
+     * The computations parameter defines the calculations that you will be running on the filtered and/or grouped objects. You can either specify a single computation or an array of computations. Altogic will perform the specified calculations for each group and return their results. You can specify multiple calculations at the same time, such as, you can calculate the total number of orders, total sales amount, and average order size on a weekly basis, etc. Additionally, you can also sort the computation results ascending or descenging.
      *
      * > If you do not specify any {@link group} or {@link filter} methods in your query builder chain, it performs the computations on all objects of the model, namely groups all objects stored in the database into a single group and runs the calculations on this group.
      *
@@ -519,7 +521,7 @@ export declare class QueryBuilder extends APIBase {
     /**
      * Retrieves a list of objects from the database running the text search. It performs a logical `OR` search of the terms unless specified as a phrase between double-quotes. If filter is specified it applies the filter query to further narrow down the results. The retrieved objects are sorted automatically in terms of the scores of the text search results. See table below for applicable modifiers that can be used with this method.
      *
-     * | Modifier | Chained with getRandom? |
+     * | Modifier | Chained with searchText? |
      * | :--- | :--- |
      * | filter |  &#10004; |
      * | group |  |
@@ -537,6 +539,32 @@ export declare class QueryBuilder extends APIBase {
      * @returns Returns the array of objects matching the text search string and filter query (if specified). If `returnCountInfo=true`, returns an object which includes count information and list of matched objects.
      */
     searchText(text: string, returnCountInfo?: boolean): Promise<{
+        data: object[] | null;
+        errors: APIError | null;
+    }>;
+    /**
+     * Retrieves a list of objects from the database running the full-text (fuzzy) search on the specified field, which must be covered by a full-text search index. If filter is specified it applies the filter query to further narrow down the results. The retrieved objects are sorted automatically in terms of the scores of the full-text search results. See table below for applicable modifiers that can be used with this method.
+     *
+     * | Modifier | Chained with searchFuzzy? |
+     * | :--- | :--- |
+     * | filter |  &#10004; |
+     * | group |  |
+     * | limit | &#10004; |
+     * | lookup | &#10004; |
+     * | omit |  &#10004; |
+     * | page |  &#10004; |
+     * | sort |   |
+     *
+     * > *This method can run only on top-level objects with a full-text (fuzzy) searchable field. You cannot run fuzzy search on sub-model objects or sub-model object lists.*
+     *
+     * > *The searched field should be a `text` or `rich-text` field marked as **full-text (fuzzy) searchable** in model definition to use this method.*
+     *
+     * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
+     * @param {string} fieldName The name of the field to run the full-text search.
+     * @param {string} text The search string
+     * @returns Returns the array of objects matching the full-text search and filter query (if specified).
+     */
+    searchFuzzy(fieldName: string, text: string): Promise<{
         data: object[] | null;
         errors: APIError | null;
     }>;

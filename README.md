@@ -7,8 +7,8 @@ enabling people and businesses to design, deploy and manage scalable application
 application development by eliminating repetitive tasks, providing pre-integrated and ready-to-use
 execution environments, and automating key stages in the application development process.
 
-For detailed API documentation go to
-[Client API reference](https://clientapi.altogic.com/v2.1.0/modules.html)
+For the Client Library guide with quickstarts and examples please visit [Client API Guide](https://altogic.com/client) and for detailed API documentation visit
+[Client API reference](https://clientapi.altogic.com/v2.2.0/modules.html)
 
 ## Installation
 
@@ -55,7 +55,7 @@ Then you can use it from a global `altogic` variable:
 </script>
 ```
 
-As input to `createClient` you need to provide your environement base URL and client-key. You can
+As input to `createClient` you need to provide your environment base URL and client-key. You can
 create a new environment or access your app `envUrl` from the **Environments** view and create a new
 `clientKey` from **App Settings/Client library** view in Altogic Designer.
 
@@ -63,18 +63,18 @@ create a new environment or access your app `envUrl` from the **Environments** v
 
 This guide will show you how to use the key modules of the client library to execute commands in
 your backend app. For more in-depth coverage, see the
-[Client API reference](https://clientapi.altogic.com/v2.1.0/modules.html).
+[Client API Guide](https://altogic.com/client).
 
 ### Authentication
 
 #### **Sign up new users with email:**
 
-If email confirmation is **enabled** in your app authentication settings then a confirm sign up
+If the email confirmation is **enabled** in your app authentication settings then a confirm sign-up
 email will be sent to the user with a link to click and this method will return the user data with a
 `null` session. Until the user clicks this link, the email address will not be verified and a
-session will not be created. After user clicks on the link in confirmation email, Altogic verifies
-the verification token sent in the email and if the email is verified successfully redirects the
-user to the redirect URL specified in app authentication settings with an `access_token` in query
+session will not be created. After the user clicks on the link in the confirmation email, Altogic verifies
+the verification token sent in the email, and if the email is verified successfully redirects the
+user to the redirect URL specified in app authentication settings with an `access_token` in the query
 string parameter. You can use this `access_token` token to get authentication grants, namely the
 user data and a new session object by calling the `getAuthGrant` method.
 
@@ -109,11 +109,11 @@ const { errors } = await altogic.auth.signInWithPhone(phone, password);
 #### **Sign up/sign-in users with an oAuth provider:**
 
 Signs in a user using the Oauth2 flow of the specified provider. Calling this method with the name
-of the sign in provider will redirect user to the relevant login page of the provider. If the
-provider sign in completes successfully, Altogic directs the user to the redirect URL with an
-`access_token` as query string parameter that you can use to fetch the authentication grants (e.g.,
-user and session data). Please note that you need to make specific configuration at the provider to
-retrieve client id and client secret to use this method.
+of the sign-in provider will redirect the user to the relevant login page of the provider. If the
+provider sign-in completes successfully, Altogic directs the user to the redirect URL with an
+`access_token` as a query string parameter that you can use to fetch the authentication grants (e.g.,
+user and session data). Please note that you need to make a specific configuration at the provider to
+retrieve the client id and client secret to use this method.
 
 ```js
 //Sign in or sign up a user using Google as the oAuth provider
@@ -177,7 +177,7 @@ const { data, errors } = await altogic.db
    .updateFields({ field: 'likeCount', updateType: 'increment', value: 1 });
 ```
 
-Or you can use a query manager to perform update operation. Below examples perform exactly the same
+Or you can use a query manager to perform an update operation. The below examples perform exactly the same
 updates as the above methods.
 
 ```js
@@ -228,7 +228,7 @@ await altogic.db
 
 ### Realtime
 
-The realtime module of Altogic client library allows realtime publish and subscribe (pub/sub) messaging through websockets. Realtime makes it possible to open a two-way interactive communication session between the user's device (e.g., browser, smartphone) and a server. With realtime, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
+The realtime module of Altogic client library allows realtime publish and subscribe (pub/sub) messaging through WebSockets. Realtime makes it possible to open a two-way interactive communication session between the user's device (e.g., browser, smartphone) and a server. With realtime, you can send messages to a server and receive event-driven responses without having to poll the server for a reply.
 
 ```js
 //Join to a channel
@@ -257,10 +257,10 @@ altogic.realtime.onUpdate((payload) => console.log(payload.channel, payload.mess
 
 ### RESTful Endpoints (i.e., cloud functions)
 
-In Altogic, you can define your app RESTful endpoints and associted services. You can think of
+In Altogic, you can define your app's RESTful endpoints and associated services. You can think of
 services as your cloud functions and you define your app services in Altogic Designer. When the
 endpoint is called, the associated service (i.e., cloud function) is executed. The client library
-endpoints module provide the methods to make POST, PUT, GET and DELETE requests to your app
+endpoints module provides the methods to make POST, PUT, GET and DELETE requests to your app
 endpoints.
 
 ```js
@@ -303,8 +303,8 @@ const { data, errors } = await altogic.endpoint.put(`/users/${userId}/address`, 
 
 ### Document storage
 
-This module allows you manage your app's cloud storage buckets and files. You store your files,
-documents, images etc. under buckets, which are the basic containers that hold your application
+This module allows you to manage your app's cloud storage buckets and files. You store your files,
+documents, images, etc. under buckets, which are the basic containers that hold your application
 data. You typically create a bucket and upload files/objects to this bucket.
 
 #### **Create a bucket:**
@@ -357,7 +357,7 @@ const result = await altogic.storage.bucket('profile-images').listFiles('isPubli
 ### Cache
 
 You can use the Altogic client library to cache simple key-value pairs at a high-speed data storage
-layer (Redis) to speed up data set and get operations.
+layer (Redis) to speed up the data set and get operations.
 
 ```js
 //Store items in cache
@@ -376,8 +376,8 @@ const result = await altogic.cache.get('lastUserOrder');
 
 The queue manager allows different parts of your application to communicate and perform activities
 asynchronously. A message queue provides a buffer that temporarily stores messages and dispatches
-them to their consuming service. With the client library you can submit messages to a message queue
-for asychronous processing. After the message is submitted, the routed service defined in your
+them to their consuming service. With the client library, you can submit messages to a message queue
+for asynchronous processing. After the message is submitted, the routed service defined in your
 message queue configuration is invoked. This routed service processes the input message and performs
 necessary tasks defined in its service flow.
 
@@ -392,7 +392,7 @@ const result = await altogic.queue.getMessageStatus(info.messageId);
 ### Scheduled tasks (i.e., cron jobs)
 
 The client library task manager allows you to manually trigger service executions of your scheduled
-tasks which actually ran periodically at fixed times, dates, or intervals.
+tasks that actually ran periodically at fixed times, dates, or intervals.
 
 Typically, a scheduled task runs according to its defined execution schedule. However, with
 Altogic's client library by calling the `runOnce` method, you can manually run scheduled tasks ahead
@@ -413,7 +413,7 @@ You can use the following resources to learn more and get help
 -  🚀 [Quick start](https://docs.altogic.com/quick-start)
 -  📜 [Altogic Docs](https://docs.altogic.com)
 -  💬 [Discord community](https://discord.gg/ERK2ssumh8)
--  📜 [Discussion forums](https://community.altogic.com)
+-  💬 [Discussion forums](https://community.altogic.com)
 
 ## Bugs Report
 
