@@ -17,7 +17,7 @@
    ],
    "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
-      "build": "tsc",
+      "build": "tsc -p tsconfig.json",
       "buildumd": "webpack",
       "run": "node ./dist/index.js",
       "format": "prettier --write \"src/**/*.ts\"",
@@ -41,6 +41,7 @@
    "devDependencies": {
       "@types/node": "^17.0.14",
       "prettier": "^2.5.1",
+      "process": "^0.11.10",
       "ts-loader": "^9.2.6",
       "tslint": "^6.1.3",
       "tslint-config-prettier": "^1.18.0",

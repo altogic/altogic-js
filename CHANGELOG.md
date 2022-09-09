@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.2.1 (2022-09-09)
+
+-  Fixed browser not found error when installing Altogic client library through CDN. 
+
 ### 2.2.0 (2022-09-07)
 
 -  Added full-text (fuzzy) search method to `QueryBuilder`. 
