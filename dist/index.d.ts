@@ -22,6 +22,6 @@ import { KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, Er
  * @param  {string} options Additional configuration parameters
  * @returns {AltogicClient} The newly created client instance
  */
-declare const createClient: (envUrl: string, clientKey: string, options?: ClientOptions | undefined) => AltogicClient;
+declare const createClient: (envUrl: string, clientKey: string, options?: ClientOptions) => AltogicClient;
 export { createClient, APIBase, AltogicClient, AuthManager, EndpointManager, CacheManager, QueueManager, TaskManager, DatabaseManager, Fetcher, KeyValuePair, Session, ClientOptions, ClientStorage, User, APIError, ErrorEntry, MessageInfo, TaskInfo, QueryBuilder, DBObject, GetOptions, SimpleLookup, ComplexLookup, CreateOptions, DeleteOptions, UpdateOptions, SetOptions, AppendOptions, DBAction, SortEntry, FieldUpdate, UpdateInfo, DeleteInfo, GroupComputation, StorageManager, BucketManager, BucketListOptions, BucketSortEntry, FileListOptions, FileSortEntry, FileUploadOptions, FileManager, RealtimeManager, CookieOptions, ListenerFunction, EventData, RealtimeOptions, MemberData, UserEventListenerFunction, };
 //# sourceMappingURL=index.d.ts.map

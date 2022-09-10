@@ -20,16 +20,17 @@ module.exports = {
 					transpileOnly: true,
 				},
 			},
+			{
+				test: /\.js$/,
+				loader: 'webpack-remove-debug',
+			},
 		],
 	},
 	resolve: {
 		extensions: ['.ts', '.js', '.json'],
-		alias: {
-			process: 'process/browser',
-		},
 	},
 	plugins: [
-		new webpack.ProvidePlugin({
+		new webpack.DefinePlugin({
 			process: 'process/browser',
 		}),
 	],

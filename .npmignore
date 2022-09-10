@@ -1,9 +1,0 @@
-src
-tsconfig.json
-tslint.json
-.prettierrc
-.gitignore
-CHANGELOG.md
-node_modules
-docs
-package-lock.json
