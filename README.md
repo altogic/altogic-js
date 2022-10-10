@@ -96,10 +96,10 @@ code SMS will be sent to the phone. Until the user validates this code by callin
 phone number will not be verified.
 
 ```js
-//Sign up a new user with mobile phonec number and password
+//Sign up a new user with mobile phone number and password
 const { errors } = await altogic.auth.signUpWithPhone(phone, password);
 
-//Verify the phone number using code sent in SMS and and return the auth grants (e.g., session)
+//Verify the phone number using code sent in SMS and return the auth grants (e.g., session)
 const { user, session, errors } = await altogic.auth.verifyPhone(phone, code);
 
 //After the users are created and their phones numbers are verified, the next time the users wants to sign in to their account, you can use the sign in method to authenticate them
@@ -344,7 +344,7 @@ const result = await altogic.storage.bucket('profile-images').listFiles({
 });
 
 /*
-You can also apply filters and paginate over the files. Below call returns the first 100 of files which are marked as public and sorted by their size in ascending order
+You can also apply filters and paginate over the files. Below call returns the first 100 files which are marked as public and sorted by their size in ascending order
 */
 const result = await altogic.storage.bucket('profile-images').listFiles('isPublic == true', {
    returnCountInfo: true,
@@ -382,7 +382,7 @@ message queue configuration is invoked. This routed service processes the input 
 necessary tasks defined in its service flow.
 
 ```js
-//Submit a message to a queuer for asychronous processing
+//Submit a message to a queuer for asynchronous processing
 const { info, errors } = await altogic.queue.submitMessage(queueName, messageBody);
 
 //Get the status of submitted message whether it has been completed processing or not
