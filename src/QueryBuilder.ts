@@ -384,7 +384,7 @@ export class QueryBuilder extends APIBase {
   async create(
     values: object | object[]
   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/create`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/create?model=${this.#modelName}`, {
       values,
       query: this.#action,
       model: this.#modelName,
@@ -417,7 +417,7 @@ export class QueryBuilder extends APIBase {
     parentId: string,
     returnTop: boolean = false
   ): Promise<{ data: object | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/set`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/set?model=${this.#modelName}`, {
       values,
       parentId,
       returnTop,
@@ -452,7 +452,7 @@ export class QueryBuilder extends APIBase {
     parentId: string,
     returnTop: boolean = false
   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/append`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/append?model=${this.#modelName}`, {
       values,
       parentId,
       returnTop,
@@ -481,7 +481,7 @@ export class QueryBuilder extends APIBase {
   async get(
     returnCountInfo: boolean = false
   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/get-list`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/get-list?model=${this.#modelName}`, {
       query: this.#action,
       returnCountInfo,
       model: this.#modelName,
@@ -514,7 +514,7 @@ export class QueryBuilder extends APIBase {
   async compute(
     computations: GroupComputation | GroupComputation[]
   ): Promise<{ data: object | object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/compute`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/compute?model=${this.#modelName}`, {
       query: this.#action,
       computations: Array.isArray(computations) ? computations : [computations],
       model: this.#modelName,
@@ -538,7 +538,7 @@ export class QueryBuilder extends APIBase {
    * @returns Returns the object matching the query.
    */
   async getSingle(): Promise<{ data: object | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/get-single`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/get-single?model=${this.#modelName}`, {
       query: this.#action,
       model: this.#modelName,
     });
@@ -566,7 +566,7 @@ export class QueryBuilder extends APIBase {
   async getRandom(
     count: number
   ): Promise<{ data: object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/get-random`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/get-random?model=${this.#modelName}`, {
       query: this.#action,
       count,
       model: this.#modelName,
@@ -593,7 +593,7 @@ export class QueryBuilder extends APIBase {
   async update(
     values: object
   ): Promise<{ data: UpdateInfo; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/update`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/update?model=${this.#modelName}`, {
       values,
       query: this.#action,
       model: this.#modelName,
@@ -624,7 +624,7 @@ export class QueryBuilder extends APIBase {
     if (Array.isArray(fieldUpdates)) updates = fieldUpdates;
     else updates = [fieldUpdates];
 
-    return await this.fetcher.post(`/_api/rest/v1/db/update-fields`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/update-fields?model=${this.#modelName}`, {
       updates,
       query: this.#action,
       model: this.#modelName,
@@ -648,7 +648,7 @@ export class QueryBuilder extends APIBase {
    * @returns Returns information about the delete operation
    */
   async delete(): Promise<{ data: DeleteInfo; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/delete`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/delete?model=${this.#modelName}`, {
       query: this.#action,
       model: this.#modelName,
     });
@@ -678,7 +678,7 @@ export class QueryBuilder extends APIBase {
     text: string,
     returnCountInfo: boolean = false
   ): Promise<{ data: object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/search-text`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/search-text?model=${this.#modelName}`, {
       query: this.#action,
       returnCountInfo,
       text,
@@ -712,7 +712,7 @@ export class QueryBuilder extends APIBase {
     fieldName: string,
     text: string
   ): Promise<{ data: object[] | null; errors: APIError | null }> {
-    return await this.fetcher.post(`/_api/rest/v1/db/fuzzy-search`, {
+    return await this.fetcher.post(`/_api/rest/v1/db/fuzzy-search?model=${this.#modelName}`, {
       query: this.#action,
       text,
       fieldName,
