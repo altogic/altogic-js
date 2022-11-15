@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.1 (2022-11-15)
+
+-  Minor bug fix to join channels when reconnected.
+
 ### 2.3.0 (2022-11-15)
 
 -  `RealtimeManager.getMembers` method has been updated to to use a REST API call to fetch channel members. As a response this method receives a JSON object with data and error fields. If successful data holds the array of channel member profiles and error is set to null/undefined. In case of error data is returned as null/undefined and error holds the error information.

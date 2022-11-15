@@ -5,7 +5,6 @@ import {
   ClientOptions,
   RealtimeOptions,
   ListenerFunction,
-  MemberData,
   UserEventListenerFunction,
 } from "./types";
 import { checkRequired, parseRealtimeEnvUrl } from "./utils/helpers";
@@ -13,7 +12,6 @@ import { APIError } from "./types";
 
 const RECONNECTION_DELAY = 1000;
 const TIMEOUT = 20000;
-const AWAIT_TIMEOUT = 5000;
 /**
  * The realtime manager allows realtime publish and subscribe (pub/sub) messaging through websockets.
  *
@@ -102,7 +100,7 @@ export class RealtimeManager extends APIBase {
     });
 
     // Register the event listeners
-    this.#socket.io.on("reconnect", () => {
+    this.#socket.on("connect", () => {
       // If autojoin channels enabled then join already subscribed channels
       if (this.#autoJoinChannels) this.#joinChannels();
     });
