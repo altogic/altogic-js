@@ -9,6 +9,7 @@ import {
   UserEventListenerFunction,
 } from "./types";
 import { checkRequired, parseRealtimeEnvUrl } from "./utils/helpers";
+import { APIError } from "./types";
 
 const RECONNECTION_DELAY = 1000;
 const TIMEOUT = 20000;
@@ -383,15 +384,12 @@ export class RealtimeManager extends APIBase {
    * @returns Returns array of channel member data. If no channel members then returns and empty array []
    * @throws Throws an exception if `channel` is not specified
    */
-  getMembers(channel: string): Promise<MemberData[]> {
+  async getMembers(
+    channel: string
+  ): Promise<{ data: boolean | null; errors: APIError | null }> {
     checkRequired("channel", channel, true);
-    return new Promise((resolve, reject) => {
-      this.#socket
-        .timeout(AWAIT_TIMEOUT)
-        .emit("members", { channel }, (err: any, response: MemberData[]) => {
-          if (err) reject(err);
-          else resolve(response);
-        });
+    return await this.fetcher.post(`/_api/rest/v1/realtime/get-members`, {
+      channel,
     });
   }
 

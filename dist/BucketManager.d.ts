@@ -128,7 +128,7 @@ export declare class BucketManager extends APIBase {
      * @param {FileUploadOptions} options Content type of the file, privacy setting of the file and whether to create the bucket if not exists. `contentType` is ignored, if `fileBody` is `Blob`, `File` or `FormData`, otherwise `contentType` option needs to be specified. If not specified, `contentType` will default to `text/plain;charset=UTF-8`. If `isPublic` is not specified, defaults to the bucket's privacy setting. If `createBucket` is set to true (defaults to false), then creates a new bucket if the bucket does not exist.
      * @returns Returns the metadata of the uploaded file
      */
-    upload(fileName: string, fileBody: any, options: FileUploadOptions): Promise<{
+    upload(fileName: string, fileBody: any, options?: FileUploadOptions): Promise<{
         data: object | null;
         errors: APIError | null;
     }>;

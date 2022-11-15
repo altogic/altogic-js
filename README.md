@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For the Client Library guide with quickstarts and examples please visit [Client API Guide](https://altogic.com/client) and for detailed API documentation visit
-[Client API reference](https://clientapi.altogic.com/v2.2.0/modules.html)
+[Client API reference](https://clientapi.altogic.com/v2.3.0/modules.html)
 
 ## Installation
 
@@ -255,10 +255,10 @@ altogic.realtime.onUpdate((payload) => console.log(payload.channel, payload.mess
 
 ```
 
-### RESTful Endpoints (i.e., cloud functions)
+### RESTful Endpoints
 
 In Altogic, you can define your app's RESTful endpoints and associated services. You can think of
-services as your cloud functions and you define your app services in Altogic Designer. When the
+services as your cloud functions and you define your app services in Altogic Designer or using the Altogic CLI. When the
 endpoint is called, the associated service (i.e., cloud function) is executed. The client library
 endpoints module provides the methods to make POST, PUT, GET and DELETE requests to your app
 endpoints.
@@ -410,10 +410,10 @@ const result = await altogic.queue.getTaskStatus(info.taskId);
 
 You can use the following resources to learn more and get help
 
--  🚀 [Quick start](https://docs.altogic.com/quick-start)
--  📜 [Altogic Docs](https://docs.altogic.com)
+-  🚀 [Quick start](https://www.altogic.com/docs/quick-start)
+-  📜 [Altogic Docs](https://www.altogic.com/docs)
 -  💬 [Discord community](https://discord.gg/ERK2ssumh8)
--  💬 [Discussion forums](https://community.altogic.com)
+-  📰 [Discussion forums](https://community.altogic.com)
 
 ## Bugs Report
 

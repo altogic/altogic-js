@@ -207,7 +207,7 @@ export class BucketManager extends APIBase {
   async upload(
     fileName: string,
     fileBody: any,
-    options: FileUploadOptions
+    options?: FileUploadOptions
   ): Promise<{ data: object | null; errors: APIError | null }> {
     if (
       (typeof FormData !== "undefined" && fileBody instanceof FormData) ||

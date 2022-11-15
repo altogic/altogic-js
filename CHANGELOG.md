@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.0 (2022-11-15)
+
+-  `RealtimeManager.getMembers` method has been updated to to use a REST API call to fetch channel members
+
+### 2.2.3 (2022-10-17)
+
+-  `BucketManager.upload` method has been updated to mark `FileUploadOptions` parameter as optional
+
 ### 2.2.2 (2022-09-11)
 
 -  Fixed browser not found error when installing Altogic client library through CDN. 
