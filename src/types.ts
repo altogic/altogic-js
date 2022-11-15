@@ -19,7 +19,7 @@ export interface User {
    */
   _id: string;
   /**
-   * The authentication provider name, can be either Altogic, Google, Faceboo, Twitter etc.
+   * The authentication provider name, can be either Altogic, Google, Faceboo, Twitter, Apple etc.
    * @type {string}
    */
   provider: string;

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.4 (2022-11-15)
+
+-  Support for sign in with Apple.
+
 ### 2.3.1 (2022-11-15)
 
 -  Minor bug fix to join channels when reconnected.

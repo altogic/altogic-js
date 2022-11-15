@@ -9,7 +9,7 @@ import { ClientOptions, User, Session, APIError, UserEventListenerFunction } fro
  *
  * 1. **Email and password based account management:** This is the default authentication method and it requires email address validation. You can customize to enable/disable email confirmations, use your own SMTP server to send email (by default signup email confirmation emails are sent from noreply@mail.app.altogic.com domain) and define your email templates.
  * 2. **Phone number and password based account management:** You can also allow your uses to sign up using their phone numbers and validate these phone numbers by sending a validation code through SMS. In order to use this method of authentication, you need to configure the SMS provider. Altogic currently supports Twilio, MessageBird, and Vonage for sending SMS messages.
- * 3. **Authentication through 3rd party Oauth providers** such as Google, Facebook, Twitter, GitHub, Discord: This method enables to run the oauth flow of specific provider in your front-end applications. In order to use this method you need to make specific configuration at the provider to retrieve client id and client secret.
+ * 3. **Authentication through 3rd party Oauth providers** such as Google, Apple, Facebook, Twitter, GitHub, Discord: This method enables to run the oauth flow of specific provider in your front-end applications. In order to use this method you need to make specific configuration at the provider to retrieve client id and client secret.
  *
  * To use any of the above authentication methods you need to configure your app authentication settings. You can customize these settings in Altogic desigler under **App Settings/Authentication**.
  *
@@ -121,7 +121,7 @@ export declare class AuthManager extends APIBase {
      *
      * If email confirmation is **enabled** in your app authentication settings and if the email of the user has not been verified yet, this method will return an error message.
      *
-     * You cannot use this method to log in a user who has signed up with an Oauth2 provider such as Google, Facebook, Twitter etc.
+     * You cannot use this method to log in a user who has signed up with an Oauth2 provider such as Google, Apple, Facebook, Twitter etc.
      *
      * @param {string} email Email of the user
      * @param {string} password Password of the user
@@ -167,7 +167,7 @@ export declare class AuthManager extends APIBase {
      * If this is the first time a user is using this provider then a new user record is creted in the database, otherwise the lastLoginAt field value of the existing user record is updated.
      * @param {string} provider
      */
-    signInWithProvider(provider: "google" | "facebook" | "twitter" | "discord" | "github"): void;
+    signInWithProvider(provider: "google" | "facebook" | "twitter" | "apple" | "discord" | "github"): void;
     /**
      * If an input token is <u>not</u> provided, signs out the user from the current session, clears user and session data in local storage and removes the **Session** header in {@link Fetcher}. Otherwise, signs out the user from the session identified by the input token.
      *
