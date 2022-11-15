@@ -1,6 +1,6 @@
 {
    "name": "altogic",
-   "version": "2.3.3",
+   "version": "2.3.4",
    "description": "Javascript client for Altogic backend apps.",
    "keywords": [
       "javascript",
