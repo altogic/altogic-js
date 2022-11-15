@@ -384,7 +384,7 @@ export class RealtimeManager extends APIBase {
    */
   async getMembers(
     channel: string
-  ): Promise<{ data: boolean | null; errors: APIError | null }> {
+  ): Promise<{ data: object[] | null; errors: APIError | null }> {
     checkRequired("channel", channel, true);
     return await this.fetcher.post(`/_api/rest/v1/realtime/get-members`, {
       channel,
