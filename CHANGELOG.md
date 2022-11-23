@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.6 (2022-11-23)
+
+-  Documentation updates. The `AuthManager.signUpWithEmail` and `AuthManager.signUpWithPhone` can now accept `emailVerified` and `phoneVerified` field values to be passed in the last parameter of the methods. If you set either `emailVerified` or `phoneVerified` to true, email or phone number verification step is bypassed even the email or phone verification is enabled in application authentication settings.
+
+### 2.3.5 (2022-11-15)
+
+-  Documentation updates.
+
 ### 2.3.4 (2022-11-15)
 
 -  Support for sign in with Apple.

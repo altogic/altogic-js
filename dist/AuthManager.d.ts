@@ -92,6 +92,8 @@ export declare class AuthManager extends APIBase {
      * After user clicks on the link in confirmation email, Altogic verifies the verification token sent in the email and if the email is verified successfully redirects the user to the redirect URL specified in app authentication settings with an `access_token`. You can use this `access_token` token to get authentication grants, namely the user data and a new session object by calling the {@link getAuthGrant} method.
      *
      * If email confirmation is **disabled**, a newly created session object with the user data will be returned.
+     *
+     * > If `emailVerified` field is set to true and passed in the last parameter of this method in a user JSON object, then the email verification step is bypassed even the email verification is enabled in application authentication settings. This is primarily used for use-cases where the email address of the user is alreay known/verified so that users are not forced to verify their email addresses again.
      * @param {string} email Unique email address of the user. If there is already a user with the provided email address then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string | User} nameOrUserData Name of the user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except email and password)  to be created in the database.
@@ -107,6 +109,8 @@ export declare class AuthManager extends APIBase {
      * If phone number confirmation is **enabled** in your app authentication settings then a confirmation code SMS will be sent to the phone and this method will return the user data and a `null` session. Until the user validates this code by calling {@link verifyPhone}, the phone number will not be verified. If a user tries to signIn to an account where phone number has not been confirmed yet, an error message will be retured asking for phone number verification.
      *
      * If phone number confirmation is **disabled**, a newly created session object and the user data will be returned.
+     *
+     * > If `phoneVerified` field is set to true and passed in the last parameter of this method in a user JSON object, then the phone number verification step is bypassed even the phone number verification is enabled in application authentication settings. This is primarily used for use-cases where the phone number of the user is alreay known/verified so that users are not forced to verify their phone numbers again.
      * @param {string} phone Unique phone number of the user. If there is already a user with the provided phone number then an error is reaised.
      * @param {string} password Password of the user, should be at least 6 characters long
      * @param {string | User} nameOrUserData Name of user or additional user data associated with the user that is being created in the database. Besides the name of the user, you can pass additional user fields with values (except phone and password) to be created in the database.
