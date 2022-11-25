@@ -610,7 +610,7 @@ class QueryBuilder extends APIBase_1.APIBase {
      * | sort |   |
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
+     * @param {FieldUpdate| FieldUpdate[]} fieldUpdates Field update instruction(s)
      * @returns Returns information about the update operation
      */
     updateFields(fieldUpdates) {

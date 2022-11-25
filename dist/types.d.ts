@@ -463,9 +463,9 @@ export interface DBAction {
     expression: string | null | undefined;
     /**
      * The list of lookups to make (left outer join) while getting the object from the database
-     * @type {([SimpleLookup | ComplexLookup]| null | undefined)}
+     * @type {(SimpleLookup[] | ComplexLookup[] | null | undefined)}
      */
-    lookups: [SimpleLookup | ComplexLookup] | null | undefined;
+    lookups: any;
     /**
      * A positive integer that specifies the page number to paginate query results. Page numbers start from 1.
      * @type {(number | null | undefined)}
@@ -478,9 +478,9 @@ export interface DBAction {
     limit: number | null | undefined;
     /**
      * Keeps the list of field names and sort direction for sorting returned objects
-     * @type {([SortEntry] | null | undefined)}
+     * @type {(SortEntry[] | null | undefined)}
      */
-    sort: [SortEntry] | null | undefined;
+    sort: SortEntry[] | null | undefined;
     /**
      * The list of fields that will be omitted in retrieved objects
      * @type {(string[]| null | undefined)}

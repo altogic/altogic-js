@@ -8,7 +8,7 @@ application development by eliminating repetitive tasks, providing pre-integrate
 execution environments, and automating key stages in the application development process.
 
 For the Client Library guide with quickstarts and examples please visit [Client API Guide](https://altogic.com/client) and for detailed API documentation visit
-[Client API reference](https://clientapi.altogic.com/v2.3.7/modules.html)
+[Client API reference](https://clientapi.altogic.com/latest/modules.html)
 
 ## Installation
 

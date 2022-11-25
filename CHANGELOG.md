@@ -2,9 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.8 (2022-11-25)
+
+-  Updated type definitions for typescript, marked fields which require object or array of objects.
+
 ### 2.3.7 (2022-11-25)
 
--  Updated type definitions for typescript, market fields which are optional.
+-  Updated type definitions for typescript, marked fields which are optional.
 
 ### 2.3.6 (2022-11-23)
 

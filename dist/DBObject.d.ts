@@ -36,11 +36,11 @@ export declare class DBObject extends APIBase {
      * Gets the object referred to by this db object and identified by the `id` from the database. While getting the object it also performs the specified lookups. If the `id` of the db object is not specified, it returns an error.
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {[SimpleLookup | ComplexLookup]} lookups The list of lookups to make (left outer join) while getting the object from the database
+     * @param {SimpleLookup[] | ComplexLookup[]} lookups The list of lookups to make (left outer join) while getting the object from the database
      * @param {GetOptions} options Get operation options. By default no caching of the retrieved object in Redis store.
      * @returns Returns the object identified by the `id` or null if no such object exists in the database
      */
-    get(lookups: [SimpleLookup | ComplexLookup], options?: GetOptions): Promise<{
+    get(lookups: SimpleLookup[] | ComplexLookup[], options?: GetOptions): Promise<{
         data: object | null;
         errors: APIError | null;
     }>;
@@ -115,11 +115,11 @@ export declare class DBObject extends APIBase {
      * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instruction(s).
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
+     * @param {FieldUpdate | FieldUpdate[]} fieldUpdates Field update instruction(s)
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */
-    updateFields(fieldUpdates: FieldUpdate | [FieldUpdate], options?: UpdateOptions): Promise<{
+    updateFields(fieldUpdates: FieldUpdate | FieldUpdate[], options?: UpdateOptions): Promise<{
         data: object | null;
         errors: APIError | null;
     }>;

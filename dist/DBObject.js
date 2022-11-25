@@ -182,7 +182,7 @@ class DBObject extends APIBase_1.APIBase {
      * Updates the fields of object referred to by this db object and identified by the `id` using the input {@link FieldUpdate} instruction(s).
      *
      * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-     * @param {FieldUpdate | [FieldUpdate]} fieldUpdates Field update instruction(s)
+     * @param {FieldUpdate | FieldUpdate[]} fieldUpdates Field update instruction(s)
      * @param {UpdateOptions} options Update operation options. By default no caching of the updated object in Redis store and no top level object return
      * @returns Returns the updated object in the database. If `returnTop` is set to true in {@link UpdateOptions} and if the updated object is a sub-model or sub-model-list object, it returns the updated top-level object.
      */

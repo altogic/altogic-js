@@ -614,11 +614,11 @@ export class QueryBuilder extends APIBase {
    * | sort |   |
    *
    * > *If the client library key is set to **enforce session**, an active user session is required (e.g., user needs to be logged in) to call this method.*
-   * @param {FieldUpdate| [FieldUpdate]} fieldUpdates Field update instruction(s)
+   * @param {FieldUpdate| FieldUpdate[]} fieldUpdates Field update instruction(s)
    * @returns Returns information about the update operation
    */
   async updateFields(
-    fieldUpdates: FieldUpdate | [FieldUpdate]
+    fieldUpdates: FieldUpdate | FieldUpdate[]
   ): Promise<{ data: UpdateInfo; errors: APIError | null }> {
     let updates = null;
     if (Array.isArray(fieldUpdates)) updates = fieldUpdates;
