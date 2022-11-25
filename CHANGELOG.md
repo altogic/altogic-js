@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.7 (2022-11-25)
+
+-  Updated type definitions for typescript, market fields which are optional.
+
 ### 2.3.6 (2022-11-23)
 
 -  Documentation updates. The `AuthManager.signUpWithEmail` and `AuthManager.signUpWithPhone` can now accept `emailVerified` and `phoneVerified` field values to be passed in the last parameter of the methods. If you set either `emailVerified` or `phoneVerified` to true, email or phone number verification step is bypassed even the email or phone verification is enabled in application authentication settings.

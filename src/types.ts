@@ -704,7 +704,7 @@ export interface FieldUpdate {
    * - **shift:** Not applicable, value is not needed
    * @type {*}
    */
-  value: any;
+  value?: any;
 }
 
 /**
@@ -772,14 +772,14 @@ export interface GroupComputation {
    * @type {string}
    * @memberof GroupComputation
    */
-  expression: string;
+  expression?: string;
   /**
    *  Defines the sort direction of computed field. If sort direction is specified as either `asc` or `desc`, computed groups will be sorted accordingly.
    *
    * @type {('none' | 'asc' | 'desc')}
    * @memberof GroupComputation
    */
-  sort: "none" | "asc" | "desc";
+  sort?: "none" | "asc" | "desc";
 }
 
 /**
@@ -792,22 +792,22 @@ export interface BucketListOptions {
    * A positive integer that specifies the page number to paginate bucket results. Page numbers start from 1.
    * @type {(number | null | undefined)}
    */
-  page: number | null | undefined;
+  page?: number | null | undefined;
   /**
    * A positive integer that specifies the max number of buckets to return per page
    * @type {(number | null | undefined)}
    */
-  limit: number | null | undefined;
+  limit?: number | null | undefined;
   /**
    * Specifies the field name and sort direction for sorting returned buckets
    * @type {(BucketSortEntry | null | undefined)}
    */
-  sort: BucketSortEntry | null | undefined;
+  sort?: BucketSortEntry | null | undefined;
   /**
    * Flag to specify whether to return the count and pagination information such as total number of buckets, page number and page size
    * @type {boolean}
    */
-  returnCountInfo: boolean;
+  returnCountInfo?: boolean;
 }
 
 /**
@@ -838,22 +838,22 @@ export interface FileListOptions {
    * A positive integer that specifies the page number to paginate file results. Page numbers start from 1.
    * @type {(number | null | undefined)}
    */
-  page: number | null | undefined;
+  page?: number | null | undefined;
   /**
    * A positive integer that specifies the max number of files to return per page
    * @type {(number | null | undefined)}
    */
-  limit: number | null | undefined;
+  limit?: number | null | undefined;
   /**
    * Specifies the field name and sort direction for sorting returned files
    * @type {(FileSortEntry | null | undefined)}
    */
-  sort: FileSortEntry | null | undefined;
+  sort?: FileSortEntry | null | undefined;
   /**
    * Flag to specify whether to return the count and pagination information such as total number of files, page number and page size
    * @type {boolean}
    */
-  returnCountInfo: boolean;
+  returnCountInfo?: boolean;
 }
 
 /**
@@ -895,22 +895,22 @@ export interface FileUploadOptions {
    * The `Content-Type` header value. This value needs to be specified if using a `fileBody` that is neither `Blob` nor `File` nor `FormData`, otherwise will default to `text/plain;charset=UTF-8`.
    * @type {string}
    */
-  contentType: string;
+  contentType?: string;
   /**
    * Specifies whether file is publicy accessible or not. Defaults to the bucket's privacy setting if not specified.
    * @type {boolean}
    */
-  isPublic: boolean;
+  isPublic?: boolean;
   /**
    * Specifies whether to create the bucket while uploading the file. If a bucket with the provided name does not exists and if `createBucket` is marked as true then creates a new bucket. Defaults to false.
    * @type {boolean}
    */
-  createBucket: boolean;
+  createBucket?: boolean;
   /**
    * Array of string values that will be added to the file metadata.
    * @type {string[]}
    */
-  tags: string;
+  tags?: string;
   /**
    * Callback function to call during file upload.
    *
