@@ -363,6 +363,14 @@ export class Fetcher {
     progressCallback: any = null
   ): Promise<{ data: any | null; errors: APIError | null }> {
     return new Promise((resolve, reject) => {
+      if (typeof XMLHttpRequest === "undefined") {
+        return reject(
+          new Error(
+            "XMLHttpRequest is not defined. This method can only be called from clients where `XMLHttpRequest` object is available (e.g., browsers)."
+          )
+        );
+      }
+
       let pathStr = path ?? "";
       pathStr = pathStr.trim();
       // Check the path format

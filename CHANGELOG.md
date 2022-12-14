@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+### 2.3.9 (2022-12-14)
+
+-  Added XMLHttpRequest control to the `Fetcher.upload` method.
+
 ### 2.3.8 (2022-11-25)
 
 -  Updated type definitions for typescript, marked fields which require object or array of objects.
